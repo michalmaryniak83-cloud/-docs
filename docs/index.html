@@ -1,0 +1,1441 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Michał &amp; Paulina – Nasza historia</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Michał i Paulina – nasza historia, wspomnienia i wyznanie miłości.">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Great+Vibes&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --bg-gradient: radial-gradient(circle at top left, #ffe6f7 0%, #ffc3a0 40%, #ffafbd 80%);
+            --card-bg: rgba(255, 255, 255, 0.88);
+            --accent: #ff6b9c;
+            --accent-dark: #e45484;
+            --text-main: #3b1f2b;
+            --text-muted: #7c5667;
+            --shadow-soft: 0 18px 45px rgba(0, 0, 0, 0.12);
+            --radius-large: 26px;
+            --radius-medium: 18px;
+            --transition-fast: 0.25s ease-out;
+        }
+		html {
+    scroll-behavior: smooth;
+}
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg-gradient);
+            color: var(--text-main);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            scroll-behavior: smooth;
+            /* płynne pojawienie się całej strony */
+            opacity: 0;
+            transition: opacity 0.6s ease-out;
+        }
+
+        body.loaded {
+            opacity: 1;
+        }
+
+        .background-overlay {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            background:
+                radial-gradient(circle at 10% 20%, rgba(255,255,255,0.6) 0, transparent 45%),
+                radial-gradient(circle at 90% 10%, rgba(255,255,255,0.35) 0, transparent 45%),
+                radial-gradient(circle at 0% 80%, rgba(255,255,255,0.4) 0, transparent 50%);
+            opacity: 0.8;
+            z-index: -2;
+        }
+
+        .floating-hearts {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: -1;
+            opacity: 0.5;
+        }
+
+        .heart {
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            background: var(--accent);
+            transform: rotate(45deg);
+            animation: floatUp 16s linear infinite;
+            opacity: 0.7;
+        }
+
+        .heart::before,
+        .heart::after {
+            content: "";
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            background: var(--accent);
+            border-radius: 50%;
+        }
+
+        .heart::before {
+            top: -8px;
+            left: 0;
+        }
+
+        .heart::after {
+            left: -8px;
+            top: 0;
+        }
+
+        .heart:nth-child(1) { left: 5%; animation-duration: 18s; animation-delay: 0s; }
+        .heart:nth-child(2) { left: 15%; animation-duration: 22s; animation-delay: 3s; transform: scale(1.2) rotate(45deg); }
+        .heart:nth-child(3) { left: 25%; animation-duration: 19s; animation-delay: 6s; opacity: 0.5; }
+        .heart:nth-child(4) { left: 35%; animation-duration: 24s; animation-delay: 1s; transform: scale(0.9) rotate(45deg); }
+        .heart:nth-child(5) { left: 45%; animation-duration: 20s; animation-delay: 8s; }
+        .heart:nth-child(6) { left: 55%; animation-duration: 23s; animation-delay: 4s; opacity: 0.6; }
+        .heart:nth-child(7) { left: 65%; animation-duration: 21s; animation-delay: 10s; transform: scale(1.1) rotate(45deg); }
+        .heart:nth-child(8) { left: 75%; animation-duration: 25s; animation-delay: 2s; }
+        .heart:nth-child(9) { left: 85%; animation-duration: 19s; animation-delay: 7s; opacity: 0.5; }
+        .heart:nth-child(10){ left: 92%; animation-duration: 26s; animation-delay: 12s; transform: scale(0.85) rotate(45deg); }
+
+        @keyframes floatUp {
+            0%   { transform: translateY(100vh) rotate(45deg); opacity: 0; }
+            10%  { opacity: 0.7; }
+            100% { transform: translateY(-20vh) rotate(45deg); opacity: 0; }
+        }
+
+        .container {
+            max-width: 1120px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            backdrop-filter: blur(18px);
+            background: linear-gradient(to bottom, rgba(255,255,255,0.92), rgba(255,255,255,0.8));
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        .nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.7rem 0;
+        }
+
+        .logo {
+            font-family: 'Great Vibes', cursive;
+            font-size: 1.7rem;
+            color: var(--accent-dark);
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .logo span {
+            font-size: 1.1rem;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+            color: var(--text-muted);
+        }
+
+        nav ul {
+            display: flex;
+            gap: 1.4rem;
+            list-style: none;
+        }
+
+        nav a {
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            position: relative;
+            padding-bottom: 0.2rem;
+            transition: color var(--transition-fast);
+        }
+
+        nav a::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 0;
+            height: 2px;
+            border-radius: 999px;
+            background: linear-gradient(90deg, var(--accent), var(--accent-dark));
+            transition: width var(--transition-fast);
+        }
+
+        nav a:hover {
+            color: var(--accent-dark);
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        .hero {
+            padding: 3.5rem 0 3rem;
+        }
+
+        .hero-inner {
+            display: grid;
+            grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+            gap: 2.5rem;
+            align-items: center;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.35rem 0.9rem;
+            border-radius: 999px;
+            font-size: 0.8rem;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            background: rgba(255, 255, 255, 0.9);
+            color: var(--accent-dark);
+            box-shadow: 0 8px 22px rgba(0,0,0,0.06);
+        }
+
+        .hero-badge span {
+            font-size: 1rem;
+        }
+
+        .hero-title {
+            margin-top: 1.2rem;
+            font-size: 2.7rem;
+            line-height: 1.15;
+            letter-spacing: 0.03em;
+            color: var(--text-main);
+        }
+
+        .hero-title .script {
+            font-family: 'Great Vibes', cursive;
+            font-size: 3.1rem;
+            color: var(--accent-dark);
+            display: block;
+            margin-bottom: 0.3rem;
+        }
+
+        .hero-subtitle {
+            margin-top: 1rem;
+            font-size: 1rem;
+            color: var(--text-muted);
+            max-width: 32rem;
+        }
+
+        .hero-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem 1.6rem;
+            margin-top: 1.8rem;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .hero-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .hero-meta-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--accent);
+        }
+
+        .hero-cta {
+            display: flex;
+            align-items: center;
+            gap: 0.9rem;
+            margin-top: 2.3rem;
+        }
+
+        .btn-primary {
+            border: none;
+            cursor: pointer;
+            border-radius: 999px;
+            padding: 0.8rem 1.6rem;
+            font-weight: 600;
+            font-size: 0.95rem;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+            color: #fff;
+            box-shadow: 0 14px 35px rgba(255, 107, 156, 0.4);
+            transform: translateY(0);
+            transition: transform var(--transition-fast), box-shadow var(--transition-fast), filter var(--transition-fast);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            filter: brightness(1.03);
+            box-shadow: 0 18px 40px rgba(255, 107, 156, 0.55);
+        }
+
+        .hero-hint {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .hero-card {
+            background: var(--card-bg);
+            border-radius: var(--radius-large);
+            padding: 1.6rem 1.4rem;
+            box-shadow: var(--shadow-soft);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-card::before {
+            content: "♥";
+            position: absolute;
+            font-family: 'Great Vibes', cursive;
+            font-size: 6rem;
+            color: rgba(255, 107, 156, 0.08);
+            right: -0.8rem;
+            bottom: -1.6rem;
+        }
+
+        .hero-photo-frame {
+            border-radius: 18px;
+            overflow: hidden;
+            border: 2px solid rgba(255, 255, 255, 0.9);
+            box-shadow: 0 16px 40px rgba(0,0,0,0.14);
+            transform: rotate(-2.5deg);
+            transform-origin: center;
+        }
+
+        .hero-photo-frame img {
+            display: block;
+            width: 100%;
+            height: 260px;
+            object-fit: cover;
+        }
+
+        .hero-note {
+            margin-top: 1rem;
+            font-size: 0.86rem;
+            color: var(--text-muted);
+        }
+
+        section {
+            padding: 2.8rem 0;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 2.2rem;
+        }
+
+        .section-kicker {
+            font-size: 0.8rem;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: var(--accent-dark);
+            margin-bottom: 0.4rem;
+        }
+
+        .section-title {
+            font-size: 1.7rem;
+            color: var(--text-main);
+            margin-bottom: 0.5rem;
+        }
+
+        .section-subtitle {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            max-width: 32rem;
+            margin: 0 auto;
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+            gap: 2.3rem;
+            align-items: center;
+        }
+
+        .about-card {
+            background: var(--card-bg);
+            border-radius: var(--radius-large);
+            padding: 1.8rem 1.7rem;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .about-card h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .about-card p {
+            font-size: 0.96rem;
+            color: var(--text-muted);
+            margin-bottom: 0.7rem;
+        }
+
+        .about-highlights {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0,1fr));
+            gap: 0.8rem 1.3rem;
+            margin-top: 1.1rem;
+        }
+
+        .about-highlight {
+            font-size: 0.9rem;
+            color: var(--text-main);
+            display: flex;
+            gap: 0.4rem;
+            align-items: flex-start;
+        }
+
+        .about-highlight span {
+            color: var(--accent);
+            font-size: 1rem;
+        }
+
+        .about-photo {
+            border-radius: var(--radius-large);
+            border: 2px solid rgba(255,255,255,0.9);
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 18px 45px rgba(0,0,0,0.15);
+        }
+
+        .about-photo img {
+            width: 100%;
+            height: 100%;
+            display: block;
+            object-fit: cover;
+            max-height: 330px;
+        }
+
+        .about-photo-caption {
+            position: absolute;
+            left: 1rem;
+            bottom: 1rem;
+            padding: 0.35rem 0.9rem;
+            border-radius: 999px;
+            font-size: 0.8rem;
+            background: rgba(0,0,0,0.35);
+            color: #fff;
+            backdrop-filter: blur(6px);
+        }
+
+        .timeline-wrapper {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .timeline {
+            position: relative;
+            padding-left: 0.4rem;
+            padding-right: 0.4rem;
+            margin-top: 2rem;
+        }
+
+        .timeline::before {
+            content: "";
+            position: absolute;
+            left: 50%;
+            top: 0;
+            width: 2px;
+            height: 100%;
+            transform: translateX(-50%);
+            background: linear-gradient(to bottom, rgba(255,255,255,0.9), rgba(255,255,255,0.4));
+        }
+
+        .timeline-item {
+            position: relative;
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 1.8rem;
+            margin-bottom: 1.9rem;
+        }
+
+        .timeline-item:nth-child(odd) .timeline-content {
+            grid-column: 1 / 2;
+            text-align: right;
+        }
+
+        .timeline-item:nth-child(odd) .timeline-meta {
+            grid-column: 2 / 3;
+            text-align: left;
+        }
+
+        .timeline-item:nth-child(even) .timeline-content {
+            grid-column: 2 / 3;
+            text-align: left;
+        }
+
+        .timeline-item:nth-child(even) .timeline-meta {
+            grid-column: 1 / 2;
+            text-align: right;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: 50%;
+            top: 0.65rem;
+            transform: translate(-50%, -50%);
+            width: 11px;
+            height: 11px;
+            border-radius: 999px;
+            background: #fff;
+            border: 3px solid var(--accent);
+            box-shadow: 0 0 0 6px rgba(255,107,156,0.2);
+        }
+
+        .timeline-content {
+            background: var(--card-bg);
+            border-radius: var(--radius-medium);
+            padding: 1rem 1.1rem;
+            box-shadow: 0 10px 28px rgba(0,0,0,0.09);
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .timeline-content strong {
+            color: var(--text-main);
+        }
+
+        .timeline-meta {
+            font-size: 0.82rem;
+            color: var(--accent-dark);
+            padding-top: 0.3rem;
+        }
+
+        .gallery-card {
+            background: var(--card-bg);
+            border-radius: var(--radius-large);
+            padding: 1.6rem 1.4rem 1.8rem;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 0.9rem;
+        }
+
+        .gallery-item {
+            border-radius: 18px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 12px 32px rgba(0,0,0,0.12);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 210px;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.4s ease-out;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.05);
+        }
+
+        .gallery-item::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 10% 10%, rgba(255,255,255,0.18), transparent 55%);
+            pointer-events: none;
+        }
+
+        .reasons-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1rem;
+            margin-top: 1.6rem;
+        }
+
+        .reason-card {
+            background: var(--card-bg);
+            border-radius: var(--radius-medium);
+            padding: 1.2rem 1.1rem;
+            box-shadow: 0 10px 26px rgba(0,0,0,0.1);
+            display: flex;
+            gap: 0.75rem;
+            align-items: flex-start;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .reason-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 999px;
+            background: radial-gradient(circle at 30% 20%, #ffe6f7, var(--accent));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+            box-shadow: 0 8px 20px rgba(255,107,156,0.5);
+        }
+
+        .reason-text h3 {
+            font-size: 0.98rem;
+            margin-bottom: 0.25rem;
+            color: var(--text-main);
+        }
+
+        .reason-text p {
+            font-size: 0.86rem;
+            color: var(--text-muted);
+        }
+
+        .reason-card::after {
+            content: "";
+            position: absolute;
+            right: -12px;
+            bottom: -12px;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: rgba(255,107,156,0.18);
+        }
+
+        .confession-wrapper {
+            max-width: 720px;
+            margin: 0 auto;
+        }
+
+        .confession-card {
+            background: var(--card-bg);
+            border-radius: var(--radius-large);
+            padding: 2rem 1.8rem 2.2rem;
+            box-shadow: var(--shadow-soft);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .confession-card::before,
+        .confession-card::after {
+            content: "";
+            position: absolute;
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            border: 16px solid rgba(255,107,156,0.12);
+        }
+
+        .confession-card::before {
+            top: -80px;
+            left: -60px;
+        }
+
+        .confession-card::after {
+            bottom: -90px;
+            right: -70px;
+        }
+
+        .confession-title-script {
+            font-family: 'Great Vibes', cursive;
+            font-size: 2.3rem;
+            color: var(--accent-dark);
+            margin-bottom: 0.6rem;
+        }
+
+        .confession-intro {
+            font-size: 0.98rem;
+            color: var(--text-muted);
+            max-width: 440px;
+            margin: 0 auto 1.5rem;
+        }
+
+        .confession-letter {
+            margin-top: 1.5rem;
+            text-align: left;
+            font-size: 0.95rem;
+            color: var(--text-main);
+            line-height: 1.8;
+            background: rgba(255,255,255,0.95);
+            border-radius: 18px;
+            padding: 1.1rem 1.2rem;
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            transition: max-height 0.6s ease, opacity 0.4s ease;
+        }
+
+        .confession-letter.visible {
+            max-height: 600px;
+            opacity: 1;
+        }
+
+        .confession-footer {
+            margin-top: 1.2rem;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .confession-footer span {
+            font-family: 'Great Vibes', cursive;
+            font-size: 1.4rem;
+            color: var(--accent-dark);
+        }
+
+        .btn-outline {
+            border-radius: 999px;
+            padding: 0.7rem 1.4rem;
+            border: 1px solid rgba(255,107,156,0.6);
+            background: rgba(255,255,255,0.95);
+            color: var(--accent-dark);
+            font-size: 0.9rem;
+            font-weight: 500;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            transition: background var(--transition-fast), color var(--transition-fast), box-shadow var(--transition-fast), transform var(--transition-fast);
+        }
+
+        .btn-outline:hover {
+            background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+            color: #fff;
+            box-shadow: 0 14px 36px rgba(255,107,156,0.5);
+            transform: translateY(-1px);
+        }
+
+        .music-toggle {
+            position: fixed;
+            right: 1.4rem;
+            bottom: 1.4rem;
+            z-index: 20;
+        }
+
+        .music-toggle button {
+            border-radius: 999px;
+            border: none;
+            background: rgba(0,0,0,0.72);
+            color: #fff;
+            padding: 0.6rem 1.1rem;
+            font-size: 0.86rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.45);
+            transition: transform var(--transition-fast), box-shadow var(--transition-fast), background var(--transition-fast);
+        }
+
+        .music-toggle button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 16px 40px rgba(0,0,0,0.6);
+            background: rgba(0,0,0,0.85);
+        }
+
+        .music-toggle-status {
+            font-size: 0.76rem;
+            opacity: 0.8;
+        }
+
+        footer {
+            padding: 2rem 0 1.8rem;
+            text-align: center;
+            font-size: 0.82rem;
+            color: var(--text-muted);
+        }
+
+        footer span {
+            font-family: 'Great Vibes', cursive;
+            font-size: 1.1rem;
+            color: var(--accent-dark);
+        }
+
+        /* Płynne pojawianie się sekcji przy przewijaniu */
+        .fade-on-scroll {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+        }
+
+        .fade-on-scroll.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @media (max-width: 900px) {
+            .hero-inner {
+                grid-template-columns: minmax(0, 1fr);
+            }
+
+            .hero-card {
+                max-width: 420px;
+                margin: 0 auto;
+            }
+
+            .about-grid {
+                grid-template-columns: minmax(0, 1fr);
+            }
+
+            .about-photo {
+                order: -1;
+            }
+        }
+
+        @media (max-width: 768px) {
+            nav ul {
+                display: none;
+            }
+
+            .hero {
+                padding-top: 2.3rem;
+            }
+
+            .hero-title {
+                font-size: 2.1rem;
+            }
+
+            .hero-title .script {
+                font-size: 2.4rem;
+            }
+
+            .section-title {
+                font-size: 1.45rem;
+            }
+
+            .timeline::before {
+                left: 0.35rem;
+            }
+
+            .timeline-item {
+                grid-template-columns: minmax(0, 1fr);
+                padding-left: 1.3rem;
+            }
+
+            .timeline-item:nth-child(odd) .timeline-content,
+            .timeline-item:nth-child(odd) .timeline-meta,
+            .timeline-item:nth-child(even) .timeline-content,
+            .timeline-item:nth-child(even) .timeline-meta {
+                grid-column: 1 / -1;
+                text-align: left;
+            }
+
+            .timeline-dot {
+                left: 0.35rem;
+            }
+
+            .music-toggle {
+                right: 1rem;
+                bottom: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-meta {
+                flex-direction: column;
+            }
+
+            .about-card {
+                padding: 1.4rem 1.3rem;
+            }
+
+            .confession-card {
+                padding: 1.6rem 1.3rem 1.9rem;
+            }
+
+            .gallery-item img {
+                height: 190px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="background-overlay"></div>
+<div class="floating-hearts">
+    <div class="heart"></div>
+    <div class="heart"></div>
+    <div class="heart"></div>
+    <div class="heart"></div>
+    <div class="heart"></div>
+    <div class="heart"></div>
+    <div class="heart"></div>
+    <div class="heart"></div>
+    <div class="heart"></div>
+    <div class="heart"></div>
+</div>
+
+<!-- Podmień nazwę pliku, jeśli Twoja piosenka ma inną -->
+<audio id="bg-music" loop>
+    <source src="piosenka.mp3" type="audio/mpeg">
+    Twoja przeglądarka nie obsługuje odtwarzacza audio.
+</audio>
+
+<div class="music-toggle">
+    <button id="music-toggle-btn">
+        ♪ Włącz muzykę
+        <span class="music-toggle-status">(kliknij, jeśli chcesz)</span>
+    </button>
+</div>
+
+<header>
+    <div class="container">
+        <div class="nav fade-on-scroll">
+            <div class="logo">
+                Michał &amp; Paulina
+                <span>Nasza historia</span>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#about">O nas</a></li>
+                    <li><a href="#timeline">Nasza historia</a></li>
+                    <li><a href="#gallery">Galeria</a></li>
+                    <li><a href="#reasons">Za co Cię kocham</a></li>
+                    <li><a href="#confession">Wyznanie</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</header>
+
+<main>
+
+    <!-- POCZĄTEK STRONY -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-inner fade-on-scroll">
+                <div>
+                    <div class="hero-badge">
+                        <span>♥</span>
+                        Dla najważniejszej dziewczyny w moim życiu
+                    </div>
+                    <h1 class="hero-title">
+                        <span class="script">
+                            Paulinko,
+                        </span>
+                        ta strona jest tylko dla Ciebie
+                    </h1>
+                    <p class="hero-subtitle">
+                        Chciałem zrobić coś, co zostanie na dłużej niż jedna wiadomość. Coś,
+                        do czego zawsze będziesz mogła wrócić, kiedy tylko będziesz chciała
+                        przypomnieć sobie, jak bardzo jesteś dla mnie ważna.
+                    </p>
+
+                    <div class="hero-meta">
+                        <div class="hero-meta-item">
+                            <div class="hero-meta-dot"></div>
+                            <span>Od: 12 grudnia 2024</span>
+                        </div>
+                        <div class="hero-meta-item">
+                            <div class="hero-meta-dot"></div>
+                            <span>Michał ♥ Paulina</span>
+                        </div>
+                    </div>
+
+                    <div class="hero-cta">
+                        <button class="btn-primary" onclick="document.getElementById('about').scrollIntoView({behavior:'smooth'})">
+                            Zaczynamy naszą historię
+                        </button>
+                        <div class="hero-hint">
+                            Przewiń w dół i zobacz, co dla Ciebie przygotowałem.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="hero-card">
+                    <div class="hero-photo-frame">
+                        <!-- PODMIEŃ NA WASZE ZDJĘCIE -->
+                        <img src="razem.JPG" alt="Michał i Paulina">
+                    </div>
+                    <p class="hero-note">
+                       To jedno z naszych zdjęć na którym jesteśmy 
+					   razem i dajemy sobie buzi 
+				
+                                           
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- O NAS -->
+    <section id="about">
+        <div class="container">
+            <div class="section-header fade-on-scroll">
+                <div class="section-kicker">O nas</div>
+                <h2 class="section-title">Jak to wszystko się zaczęło</h2>
+                <p class="section-subtitle">
+                    Każda piękna historia ma swój początek. Nasza zaczęła się od zwykłych
+                    rozmów, które bardzo szybko stały się czymś, bez czego trudno wyobrazić
+                    sobie dzień.
+                </p>
+            </div>
+
+            <div class="about-grid fade-on-scroll">
+                <div class="about-card">
+                    <h3>Dwoje ludzi, jedna historia</h3>
+                    <p>
+                        Od momentu, kiedy pojawiłaś się w moim życiu, wszystko zaczęło nabierać
+                        innych barw. Nagle zwykłe dni stały się lepsze, a to, co wcześniej było
+                        „normalne", zaczęło mieć większy sens – bo mogłem dzielić to z Tobą.
+                    </p>
+                    <p>
+                        Każda nasza rozmowa, każdy wspólny śmiech, każda wiadomość i spotkanie
+                        tylko bardziej utwierdzają mnie w tym, jak bardzo chcę być właśnie
+                        z Tobą. To niesamowite, jak jedna osoba potrafi tak dużo zmienić – i
+                        właśnie Ty jesteś tą osobą.
+                    </p>
+
+                    <div class="about-highlights">
+                        <div class="about-highlight">
+                            <span>♥</span>
+                            <div>Pierwsze rozmowy, które przerodziły się w coś wyjątkowego.</div>
+                        </div>
+                        <div class="about-highlight">
+                            <span>♥</span>
+                            <div>Razem oficjalnie od: 12 grudnia 2024.</div>
+                        </div>
+                        <div class="about-highlight">
+                            <span>♥</span>
+                            <div>Łączy nas coś więcej niż słowa – zrozumienie, bliskość i ciepło.</div>
+                        </div>
+                        <div class="about-highlight">
+                            <span>♥</span>
+                            <div>Najbardziej kocham to, że przy Tobie czuję się po prostu sobą.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="about-photo">
+                    <!-- PODMIEŃ NA KOLEJNE ZDJĘCIE -->
+                    <img src="razem2.png" alt="Michał i Paulina razem">
+                    <div class="about-photo-caption">
+                        Jeden z tych momentów, do których zawsze będę chciał wracać.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- NASZA HISTORIA - OŚ CZASU -->
+    <section id="timeline">
+        <div class="container">
+            <div class="section-header fade-on-scroll">
+                <div class="section-kicker">Nasza historia</div>
+                <h2 class="section-title">Najważniejsze momenty</h2>
+                <p class="section-subtitle">
+                    Każdy dzień z Tobą jest ważny, ale są takie chwile, które zapisują się
+                    w sercu na zawsze. Te kilka to tylko początek tego, co przed nami.
+                </p>
+            </div>
+
+            <div class="timeline-wrapper fade-on-scroll">
+                <div class="timeline">
+
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <strong>Początek naszej historii</strong><br>
+                            Był taki dzień, kiedy jeszcze nie wiedzieliśmy, dokąd to wszystko
+                            nas zaprowadzi. Po prostu rozmawialiśmy, śmialiśmy się, poznawaliśmy
+                            się krok po kroku. A jednak już wtedy coś we mnie mówiło, że to
+                            będzie ktoś wyjątkowy.
+                        </div>
+                        <div class="timeline-meta">
+                            Pierwsze rozmowy
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <strong>Coraz bliżej</strong><br>
+                            Z każdą kolejną chwilą zaczynałem czuć, że jesteś kimś dużo
+                            ważniejszym niż „po prostu" kolejną osobą w moim życiu. Zwykłe
+                            wiadomości zaczęły znaczyć więcej, a każde pożegnanie i przywitanie
+                             od Ciebie stawało się czymś, na co czekałem.
+                        </div>
+                        <div class="timeline-meta">
+                            Zakochiwanie się w Tobie
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <strong>12 grudnia 2024</strong><br>
+                            Dzień, w którym to wszystko nabrało oficjalnego kształtu. Dzień,
+                            od którego mógłbym powiedzieć, że już nie jestem „sam" – że jesteśmy
+                            „my". To data, którą będę pamiętał zawsze, bo od niej zaczyna się
+                            nasz wspólny kalendarz.
+                        </div>
+                        <div class="timeline-meta">
+                            Oficjalnie razem
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <strong>Przyszłość</strong><br>
+                            Przed nami jeszcze tyle chwil, których nawet nie jesteśmy w stanie
+                            sobie teraz wyobrazić. Wspólne plany, spełnianie marzeń, rozmowy do
+                            nocy, spontaniczne wyjścia i zwykłe, spokojne dni – wszystko to, co
+                            będzie nasze. I właśnie na to wszystko z Tobą najbardziej czekam.
+                        </div>
+                        <div class="timeline-meta">
+                            To dopiero początek
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- GALERIA -->
+    <section id="gallery">
+        <div class="container">
+            <div class="section-header fade-on-scroll">
+                <div class="section-kicker">Galeria</div>
+                <h2 class="section-title">Chwile zatrzymane na zdjęciach</h2>
+                <p class="section-subtitle">
+                    A to cztery moje zdjęcia zrobione w czasie naszego związku   
+					<br>P.S dziękuje za śliczną bluzeczkę 
+                    
+                    
+                </p>
+            </div>
+
+            <div class="gallery-card fade-on-scroll">
+                <div class="gallery-grid">
+                    <!-- PODMIEŃ ŚCIEŻKI NA SWOJE ZDJĘCIA -->
+                    <div class="gallery-item">
+                        <img src="ja.jpeg" alt="Michał i Paulina - zdjęcie 1">
+                    </div>
+                    <div class="gallery-item">
+                        <img src="ja2.jpeg" alt="Michał i Paulina - zdjęcie 2">
+                    </div>
+                    <div class="gallery-item">
+                        <img src="ja3.jpeg" alt="Michał i Paulina - zdjęcie 3">
+                    </div>
+                    <div class="gallery-item">
+                        <img src="ja1.jpeg" alt="Michał i Paulina - zdjęcie 4">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ZA CO JĄ KOCHASZ -->
+    <section id="reasons">
+        <div class="container">
+            <div class="section-header fade-on-scroll">
+                <div class="section-kicker">Za co Cię kocham</div>
+                <h2 class="section-title">Małe rzeczy, które znaczą wszystko</h2>
+                <p class="section-subtitle">
+                    Mógłbym wymieniać godzinami, ale spróbowałem zebrać choć kilka powodów,
+                    dla których tak łatwo jest zakochać się właśnie w Tobie, Paulinko.
+                </p>
+            </div>
+
+            <div class="reasons-grid fade-on-scroll">
+
+                <div class="reason-card">
+                    <div class="reason-icon">♥</div>
+                    <div class="reason-text">
+                        <h3>Twój uśmiech</h3>
+                        <p>
+                            Twój uśmiech potrafi rozjaśnić nawet najgorszy dzień. Wystarczy,
+                            że się uśmiechniesz, a wszystko staje się jakby prostsze, lżejsze
+                            i spokojniejsze. To jeden z tych widoków, których nigdy nie mam
+                            dość.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="reason-card">
+                    <div class="reason-icon">♥</div>
+                    <div class="reason-text">
+                        <h3>Twoje serce</h3>
+                        <p>
+                            Kocham to, jaka jesteś dla mnie – wrażliwa, ciepła, troskliwa.
+                            Zawsze potrafisz pocieszyć, wesprzeć, powiedzieć coś, co naprawdę
+                            pomaga. Masz w sobie tyle dobra, że czasem aż ciężko mi uwierzyć,
+                            że mam szczęście być tak blisko tego serca.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="reason-card">
+                    <div class="reason-icon">♥</div>
+                    <div class="reason-text">
+                        <h3>Wspólne chwile</h3>
+                        <p>
+                            Kocham te wszystkie momenty, kiedy jesteśmy po prostu razem –
+                            nawet jeśli nic wielkiego się nie dzieje. Rozmowy, głupie żarty,
+                            oglądanie czegoś, pisanie do siebie, planowanie… To właśnie z tych
+                            małych rzeczy składa się szczęście.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="reason-card">
+                    <div class="reason-icon">♥</div>
+                    <div class="reason-text">
+                        <h3>To, jaka jesteś</h3>
+                        <p>
+                            Kocham Cię za to, że jesteś sobą – piękną, mądrą, wyjątkową. Za
+                            Twój charakter, emocje, sposób, w jaki patrzysz na świat. Za to,
+                            że nie udajesz nikogo innego i dzięki temu przy Tobie ja też
+                            nie muszę nic udawać.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="reason-card">
+                    <div class="reason-icon">♥</div>
+                    <div class="reason-text">
+                        <h3>Twoja obecność</h3>
+                        <p>
+                            Kocham to, że po prostu jesteś. Że mogę napisać, zadzwonić, spotkać
+                            się, przytulić. Że nawet w ciszy czuję, że nie jestem sam. Twoja
+                            obecność daje mi spokój, którego wcześniej brakowało.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="reason-card">
+                    <div class="reason-icon">♥</div>
+                    <div class="reason-text">
+                        <h3>Nasze „małe rzeczy"</h3>
+                        <p>
+                            Kocham wszystkie nasze wewnętrzne teksty, głupie żarciki, spojrzenia,
+                            które rozumiemy tylko my. Te drobne rzeczy tworzą coś, co jest
+                            tylko nasze – i właśnie to czyni tę relację tak wyjątkową.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="reason-card">
+                    <div class="reason-icon">♥</div>
+                    <div class="reason-text">
+                        <h3>To, jak mnie wspierasz</h3>
+                        <p>
+                            Kocham to, że potrafisz dodać mi siły, kiedy sam w siebie wątpię.
+                            Twoje słowa, wsparcie i wiara we mnie naprawdę wiele znaczą. Dzięki
+                            Tobie łatwiej mi iść do przodu.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="reason-card">
+                    <div class="reason-icon">♥</div>
+                    <div class="reason-text">
+                        <h3>Twoje poczucie humoru</h3>
+                        <p>
+                            Kocham to, jak potrafisz mnie rozśmieszyć – czasem jednym zdaniem,
+                            spojrzeniem albo głupim żartem. Dzięki Tobie nawet zwykły dzień
+                            może stać się wyjątkowy.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="reason-card">
+                    <div class="reason-icon">♥</div>
+                    <div class="reason-text">
+                        <h3>Twoja cierpliwość</h3>
+                        <p>
+                            Kocham to, że potrafisz mnie zrozumieć, nawet kiedy nie zawsze umiem
+                            wszystko dobrze wyjaśnić. Twoja cierpliwość i spokój naprawdę dużo
+                            dla mnie znaczą.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="reason-card">
+                    <div class="reason-icon">♥</div>
+                    <div class="reason-text">
+                        <h3>To, jak o mnie dbasz</h3>
+                        <p>
+                            Kocham wszystkie drobne gesty, przez które widzę, że o mnie dbasz –
+                            pytania, czy wszystko w porządku, troskę o mój nastrój, o mój dzień.
+                            Czuję się przy Tobie ważny i kochany.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- WYZNANIE -->
+    <section id="confession">
+        <div class="container">
+            <div class="confession-wrapper">
+                <div class="section-header fade-on-scroll">
+                    <div class="section-kicker">Wyznanie</div>
+                    <h2 class="section-title">To, co najważniejsze</h2>
+                </div>
+
+                <div class="confession-card fade-on-scroll">
+                    <div class="confession-title-script">
+                        Kocham Cię, Paulino
+                    </div>
+                    <p class="confession-intro">
+                        Chciałem, żebyś miała miejsce, w którym zawsze będziesz mogła wrócić
+                        do tych słów. Kliknij poniżej, a pokażę Ci coś prosto z serca.
+                    </p>
+
+                    <button class="btn-outline" id="toggle-letter-btn">
+                        Otwórz moje wyznanie
+                        <span>♥</span>
+                    </button>
+
+                    <div class="confession-letter" id="love-letter">
+                        <p>
+                            Księżniczko,<br><br>
+                            odkąd pojawiłaś się w moim życiu, wszystko zaczęło wyglądać inaczej.
+                            Zwykłe dni przestały być zwykłe, bo wiedziałem, że gdzieś tam po
+                            drugiej stronie jesteś Ty – ktoś, z kim chcę dzielić każdą małą i
+                            dużą chwilę.
+                        </p>
+                        <p>
+                            Czasem trudno jest ubrać w słowa to, co naprawdę czuję. Ale wiem
+                            jedno – jesteś dla mnie kimś niesamowicie ważnym. Kimś, o kogo chcę
+                            dbać, kogo chcę wspierać, przy kim chcę być zarówno w tych pięknych,
+                            jak i trudniejszych momentach.
+                        </p>
+                        <p>
+                            Dziękuję Ci za to, że jesteś. Za każdy uśmiech, każdą wiadomość,
+                            każde „dobranoc" i „dzień dobry". Za to, że potrafisz sprawić, że
+                            czuję się potrzebny i ważny. Za to, że pozwalasz mi być częścią
+                            swojego świata.
+                        </p>
+                        <p>
+                            Chcę, żebyś wiedziała, że naprawdę mi na Tobie zależy. Że nie jesteś
+                            dla mnie „na chwilę" ani „tak po prostu". Widzę w Tobie osobę, z którą
+                            chcę budować coś prawdziwego – krok po kroku, bez pośpiechu, ale
+                            szczerze i z sercem.
+                        </p>
+                        <p>
+                            Kocham Cię, Paulinko. Bardziej, niż jestem w stanie napisać w jednym
+                            liście czy na jednej stronie. I mam nadzieję, że z każdym kolejnym
+                            dniem będę mógł Ci to udowadniać nie tylko słowami, ale przede
+                            wszystkim tym, jak będę przy Tobie.
+                        </p>
+                        <p>
+                            Na zawsze Twój,<br>
+                            Michał (misiu)
+                        </p>
+                    </div>
+
+                    <div class="confession-footer">
+                        Dziękuję, że jesteś. <span>Paulino</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<footer>
+    Stworzone z miłością dla Pauliny. <span>♥</span>
+</footer>
+
+<script>
+    // płynne pojawienie się całej strony po załadowaniu
+    window.addEventListener('load', () => {
+        document.body.classList.add('loaded');
+    });
+
+    // przycisk do muzyki
+    const music = document.getElementById('bg-music');
+    const musicBtn = document.getElementById('music-toggle-btn');
+    const musicStatus = musicBtn.querySelector('.music-toggle-status');
+
+    let isPlaying = false;
+
+    // Automatyczne odtwarzanie muzyki po załadowaniu strony
+    window.addEventListener('load', async () => {
+        try {
+            await music.play();
+            isPlaying = true;
+            musicBtn.firstChild.textContent = '♪ Pauzuj muzykę ';
+            musicStatus.textContent = '(gra w tle)';
+        } catch (e) {
+            console.error('Nie udało się odtworzyć muzyki automatycznie:', e);
+        }
+    });
+
+    musicBtn.addEventListener('click', async () => {
+        try {
+            if (!isPlaying) {
+                await music.play();
+                isPlaying = true;
+                musicBtn.firstChild.textContent = '♪ Pauzuj muzykę ';
+                musicStatus.textContent = '(gra w tle)';
+            } else {
+                music.pause();
+                isPlaying = false;
+                musicBtn.firstChild.textContent = '♪ Włącz muzykę ';
+                musicStatus.textContent = '(kliknij, jeśli chcesz)';
+            }
+        } catch (e) {
+            console.error(e);
+        }
+    });
+
+    // rozwijanie / chowanie wyznania
+    const toggleLetterBtn = document.getElementById('toggle-letter-btn');
+    const loveLetter = document.getElementById('love-letter');
+    let letterVisible = false;
+
+    toggleLetterBtn.addEventListener('click', () => {
+        letterVisible = !letterVisible;
+        loveLetter.classList.toggle('visible', letterVisible);
+        toggleLetterBtn.firstChild.textContent = letterVisible ? 'Schowaj wyznanie ' : 'Otwórz moje wyznanie ';
+    });
+
+    // płynne pojawianie się sekcji przy scrollu
+    const fadeEls = document.querySelectorAll('.fade-on-scroll');
+
+    if ('IntersectionObserver' in window) {
+        const observer = new IntersectionObserver((entries, obs) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    obs.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.15 });
+
+        fadeEls.forEach(el => observer.observe(el));
+    } else {
+        // starsze przeglądarki – pokazujemy od razu
+        fadeEls.forEach(el => el.classList.add('visible'));
+    }
+</script>
+
+</body>
+</html>
