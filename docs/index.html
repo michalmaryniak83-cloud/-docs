@@ -518,10 +518,24 @@
             box-shadow: 0 10px 28px rgba(0,0,0,0.09);
             font-size: 0.9rem;
             color: var(--text-muted);
+            /* płynne powiększenie i poprawa wydajności */
+            transition: transform 340ms cubic-bezier(.22,.9,.31,1), box-shadow 340ms cubic-bezier(.22,.9,.31,1);
+            will-change: transform, box-shadow;
         }
 
         .timeline-content strong {
             color: var(--text-main);
+        }
+
+        /* efekt powiększenia przy hover/focus (tylko urządzenia z hover) */
+        @media (hover: hover) {
+            .timeline-item:hover .timeline-content,
+            .timeline-item:focus-within .timeline-content,
+            .timeline-content:focus {
+                transform: translateY(-8px) scale(1.06);
+                box-shadow: 0 26px 56px rgba(0,0,0,0.18);
+                outline: none;
+            }
         }
 
         .timeline-meta {
@@ -555,11 +569,18 @@
             height: 210px;
             object-fit: cover;
             display: block;
-            transition: transform 0.4s ease-out;
+            /* jeszcze płynniejsze skalowanie z lepszym easingiem i obsługą cienia */
+            transition: transform 420ms cubic-bezier(.16,.84,.34,1), box-shadow 420ms cubic-bezier(.16,.84,.34,1);
+            will-change: transform, box-shadow;
+            transform-origin: center center;
         }
 
-        .gallery-item:hover img {
-            transform: scale(1.05);
+        @media (hover: hover) {
+            .gallery-item:hover img,
+            .gallery-item:focus-within img {
+                transform: scale(1.08) translateY(-6px) translateZ(0);
+                box-shadow: 0 18px 42px rgba(0,0,0,0.22);
+            }
         }
 
         .gallery-item::after {
@@ -587,6 +608,18 @@
             align-items: flex-start;
             position: relative;
             overflow: hidden;
+            /* płynne powiększanie na hover oraz poprawa wydajności */
+            transition: transform 340ms cubic-bezier(.22,.9,.31,1), box-shadow 340ms cubic-bezier(.22,.9,.31,1);
+            will-change: transform, box-shadow;
+        }
+
+        /* efekt tylko na urządzeniach, które obsługują hover (unikać niechcianych efektów na dotykowych) */
+        @media (hover: hover) {
+            .reason-card:hover,
+            .reason-card:focus-within {
+                transform: translateY(-8px) scale(1.06);
+                box-shadow: 0 26px 56px rgba(0,0,0,0.18);
+            }
         }
 
         .reason-icon {
@@ -876,14 +909,28 @@
 
         }
 
-    /* Zoomable images and lightbox (global) */
-    /* Usuń efekt lupy i hover scaling — dajemy prosty pointer */
+    /* Zoomable images and hover zoom (global) */
+    /* Płynne powiększenie przy najechaniu — kliknięcie otwiera lightbox tylko na urządzeniach dotykowych */
     img.zoomable {
         cursor: pointer;
-        transition: none;
+        transition: transform 420ms cubic-bezier(.16,.84,.34,1), box-shadow 420ms cubic-bezier(.16,.84,.34,1);
+        will-change: transform, box-shadow;
+        transform-origin: center center;
     }
 
-    /* brak transformacji na hover */
+    /* efekt tylko na urządzeniach, które obsługują hover (unikać niechcianych efektów na dotykowych) */
+    @media (hover: hover) and (pointer: fine) {
+        /* Silniejsza specyficzność i fallback: działa na desktopach z precyzyjnym wskaźnikiem */
+        .gallery-item:hover img.zoomable,
+        .gallery-item:focus-within img.zoomable,
+        .gallery-item:hover img,
+        .gallery-item:focus-within img,
+        img.zoomable:hover,
+        img.zoomable:focus {
+            transform: scale(1.08) translateY(-6px) translateZ(0) !important;
+            box-shadow: 0 18px 42px rgba(0,0,0,0.22) !important;
+        }
+    }
 
     .lightbox {
         position: fixed;
@@ -891,12 +938,13 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        background: rgba(0, 0, 0, 0.78); /* ciemniejsze, przezroczyste tło */
+        /* mocniejsze przyciemnienie tła, obraz może zajmować niemal cały ekran */
+        background: rgba(0, 0, 0, 0.92);
         opacity: 0;
         visibility: hidden;
         transition: opacity 0.32s ease, visibility 0.32s ease;
         z-index: 9999;
-        padding: 4vh 3vw;
+        padding: 2vh 2vw;
         -webkit-backdrop-filter: blur(6px);
         backdrop-filter: blur(6px);
     }
@@ -907,15 +955,23 @@
     }
 
     .lightbox img {
-        max-width: 85vw; /* większe */
-        max-height: 85vh;
+        /* obraz może zająć niemal cały ekran, zachowując proporcje */
+        max-width: 98vw;
+        max-height: 98vh;
         width: auto;
         height: auto;
-        border-radius: 12px;
+        object-fit: contain;
+        border-radius: 8px;
         box-shadow: 0 28px 80px rgba(0,0,0,0.6);
         transform: none; /* brak skalowania dla uniknięcia ruchu przy zamykaniu */
         transition: opacity 0.28s ease; /* tylko fade */
         opacity: 0;
+        cursor: zoom-out;
+    }
+
+    .lightbox.open img {
+        opacity: 1;
+        cursor: zoom-out;
     }
 
     .lightbox.open img {
@@ -1125,7 +1181,7 @@
 
                     <div class="timeline-item">
                         <div class="timeline-dot"></div>
-                        <div class="timeline-content">
+                        <div class="timeline-content" tabindex="0">
                             <strong>Początek naszej historii</strong><br>
                             Był taki dzień, kiedy jeszcze nie wiedzieliśmy, dokąd to wszystko
                             nas zaprowadzi. Po prostu rozmawialiśmy, śmialiśmy się, poznawaliśmy
@@ -1139,7 +1195,7 @@
 
                     <div class="timeline-item">
                         <div class="timeline-dot"></div>
-                        <div class="timeline-content">
+                        <div class="timeline-content" tabindex="0">
                             <strong>Coraz bliżej</strong><br>
                             Z każdą kolejną chwilą zaczynałem czuć, że jesteś kimś dużo
                             ważniejszym niż „po prostu" kolejną osobą w moim życiu. Zwykłe
@@ -1153,7 +1209,7 @@
 
                     <div class="timeline-item">
                         <div class="timeline-dot"></div>
-                        <div class="timeline-content">
+                        <div class="timeline-content" tabindex="0">
                             <strong>12 grudnia 2024</strong><br>
                             Dzień, w którym to wszystko nabrało oficjalnego kształtu. Dzień,
                             od którego mógłbym powiedzieć, że już nie jestem „sam" – że jesteśmy
@@ -1167,7 +1223,7 @@
 
                     <div class="timeline-item">
                         <div class="timeline-dot"></div>
-                        <div class="timeline-content">
+                        <div class="timeline-content" tabindex="0">
                             <strong>Przyszłość</strong><br>
                             Przed nami jeszcze tyle chwil, których nawet nie jesteśmy w stanie
                             sobie teraz wyobrazić. Wspólne plany, spełnianie marzeń, rozmowy do
@@ -1660,9 +1716,11 @@
             setTimeout(cleanUp, 420);
         }
 
+        // Click-to-open lightbox: otwieramy na wszystkich urządzeniach (desktop + touch)
         document.addEventListener('click', (e) => {
             const z = e.target.closest && e.target.closest('img.zoomable');
-            if (z) open(z.src, z.alt);
+            if (!z) return;
+            open(z.src, z.alt);
         });
 
         lightbox.addEventListener('click', (e) => {
@@ -1675,3 +1733,4 @@
 
 </body>
 </html>
+
