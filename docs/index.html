@@ -143,6 +143,13 @@
             display: flex;
             align-items: center;
             gap: 0.4rem;
+            cursor: pointer; /* wskazuje, że element jest klikalny */
+        }
+
+        .logo:focus {
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(255,107,156,0.12);
+            border-radius: 6px;
         }
 
         .logo span {
@@ -865,7 +872,72 @@
             .gallery-item img {
                 height: 190px;
             }
+
+
         }
+
+    /* Zoomable images and lightbox (global) */
+    /* Usuń efekt lupy i hover scaling — dajemy prosty pointer */
+    img.zoomable {
+        cursor: pointer;
+        transition: none;
+    }
+
+    /* brak transformacji na hover */
+
+    .lightbox {
+        position: fixed;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(0, 0, 0, 0.78); /* ciemniejsze, przezroczyste tło */
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.32s ease, visibility 0.32s ease;
+        z-index: 9999;
+        padding: 4vh 3vw;
+        -webkit-backdrop-filter: blur(6px);
+        backdrop-filter: blur(6px);
+    }
+
+    .lightbox.open {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .lightbox img {
+        max-width: 85vw; /* większe */
+        max-height: 85vh;
+        width: auto;
+        height: auto;
+        border-radius: 12px;
+        box-shadow: 0 28px 80px rgba(0,0,0,0.6);
+        transform: none; /* brak skalowania dla uniknięcia ruchu przy zamykaniu */
+        transition: opacity 0.28s ease; /* tylko fade */
+        opacity: 0;
+    }
+
+    .lightbox.open img {
+        opacity: 1;
+    }
+
+    .lightbox-close {
+        position: fixed; /* zawsze w prawym górnym rogu widoku */
+        top: 18px;
+        right: 20px;
+        background: rgba(255,255,255,0.12);
+        backdrop-filter: blur(4px);
+        border: 1px solid rgba(255,255,255,0.12);
+        color: #fff;
+        font-size: 28px;
+        cursor: pointer;
+        padding: 8px 10px;
+        border-radius: 10px;
+        z-index: 10001;
+        line-height: 1;
+    }
+    
     </style>
 </head>
 <body>
@@ -964,7 +1036,7 @@
                 <div class="hero-card">
                     <div class="hero-photo-frame">
                         <!-- PODMIEŃ NA WASZE ZDJĘCIE -->
-                        <img src="razem.JPG" alt="Michał i Paulina">
+                        <img class="zoomable" src="razem.JPG" alt="Michał i Paulina">
                     </div>
                     <p class="hero-note">
                        To jedno z naszych zdjęć na którym jesteśmy 
@@ -1027,7 +1099,7 @@
 
                 <div class="about-photo">
                     <!-- PODMIEŃ NA KOLEJNE ZDJĘCIE -->
-                    <img src="razem2.png" alt="Michał i Paulina razem">
+                    <img class="zoomable" src="razem2.png" alt="Michał i Paulina razem">
                     <div class="about-photo-caption">
                         Jeden z tych momentów, do których zawsze będę chciał wracać.
                     </div>
@@ -1130,16 +1202,16 @@
                 <div class="gallery-grid">
                     <!-- PODMIEŃ ŚCIEŻKI NA SWOJE ZDJĘCIA -->
                     <div class="gallery-item">
-                        <img src="ja.jpeg" alt="Michał i Paulina - zdjęcie 1">
+                        <img class="zoomable" src="ja.jpeg" alt="Michał i Paulina - zdjęcie 1">
                     </div>
                     <div class="gallery-item">
-                        <img src="ja2.jpeg" alt="Michał i Paulina - zdjęcie 2">
+                        <img class="zoomable" src="ja2.jpeg" alt="Michał i Paulina - zdjęcie 2">
                     </div>
                     <div class="gallery-item">
-                        <img src="ja3.jpeg" alt="Michał i Paulina - zdjęcie 3">
+                        <img class="zoomable" src="ja3.jpeg" alt="Michał i Paulina - zdjęcie 3">
                     </div>
                     <div class="gallery-item">
-                        <img src="ja1.jpeg" alt="Michał i Paulina - zdjęcie 4">
+                        <img class="zoomable" src="ja1.jpeg" alt="Michał i Paulina - zdjęcie 4">
                     </div>
                 </div>
             </div>
@@ -1363,6 +1435,12 @@
     Stworzone z miłością dla Pauliny. <span>♥</span>
 </footer>
 
+    <!-- Lightbox for image zoom -->
+    <div id="lightbox" class="lightbox" role="dialog" aria-modal="true" tabindex="-1">
+        <button class="lightbox-close" aria-label="Zamknij">&times;</button>
+        <img src="" alt="">
+    </div>
+
 <script>
     // płynne pojawienie się całej strony po załadowaniu
     window.addEventListener('load', () => {
@@ -1376,16 +1454,77 @@
 
     let isPlaying = false;
 
-    // Automatyczne odtwarzanie muzyki po załadowaniu strony
-    window.addEventListener('load', async () => {
+    // Autoplay muted + unmute-on-first-interaction (z fade-in)
+    const AUTOPLAY_TARGET_VOLUME = 0.6;
+    let autoplayBlocked = false;
+    let userInteracted = false;
+
+    async function tryAutoplayMuted() {
         try {
+            // Spróbuj odtworzyć wyciszoną ścieżkę od razu — to działa w większości przeglądarek
+            music.muted = true;
+            music.volume = 0;
             await music.play();
             isPlaying = true;
             musicBtn.firstChild.textContent = '♪ Pauzuj muzykę ';
-            musicStatus.textContent = '(gra w tle)';
+            musicStatus.textContent = '(gra w tle, wyciszona)';
         } catch (e) {
+            autoplayBlocked = true;
             console.error('Nie udało się odtworzyć muzyki automatycznie:', e);
         }
+    }
+
+    function fadeToVolume(target, duration = 800) {
+        const start = performance.now();
+        const initial = music.volume;
+        const delta = target - initial;
+        return new Promise(resolve => {
+            function step(now) {
+                const t = Math.min(1, (now - start) / duration);
+                music.volume = initial + delta * t;
+                if (t < 1) requestAnimationFrame(step); else resolve();
+            }
+            requestAnimationFrame(step);
+        });
+    }
+
+    function unmuteAndFade() {
+        if (!music) return;
+        try {
+            if (music.muted) music.muted = false;
+            fadeToVolume(AUTOPLAY_TARGET_VOLUME).then(() => {
+                musicStatus.textContent = '(gra w tle)';
+            });
+        } catch (e) {
+            console.error(e);
+        }
+    }
+
+    function onFirstInteraction() {
+        if (userInteracted) return;
+        userInteracted = true;
+        document.removeEventListener('click', onFirstInteraction);
+        document.removeEventListener('keydown', onFirstInteraction);
+        document.removeEventListener('touchstart', onFirstInteraction);
+
+        if (autoplayBlocked) {
+            // Autoplay był zablokowany — teraz po interakcji spróbuj odtworzyć i odcisz
+            music.play().then(() => {
+                isPlaying = true;
+                musicBtn.firstChild.textContent = '♪ Pauzuj muzykę ';
+                unmuteAndFade();
+            }).catch(e => console.error('Play after interaction failed:', e));
+        } else {
+            // Autoplay się powiódł, ale było wyciszone
+            unmuteAndFade();
+        }
+    }
+
+    window.addEventListener('load', () => {
+        tryAutoplayMuted();
+        document.addEventListener('click', onFirstInteraction, { once: true });
+        document.addEventListener('keydown', onFirstInteraction, { once: true });
+        document.addEventListener('touchstart', onFirstInteraction, { once: true });
     });
 
     musicBtn.addEventListener('click', async () => {
@@ -1394,7 +1533,8 @@
                 await music.play();
                 isPlaying = true;
                 musicBtn.firstChild.textContent = '♪ Pauzuj muzykę ';
-                musicStatus.textContent = '(gra w tle)';
+                // Gdy użytkownik explicitnie uruchamia — odcisz i fade-in
+                unmuteAndFade();
             } else {
                 music.pause();
                 isPlaying = false;
@@ -1435,6 +1575,102 @@
         // starsze przeglądarki – pokazujemy od razu
         fadeEls.forEach(el => el.classList.add('visible'));
     }
+
+    // Kliknięcie w logotyp przewija stronę na samą górę (płynnie) i obsługa klawiatury
+    (function() {
+        const logo = document.querySelector('.logo');
+        if (!logo) return;
+        // upewnij się, że widać że można kliknąć
+        logo.style.cursor = 'pointer';
+        // dostępność klawiatury
+        if (!logo.hasAttribute('tabindex')) logo.setAttribute('tabindex', '0');
+        logo.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+        logo.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        });
+    })();
+
+    // Lightbox for zoomable images
+    (function() {
+        const lightbox = document.getElementById('lightbox');
+        if (!lightbox) return;
+        const imgEl = lightbox.querySelector('img');
+        const closeBtn = lightbox.querySelector('.lightbox-close');
+        let savedScrollY = 0;
+
+        function open(src, alt) {
+            imgEl.src = src;
+            imgEl.alt = alt || '';
+            // zapamiętaj pozycję scrolla
+            savedScrollY = window.scrollY || document.documentElement.scrollTop || 0;
+
+            // kompensacja szerokości paska przewijania, żeby nie powodować przesunięcia layoutu
+            const scrollBarWidth = window.innerWidth - document.documentElement.clientWidth;
+            if (scrollBarWidth > 0) {
+                // stosujemy padding na root (html), bo ustawienie overflow:hidden na root ukrywa pasek przewijania
+                document.documentElement.style.paddingRight = `${scrollBarWidth}px`;
+            }
+
+            // zablokuj przewijanie strony bez zmiany pozycji elementów: ustaw overflow:hidden na root
+            document.documentElement.style.overflow = 'hidden';
+
+            lightbox.classList.add('open');
+            // NIE wywołujemy focus(), żeby nie wywoływać przewinięcia w niektórych przeglądarkach
+        }
+
+        function close() {
+            if (!lightbox.classList.contains('open')) return;
+            lightbox.classList.remove('open');
+
+            // Poczekaj na zakończenie przejścia (fade out), żeby nie powodować skoku strony.
+            let handled = false;
+            const cleanUp = () => {
+                if (handled) return; handled = true;
+
+                // Tymczasowo wyłącz płynne przewijanie
+                const html = document.documentElement;
+                const prevScrollBehavior = html.style.scrollBehavior || '';
+                html.style.scrollBehavior = 'auto';
+
+                // Usuń blokadę przewijania (overflow:hidden) i skompensowany padding, zachowując pozycję scrolla
+                document.documentElement.style.overflow = '';
+                document.documentElement.style.paddingRight = '';
+
+                // Przywróć scroll do zapisanej pozycji (na wszelki wypadek)
+                window.scrollTo(0, savedScrollY);
+
+                imgEl.src = '';
+
+                // Przywróć wcześniejsze zachowanie przewijania (jeśli było ustawione)
+                setTimeout(() => { html.style.scrollBehavior = prevScrollBehavior; }, 60);
+            };
+
+            const onTransitionEnd = (e) => {
+                if (e.target === lightbox && e.propertyName === 'opacity') {
+                    lightbox.removeEventListener('transitionend', onTransitionEnd);
+                    cleanUp();
+                }
+            };
+
+            lightbox.addEventListener('transitionend', onTransitionEnd);
+            // Fallback: jeśli transitionend się nie wyzwoli, wykonaj cleanup po 420ms
+            setTimeout(cleanUp, 420);
+        }
+
+        document.addEventListener('click', (e) => {
+            const z = e.target.closest && e.target.closest('img.zoomable');
+            if (z) open(z.src, z.alt);
+        });
+
+        lightbox.addEventListener('click', (e) => {
+            if (e.target === lightbox || e.target === closeBtn) close();
+        });
+
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
+    })();
 </script>
 
 </body>
