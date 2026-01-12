@@ -993,12 +993,143 @@
         z-index: 10001;
         line-height: 1;
     }
+
+    /* Password overlay styles */
+    /* Accessibility helpers for overlay focus trapping */
+    .sr-only { position: absolute !important; height: 1px; width: 1px; overflow: hidden; clip: rect(1px, 1px, 1px, 1px); white-space: nowrap; }
+
+    .pw-card .pw-input:focus { outline: 3px solid rgba(128, 110, 255, 0.18); box-shadow: 0 6px 20px rgba(0,0,0,0.12); }
+
+    .pw-button:focus { outline: 3px solid rgba(128, 110, 255, 0.18); }
+
+    /* When site is locked, prevent scrolling and interaction with content */
+    body.site-locked { overflow: hidden; }
+    body.site-locked header, body.site-locked main, body.site-locked footer { filter: blur(2px) grayscale(.02); pointer-events: none; user-select: none; }
+
+    .pw-overlay {
+        position: fixed;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        /* przyciemnij nieco mniej, ale zwiększ rozmycie tła */
+        background: rgba(0,0,0,0.94);
+        backdrop-filter: blur(9px);
+        transition: background .26s ease, backdrop-filter .26s ease;
+        z-index: 100000;
+        padding: 2vh 2vw;
+    }
+
+    .pw-overlay.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+
+    .pw-card {
+        width: min(560px, 94%);
+        background: var(--card-bg);
+        border-radius: 16px;
+        padding: 1.6rem 1.4rem;
+        text-align: center;
+        box-shadow: var(--shadow-soft);
+        color: var(--text-main);
+    }
+
+    .pw-card h2 {
+        margin: 0 0 0.3rem 0;
+        font-family: 'Great Vibes', cursive;
+        font-size: 1.6rem;
+        color: var(--accent-dark);
+        transition: opacity .36s ease, transform .36s ease;
+    }
+
+    .pw-card h2.faded { opacity: 0; transform: translateY(-8px); pointer-events: none; }
+
+    /* Wrapper to allow smooth collapse (height transition) */
+    .pw-title-wrap { overflow: hidden; max-height: 84px; transition: max-height .36s ease; }
+    .pw-title-wrap.collapsed { max-height: 0; }
+
+    .pw-card p { color: var(--text-muted); margin-bottom: 0.6rem; }
+    #pw-hint { transition: opacity .28s ease; }
+
+    .pw-input-row { display: flex; gap: 0.6rem; align-items: center; margin-top: 0.4rem; }
+    .pw-input-row .pw-input { flex: 1; }
+    .pw-visibility {
+        background: transparent;
+        border: 1px solid rgba(0,0,0,0.06);
+        padding: 0.4rem 0.6rem;
+        border-radius: 10px;
+        cursor: pointer;
+        font-size: 0.95rem;
+        color: var(--text-main);
+    }
+    .pw-visibility[aria-pressed="true"] { background: rgba(0,0,0,0.06); }
+
+    /* Overlay lightened after multiple failures */
+    .pw-overlay.light {
+        /* jaśniejsze i mocniej rozmyte po kolejnych nieudanych próbach */
+        background: rgba(0,0,0,0.78);
+        backdrop-filter: blur(14px);
+    }
+
+    .pw-input {
+        width: 100%;
+        padding: 0.8rem 1rem;
+        border-radius: 10px;
+        border: 1px solid rgba(0,0,0,0.06);
+        font-size: 1rem;
+        margin-top: 0.4rem;
+        box-sizing: border-box;
+    }
+
+    .pw-button {
+        margin-top: 0.8rem;
+        border-radius: 999px;
+        padding: 0.7rem 1.2rem;
+        background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+        color: #fff;
+        border: none;
+        cursor: pointer;
+        font-weight: 600;
+    }
+
+    .pw-error { color: #b00020; margin-top: 0.6rem; font-size: 0.92rem; min-height: 1.1em; opacity: 0; transform: translateY(6px); transition: opacity .24s ease, transform .24s ease; }
+    .pw-error.visible { opacity: 1; transform: translateY(0); }
+
+    @keyframes pw-shake {
+        0% { transform: translateX(0); }
+        20% { transform: translateX(-8px); }
+        40% { transform: translateX(6px); }
+        60% { transform: translateX(-4px); }
+        80% { transform: translateX(2px); }
+        100% { transform: translateX(0); }
+    }
+
+    .pw-input.shake { animation: pw-shake .6s ease; }
+
+    /* When site is locked, prevent scrolling and interaction with content */
+    body.site-locked { overflow: hidden; }
+    body.site-locked header, body.site-locked main, body.site-locked footer { filter: blur(2px) grayscale(.02); pointer-events: none; user-select: none; }
+
     
     </style>
 </head>
 <body>
 
 <div class="background-overlay"></div>
+
+    <!-- Password overlay -->
+    <div id="pw-overlay" class="pw-overlay" role="dialog" aria-modal="true" aria-labelledby="pw-title">
+        <div class="pw-card" role="document">
+            <div class="pw-title-wrap"><h2 id="pw-title">Wprowadź hasło</h2></div>
+            <p id="pw-hint">Wpisz hasło, aby uzyskać dostęp do strony.</p>
+            <div class="pw-input-row">
+                <input id="pw-input" class="pw-input" type="password" aria-label="Hasło" autocomplete="off" placeholder="Hasło" />
+                <button id="pw-toggle-visibility" class="pw-visibility" aria-pressed="false" aria-label="Pokaż hasło">Pokaż</button>
+            </div>
+            <div>
+                <button id="pw-submit" class="pw-button">Otwórz stronę</button>
+            </div>
+            <div id="pw-error" class="pw-error" aria-live="assertive"></div>
+        </div>
+    </div>
 <div class="floating-hearts">
     <div class="heart"></div>
     <div class="heart"></div>
@@ -1556,8 +1687,21 @@
         }
     }
 
-    function onFirstInteraction() {
+    function onFirstInteraction(e) {
         if (userInteracted) return;
+        // Jeśli nakładka hasła jest otwarta lub pole hasła ma fokus, ignorujemy tę interakcję
+        const pwOverlay = document.getElementById('pw-overlay');
+        const pwInputEl = document.getElementById('pw-input');
+        const overlayOpen = pwOverlay && !pwOverlay.classList.contains('hidden');
+        const inputFocused = pwInputEl && (document.activeElement === pwInputEl || pwInputEl.contains(document.activeElement));
+        if (overlayOpen || inputFocused) {
+            // Rejestrujemy nasłuchy ponownie, żeby następna interakcja (po zamknięciu) zadziałała
+            document.addEventListener('click', onFirstInteraction, { once: true });
+            document.addEventListener('keydown', onFirstInteraction, { once: true });
+            document.addEventListener('touchstart', onFirstInteraction, { once: true });
+            return;
+        }
+
         userInteracted = true;
         document.removeEventListener('click', onFirstInteraction);
         document.removeEventListener('keydown', onFirstInteraction);
@@ -1729,8 +1873,171 @@
 
         document.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
     })();
+
+    // Password overlay logic
+    (function(){
+        const pwOverlay = document.getElementById('pw-overlay');
+        const pwInput = document.getElementById('pw-input');
+        const pwSubmit = document.getElementById('pw-submit');
+        const pwError = document.getElementById('pw-error');
+        const CORRECT_PW = '12.12.2024';
+        let pwSavedScrollY = 0;
+        let pwAttempts = 0; // licznik nieudanych prób
+
+        const pwTitle = document.getElementById('pw-title');
+        const pwTitleWrap = document.querySelector('.pw-title-wrap');
+        const pwHint = document.getElementById('pw-hint');
+        const pwToggle = document.getElementById('pw-toggle-visibility');
+
+        function lockSiteWithPw() {
+            // Reset state each time we lock
+            pwAttempts = 0;
+            if (pwOverlay.classList.contains('light')) pwOverlay.classList.remove('light');
+            if (pwTitle) pwTitle.classList.remove('faded');
+            if (pwTitleWrap) pwTitleWrap.classList.remove('collapsed');
+            if (pwHint) pwHint.style.opacity = '';
+            if (pwToggle) { pwToggle.setAttribute('aria-pressed','false'); pwToggle.textContent = 'Pokaż'; }
+            if (pwInput) pwInput.type = 'password';
+
+            document.body.classList.add('site-locked');
+            pwOverlay.classList.remove('hidden');
+            // Move focus into the overlay
+            setTimeout(() => pwInput.focus(), 20);
+            // prevent background scroll via saved scrollY trick
+            pwSavedScrollY = window.scrollY;
+            document.documentElement.style.overflow = 'hidden';
+            document.documentElement.style.paddingRight = (window.innerWidth - document.documentElement.clientWidth) + 'px';
+            // hide content from assistive tech
+            document.querySelectorAll('header, main, footer').forEach(el => el.setAttribute('aria-hidden','true'));
+        }
+
+        function unlockSite() {
+            pwOverlay.classList.add('hidden');
+            // clear any 'light' state
+            pwOverlay.classList.remove('light');
+            pwAttempts = 0;
+            if (pwTitle) pwTitle.classList.remove('faded');
+            if (pwTitleWrap) pwTitleWrap.classList.remove('collapsed');
+            if (pwHint) pwHint.style.opacity = '';
+            if (pwToggle) { pwToggle.setAttribute('aria-pressed','false'); pwToggle.textContent = 'Pokaż'; }
+            if (pwInput) pwInput.type = 'password';
+
+            document.body.classList.remove('site-locked');
+            document.documentElement.style.overflow = '';
+            document.documentElement.style.paddingRight = '';
+            // restore scroll
+            window.scrollTo(0, pwSavedScrollY || 0);
+            pwError.classList.remove('visible');
+            pwError.textContent = '';
+            pwInput.value = '';
+            document.querySelectorAll('header, main, footer').forEach(el => el.removeAttribute('aria-hidden'));
+            // put focus on body for safety
+            document.body.focus();
+        }
+
+        function showPwError(msg) {
+            pwError.textContent = msg;
+            // pokaż komunikat płynnie
+            pwError.classList.add('visible');
+
+            // usuń wcześniejsze czasowe ukrywanie, jeśli istnieje
+            if (pwError._hideTimeout) clearTimeout(pwError._hideTimeout);
+            // po chwili komunikat sam się ukryje płynnie
+            pwError._hideTimeout = setTimeout(() => {
+                pwError.classList.remove('visible');
+                setTimeout(() => { pwError.textContent = ''; }, 260);
+            }, 2600);
+
+            pwInput.classList.add('shake');
+            setTimeout(() => pwInput.classList.remove('shake'), 650);
+        }
+
+        function checkPw() {
+            if (pwInput.value === CORRECT_PW) {
+                sessionStorage.setItem('site_unlocked', '1');
+                pwAttempts = 0;
+                unlockSite();
+            } else {
+                pwAttempts++;
+                // Jeśli to już druga (lub kolejna) nieudana próba, rozjaśniamy tło i bardziej rozmywamy
+                if (pwAttempts >= 2) {
+                    pwOverlay.classList.add('light');
+                    pwTitle.classList.add('faded');
+                    pwHint.style.opacity = '0.5';
+                }
+                showPwError('Niepoprawne hasło — spróbuj ponownie.');
+            }
+        }
+
+        pwSubmit.addEventListener('click', (e) => { e.preventDefault(); checkPw(); });
+
+        pwInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') checkPw();
+            if (e.key === 'Escape') {
+                // do not allow Escape to bypass the gate
+                e.stopPropagation();
+                e.preventDefault();
+            }
+        });
+
+        // Hiding error when user types + fade title away on focus/input
+        pwInput.addEventListener('input', () => {
+            if (pwError.classList.contains('visible')) {
+                pwError.classList.remove('visible');
+                if (pwError._hideTimeout) clearTimeout(pwError._hideTimeout);
+                setTimeout(() => { pwError.textContent = ''; }, 260);
+            }
+            pwTitle.classList.add('faded');
+            if (pwTitleWrap) pwTitleWrap.classList.add('collapsed');
+        });
+
+        pwInput.addEventListener('focus', () => {
+            pwTitle.classList.add('faded');
+            if (pwTitleWrap) pwTitleWrap.classList.add('collapsed');
+        });
+
+        // Toggle visibility of password
+        if (pwToggle) {
+            pwToggle.addEventListener('click', (e) => {
+                const showing = pwInput.type === 'text';
+                pwInput.type = showing ? 'password' : 'text';
+                pwToggle.setAttribute('aria-pressed', String(!showing));
+                pwToggle.textContent = showing ? 'Pokaż' : 'Ukryj';
+                pwInput.focus();
+            });
+        }
+
+        // Prevent clicks from escaping overlay
+        pwOverlay.addEventListener('click', (e) => {
+            if (e.target === pwOverlay) {
+                pwInput.classList.add('shake');
+                setTimeout(() => pwInput.classList.remove('shake'), 650);
+            }
+        });
+
+        // Focus trap
+        pwOverlay.addEventListener('keydown', (e) => {
+            if (e.key !== 'Tab') return;
+            const focusable = Array.from(pwOverlay.querySelectorAll('button, input, [tabindex]:not([tabindex="-1"])')).filter(el => !el.disabled);
+            if (focusable.length === 0) return;
+            const first = focusable[0];
+            const last = focusable[focusable.length - 1];
+            if (e.shiftKey && document.activeElement === first) {
+                e.preventDefault(); last.focus();
+            } else if (!e.shiftKey && document.activeElement === last) {
+                e.preventDefault(); first.focus();
+            }
+        });
+
+        // If previously unlocked in session, hide overlay
+        if (sessionStorage.getItem('site_unlocked') === '1') {
+            pwOverlay.classList.add('hidden');
+        } else {
+            // Lock site immediately
+            lockSiteWithPw();
+        }
+    })();
 </script>
 
 </body>
 </html>
-
