@@ -25,9 +25,6 @@
             --radius-medium: 18px;
             --transition-fast: 0.25s ease-out;
         }
-		html {
-    scroll-behavior: smooth;
-}
 
         body {
             font-family: 'Poppins', sans-serif;
@@ -351,6 +348,12 @@
         .section-header {
             text-align: center;
             margin-bottom: 2.2rem;
+        }
+
+        #profileBtn:hover {
+            background: rgba(255,107,156,0.25);
+            transform: scale(1.1);
+            transition: 0.3s ease;
         }
 
         .section-kicker {
@@ -763,6 +766,385 @@
             transform: translateY(-1px);
         }
 
+        .admin-return-btn,
+        .user-logout-btn {
+            position: fixed;
+            left: 1.4rem;
+            bottom: 1.4rem;
+            z-index: 20;
+            border-radius: 999px;
+            border: none;
+            background: rgba(0,0,0,0.72);
+            color: #fff;
+            padding: 0.6rem 1.1rem;
+            font-size: 0.86rem;
+            display: none;
+            align-items: center;
+            gap: 0.4rem;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.45);
+            transition: transform var(--transition-fast), box-shadow var(--transition-fast), background var(--transition-fast);
+        }
+
+        .admin-return-btn:hover,
+        .user-logout-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 16px 40px rgba(0,0,0,0.6);
+            background: rgba(0,0,0,0.85);
+        }
+
+        .admin-return-btn.show,
+        .user-logout-btn.show {
+            display: flex;
+        }
+
+        /* Chat styles */
+        .chat-toggle-btn {
+            position: fixed;
+            right: 20rem;
+            bottom: 1.4rem;
+            z-index: 20;
+            border-radius: 999px;
+            border: none;
+            background: rgba(0,0,0,0.72);
+            color: #fff;
+            padding: 0.6rem 1.1rem;
+            font-size: 0.86rem;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.45);
+            transition: transform var(--transition-fast), box-shadow var(--transition-fast), background var(--transition-fast);
+        }
+
+        .chat-toggle-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 16px 40px rgba(0,0,0,0.6);
+            background: rgba(0,0,0,0.85);
+        }
+
+        .chat-toggle-btn.hidden {
+            display: none;
+        }
+
+        .chat-panel {
+            position: fixed;
+            right: 0;
+            top: 0;
+            width: 360px;
+            height: 100vh;
+            background: var(--card-bg);
+            box-shadow: -8px 0 32px rgba(0,0,0,0.2);
+            z-index: 99999;
+            display: flex;
+            flex-direction: column;
+            transform: translateX(100%);
+            opacity: 0;
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease-out;
+            pointer-events: none;
+        }
+
+        .chat-panel:not(.hidden) {
+            transform: translateX(0);
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .chat-panel.hidden {
+            display: none;
+        }
+
+        .chat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.2rem;
+            border-bottom: 2px solid rgba(255,107,156,0.2);
+            background: linear-gradient(135deg, rgba(255,107,156,0.05), rgba(255,107,156,0.1));
+        }
+
+        .chat-header h3 {
+            margin: 0;
+            font-size: 1.1rem;
+            color: var(--text-main);
+        }
+
+        .chat-close {
+            background: transparent;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-muted);
+            padding: 0;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            transition: background 0.2s ease;
+        }
+
+        .chat-close:hover {
+            background: rgba(0,0,0,0.08);
+        }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1rem 0.5rem;
+            padding-bottom: 5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+            min-height: 0;
+        }
+
+        .chat-message {
+            display: flex;
+            align-items: flex-end;
+            gap: 0.5rem;
+            margin-bottom: 0.2rem;
+            padding: 0 0.5rem;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        .chat-message.own {
+            justify-content: flex-end;
+        }
+
+        .chat-message.own .chat-bubble {
+            background: rgba(255,200,150,0.95);
+            color: #333;
+            border-radius: 18px 18px 4px 18px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        }
+
+        .chat-message.other .chat-bubble {
+            background: rgba(100,150,200,0.95);
+            color: white;
+            border-radius: 18px 18px 18px 4px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.15);
+        }
+
+        :root.theme-stitch .chat-avatar {
+            background: rgba(100,181,246,0.4);
+            color: white;
+        }
+
+        #chatPanel.theme-stitch-dark .chat-messages {
+            background: #1a1a1a;
+        }
+
+        #chatPanel.theme-stitch-dark .chat-header {
+            background: rgba(30, 30, 30, 0.95);
+            border-bottom-color: rgba(91, 141, 190, 0.2);
+        }
+
+        .chat-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(255,107,156,0.25);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.75rem;
+            flex-shrink: 0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            color: #333;
+        }
+
+        .chat-bubble {
+            max-width: 60%;
+            padding: 0.7rem 1rem;
+            border-radius: 18px;
+            word-break: break-word;
+            position: relative;
+            font-size: 0.95rem;
+            line-height: 1.4;
+        }
+
+        .chat-message-header {
+            font-size: 0.7rem;
+            color: rgba(0,0,0,0.5);
+            margin-top: 0.2rem;
+            text-align: center;
+            width: 100%;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .chat-message-nick {
+            display: none;
+        }
+
+        .chat-message-time {
+            display: none;
+        }
+
+        .chat-message-text {
+            font-size: 0.9rem;
+            word-break: break-word;
+            letter-spacing: 0.3px;
+        }
+
+        .chat-input-area {
+            display: flex;
+            gap: 0.6rem;
+            align-items: center;
+            padding: 0.8rem;
+            border-top: 1px solid rgba(0,0,0,0.1);
+            background: var(--card-bg);
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        #chatInput {
+            flex: 1;
+            padding: 0.7rem 1rem;
+            border: 1px solid rgba(0,0,0,0.1);
+            border-radius: 20px;
+            font-size: 0.9rem;
+            background: rgba(0,0,0,0.03);
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        #chatInput:focus {
+            outline: none;
+            border-color: var(--accent-dark);
+            box-shadow: 0 0 8px rgba(255,107,156,0.2);
+        }
+
+        .emoji-picker-btn {
+            background: transparent;
+            border: none;
+            padding: 0.5rem;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: opacity 0.2s ease;
+        }
+
+        .emoji-picker-btn:hover {
+            opacity: 0.7;
+        }
+
+        .emoji-picker {
+            position: absolute;
+            bottom: 60px;
+            right: 1rem;
+            background: var(--card-bg);
+            border: 1px solid rgba(0,0,0,0.1);
+            border-radius: 12px;
+            padding: 0.8rem;
+            box-shadow: 0 -8px 32px rgba(0,0,0,0.15);
+            z-index: 1000;
+            animation: slideUp 0.3s ease-out;
+        }
+
+        .emoji-picker.hidden {
+            display: none;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .emoji-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 0.4rem;
+        }
+
+        .emoji-btn {
+            background: transparent;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.4rem;
+            border-radius: 8px;
+            transition: background 0.2s ease;
+        }
+
+        .emoji-btn:hover {
+            background: rgba(255,107,156,0.1);
+        }
+
+        .chat-users-list {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .chat-user-item {
+            padding: 0.8rem 1rem;
+            border-bottom: 1px solid rgba(255,107,156,0.1);
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .chat-user-item:hover {
+            background: rgba(255,107,156,0.08);
+        }
+
+        .chat-user-item-name {
+            font-weight: 500;
+            color: var(--text-main);
+        }
+
+        .chat-user-item-status {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .chat-conversation {
+            display: none;
+        }
+
+        .chat-conversation:not(.hidden) {
+            display: flex;
+        }
+
+        @media (max-width: 600px) {
+            .chat-panel {
+                width: 100%;
+            }
+        }
+
+        .admin-tab-btn {
+            transition: color 0.2s ease, border-color 0.2s ease;
+        }
+
+        .admin-tab-btn:hover {
+            color: var(--accent-dark);
+        }
+
+        .admin-tab-btn.active {
+            color: var(--accent-dark);
+            border-bottom-color: var(--accent);
+        }
+
         .music-toggle {
             position: fixed;
             right: 1.4rem;
@@ -1020,6 +1402,8 @@
         padding: 2vh 2vw;
     }
 
+    .hidden { display: none !important; }
+
     .pw-overlay.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
 
     .pw-card {
@@ -1093,6 +1477,28 @@
     .pw-error { color: #b00020; margin-top: 0.6rem; font-size: 0.92rem; min-height: 1.1em; opacity: 0; transform: translateY(6px); transition: opacity .24s ease, transform .24s ease; }
     .pw-error.visible { opacity: 1; transform: translateY(0); }
 
+    /* Animacje dla boxów */
+    #choiceBox,
+    #loginBox,
+    #registerBox,
+    #adminPanel,
+    #userPanel {
+        opacity: 0;
+        transform: scale(0.95) translateY(10px);
+        transition: opacity 0.4s ease-out, transform 0.4s ease-out;
+        pointer-events: none;
+    }
+
+    #choiceBox:not(.hidden),
+    #loginBox:not(.hidden),
+    #registerBox:not(.hidden),
+    #adminPanel:not(.hidden),
+    #userPanel:not(.hidden) {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+        pointer-events: auto;
+    }
+
     @keyframes pw-shake {
         0% { transform: translateX(0); }
         20% { transform: translateX(-8px); }
@@ -1115,21 +1521,221 @@
 
 <div class="background-overlay"></div>
 
-    <!-- Password overlay -->
-    <div id="pw-overlay" class="pw-overlay" role="dialog" aria-modal="true" aria-labelledby="pw-title">
+    <!-- Nowy overlay logowania/rejestracji -->
+    <div id="auth-overlay" class="pw-overlay" role="dialog" aria-modal="true">
         <div class="pw-card" role="document">
-            <div class="pw-title-wrap"><h2 id="pw-title">Wprowadź hasło</h2></div>
-            <p id="pw-hint">Wpisz hasło, aby uzyskać dostęp do strony.</p>
-            <div class="pw-input-row">
-                <input id="pw-input" class="pw-input" type="password" aria-label="Hasło" autocomplete="off" placeholder="Hasło" />
-                <button id="pw-toggle-visibility" class="pw-visibility" aria-pressed="false" aria-label="Pokaż hasło">Pokaż</button>
+            <div id="choiceBox">
+                <h2 style="margin-bottom: 2rem;">Wybierz opcję</h2>
+                <div style="display: flex; gap: 1rem; flex-direction: column;">
+                    <button class="btn-primary" onclick="showLogin()" style="margin: 0;">Logowanie</button>
+                    <button class="btn-primary" onclick="showRegister()" style="margin: 0;">Rejestracja</button>
+                </div>
             </div>
-            <div>
-                <button id="pw-submit" class="pw-button">Otwórz stronę</button>
+            <div id="loginBox" class="hidden">
+                <h2 style="margin-bottom: 1.5rem;">Logowanie</h2>
+                <div style="display: flex; flex-direction: column; gap: 1rem;">
+                    <div>
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Nazwa użytkownika</label>
+                        <input type="text" id="loginName" style="width: 100%; padding: 0.8rem; border: 1px solid rgba(0,0,0,0.1); border-radius: 10px; font-size: 1rem; box-sizing: border-box;">
+                    </div>
+                    <div>
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Hasło</label>
+                        <div style="display: flex; gap: 0.5rem; align-items: center;">
+                            <input type="password" id="loginPass" style="flex: 1; padding: 0.8rem; border: 1px solid rgba(0,0,0,0.1); border-radius: 10px; font-size: 1rem; box-sizing: border-box;">
+                            <button type="button" onclick="togglePasswordVisibility('loginPass')" style="padding: 0.6rem 0.8rem; border: 1px solid rgba(0,0,0,0.1); border-radius: 10px; background: transparent; cursor: pointer; font-size: 1.1rem;">👁️</button>
+                        </div>
+                    </div>
+                    <div id="loginError" class="pw-error"></div>
+                    <div style="display: flex; gap: 0.8rem; flex-direction: column;">
+                        <button class="btn-primary" onclick="login()" style="margin: 0;">Zaloguj</button>
+                        <button class="btn-outline" onclick="backToChoice()" style="margin: 0;">Wróć do wyboru</button>
+                    </div>
+                </div>
             </div>
-            <div id="pw-error" class="pw-error" aria-live="assertive"></div>
+            <div id="registerBox" class="hidden">
+                <h2 style="margin-bottom: 1.5rem;">Rejestracja</h2>
+                <div style="display: flex; flex-direction: column; gap: 1rem;">
+                    <div>
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Nazwa użytkownika</label>
+                        <input type="text" id="regName" style="width: 100%; padding: 0.8rem; border: 1px solid rgba(0,0,0,0.1); border-radius: 10px; font-size: 1rem; box-sizing: border-box;">
+                    </div>
+                    <div>
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Hasło</label>
+                        <div style="display: flex; gap: 0.5rem; align-items: center;">
+                            <input type="password" id="regPass" style="flex: 1; padding: 0.8rem; border: 1px solid rgba(0,0,0,0.1); border-radius: 10px; font-size: 1rem; box-sizing: border-box;">
+                            <button type="button" onclick="togglePasswordVisibility('regPass')" style="padding: 0.6rem 0.8rem; border: 1px solid rgba(0,0,0,0.1); border-radius: 10px; background: transparent; cursor: pointer; font-size: 1.1rem;">👁️</button>
+                        </div>
+                    </div>
+                    <div>
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">PIN do utworzenia konta</label>
+                        <div style="display: flex; gap: 0.5rem; align-items: center;">
+                            <input type="password" id="regPin" style="flex: 1; padding: 0.8rem; border: 1px solid rgba(0,0,0,0.1); border-radius: 10px; font-size: 1rem; box-sizing: border-box;">
+                            <button type="button" onclick="togglePasswordVisibility('regPin')" style="padding: 0.6rem 0.8rem; border: 1px solid rgba(0,0,0,0.1); border-radius: 10px; background: transparent; cursor: pointer; font-size: 1.1rem;">👁️</button>
+                        </div>
+                    </div>
+                    <div id="regError" class="pw-error"></div>
+                    <div style="display: flex; gap: 0.8rem; flex-direction: column;">
+                        <button class="btn-primary" onclick="register()" style="margin: 0;">Utwórz konto</button>
+                        <button class="btn-outline" onclick="backToChoice()" style="margin: 0;">Wróć do wyboru</button>
+                    </div>
+                </div>
+            </div>
+            <div id="adminPanel" class="hidden">
+                <h2 style="margin-bottom: 1.5rem;">Panel Admina - Zarządzanie użytkownikami</h2>
+                
+                <!-- Zakładki -->
+                <div style="display: flex; gap: 0.5rem; margin-bottom: 1.5rem; border-bottom: 2px solid rgba(255,107,156,0.2); padding-bottom: 0.5rem;">
+                    <button class="admin-tab-btn active" onclick="switchAdminTab('users')" style="padding: 0.5rem 1rem; background: transparent; border: none; cursor: pointer; color: var(--accent-dark); font-weight: 600; border-bottom: 3px solid var(--accent); margin-bottom: -0.5rem;">Użytkownicy</button>
+                    <button class="admin-tab-btn" onclick="switchAdminTab('messages')" style="padding: 0.5rem 1rem; background: transparent; border: none; cursor: pointer; color: var(--text-muted); font-weight: 500;">Wiadomości</button>
+                </div>
+
+                <!-- Zakładka użytkowników -->
+                <div id="adminUsersTab">
+                    <div style="overflow-x: auto; margin-bottom: 1.5rem;">
+                        <table style="width: 100%; border-collapse: collapse; font-size: 0.9rem;">
+                            <thead>
+                                <tr style="background: rgba(255,107,156,0.1); border-bottom: 2px solid rgba(255,107,156,0.3);">
+                                    <th style="padding: 0.8rem; text-align: left;">Nazwa</th>
+                                    <th style="padding: 0.8rem; text-align: left;">Hasło</th>
+                                    <th style="padding: 0.8rem; text-align: left;">Rola</th>
+                                    <th style="padding: 0.8rem; text-align: left;">Status</th>
+                                    <th style="padding: 0.8rem; text-align: left;">Akcje</th>
+                                </tr>
+                            </thead>
+                            <tbody id="usersTableBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Zakładka wiadomości -->
+                <div id="adminMessagesTab" style="display: none;">
+                    <div style="max-height: 400px; overflow-y: auto; margin-bottom: 1.5rem; border: 1px solid rgba(255,107,156,0.2); border-radius: 10px; padding: 1rem;">
+                        <div id="adminChatMessages"></div>
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 0.8rem; flex-direction: column;">
+                    <button class="btn-primary" onclick="goToSite()" style="margin: 0;">Przejdź na stronę</button>
+                    <button class="btn-outline" onclick="logout()" style="margin: 0;">Wyloguj</button>
+                </div>
+            </div>
         </div>
     </div>
+
+    <!-- Panel czatu -->
+    <div id="chatPanel" class="chat-panel hidden">
+        <div class="chat-header">
+            <h3 id="chatTitle">💬 Czat</h3>
+            <button class="chat-close" onclick="toggleChat()">✕</button>
+        </div>
+        
+        <div style="display: flex; flex: 1; overflow: hidden;">
+            <!-- Panel zarządzania grupą po lewej -->
+            <div id="groupManageModal" style="width: 0; background: white; padding: 0; box-shadow: 2px 0 8px rgba(0,0,0,0.05); overflow-y: auto; border-right: 1px solid rgba(0,0,0,0.1); transition: width 0.3s ease; display: flex; flex-direction: column;">
+                <div style="padding: 1.5rem; border-bottom: 1px solid rgba(0,0,0,0.1);">
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem;">
+                        <h2 style="margin: 0; color: #333; font-size: 1.1rem;">⚙️ Zarządzaj</h2>
+                        <button onclick="closeGroupManageModal()" style="background: rgba(0,0,0,0.05); border: none; color: #333; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; font-size: 1.2rem;">✕</button>
+                    </div>
+                </div>
+                <div id="groupMembersContainer" style="margin: 1rem; background: rgba(0,0,0,0.03); padding: 1rem; border-radius: 8px; max-height: 250px; overflow-y: auto; flex: 1;"></div>
+                <div style="padding: 1.5rem; border-top: 1px solid rgba(0,0,0,0.1); display: flex; flex-direction: column; gap: 0.6rem;">
+                    <button onclick="saveGroupMembers()" class="btn-primary" style="width: 100%;">Zapisz</button>
+                    <button onclick="openDeleteGroupDialog()" style="width: 100%; background: rgba(255,0,0,0.08); border: 2px solid rgba(255,0,0,0.2); color: #b00020; padding: 0.6rem; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.3s;">🗑️ Usuń</button>
+                </div>
+            </div>
+            
+            <!-- Lista użytkowników -->
+            <div id="chatUsersList" class="chat-users-list" style="flex: 1; display: flex; flex-direction: column; border-right: 1px solid rgba(0,0,0,0.1);">
+                <div style="display: flex; gap: 0.4rem; padding: 0.8rem; border-bottom: 1px solid rgba(255,107,156,0.1);">
+                    <input type="text" id="chatUserSearch" placeholder="Szukaj..." style="flex: 1; padding: 0.5rem; border: 1px solid rgba(0,0,0,0.1); border-radius: 8px; font-size: 0.85rem;">
+                    <button onclick="showCreateGroupDialog()" style="background: rgba(255,107,156,0.1); border: 1px solid rgba(255,107,156,0.3); padding: 0.5rem 0.8rem; border-radius: 8px; cursor: pointer; font-size: 0.9rem; white-space: nowrap;">+ Grupa</button>
+                </div>
+                <div id="usersListContainer" style="overflow-y: auto; flex: 1; padding: 0.5rem;">
+                </div>
+            </div>
+        </div>
+        
+        <!-- Rozmowa z wybranym użytkownikiem -->
+        <div id="chatConversation" class="chat-conversation hidden" style="display: flex; flex-direction: column; height: 100%; position: relative;">
+            <!-- Header z informacjami o czacie -->
+            <div style="position: sticky; top: 0; z-index: 100; padding: 1rem; border-bottom: 1px solid rgba(0,0,0,0.1); background: var(--card-bg);">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem;">
+                    <div style="display: flex; align-items: center; gap: 0.8rem; flex: 1;">
+                        <button onclick="backToUsersList()" style="background: transparent; border: none; cursor: pointer; font-size: 1.3rem; padding: 0;">←</button>
+                        <div style="flex: 1;">
+                            <div id="chatWithUser" style="font-weight: 600; color: var(--accent-dark); font-size: 0.95rem; cursor: pointer;" onclick="editNicknameInChat()"></div>
+                            <div id="chatStatus" style="font-size: 0.75rem; color: var(--text-muted);">Aktywny(a) 1 godz. temu</div>
+                        </div>
+                    </div>
+                    <div style="display: flex; gap: 0.5rem;">
+                        <button onclick="startAudioCall()" title="Połączenie audio" style="background: rgba(76,175,80,0.1); border: 1px solid rgba(76,175,80,0.3); color: #4CAF50; padding: 0.5rem 0.8rem; border-radius: 6px; cursor: pointer; font-size: 0.9rem;">☎️</button>
+                        <button onclick="startVideoCall()" title="Połączenie wideo" style="background: rgba(33,150,243,0.1); border: 1px solid rgba(33,150,243,0.3); color: #2196F3; padding: 0.5rem 0.8rem; border-radius: 6px; cursor: pointer; font-size: 0.9rem;">📹</button>
+                        <button id="manageGroupBtn" onclick="showGroupManageDialog(currentGroupId)" style="background: rgba(255,107,156,0.1); border: 1px solid rgba(255,107,156,0.2); color: #333; padding: 0.5rem 0.8rem; border-radius: 6px; cursor: pointer; font-size: 0.9rem; display: none;">⚙️</button>
+                        <button id="deleteGroupBtnHeader" onclick="openDeleteGroupDialog()" style="background: rgba(255,0,0,0.08); border: 1px solid rgba(255,0,0,0.2); color: #b00020; padding: 0.5rem 0.8rem; border-radius: 6px; cursor: pointer; font-size: 0.9rem; display: none;">🗑️</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Wiadomości -->
+            <div id="chatMessages" class="chat-messages"></div>
+            
+            <!-- Panel zarządzania (popup) -->
+            <div id="groupManagePopup" class="hidden" style="position: absolute; bottom: 60px; right: 1rem; width: 250px; background: white; border: 1px solid rgba(0,0,0,0.1); border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); z-index: 50; display: flex; flex-direction: column; max-height: 300px;">
+                <div style="padding: 1rem; border-bottom: 1px solid rgba(0,0,0,0.1);">
+                    <div style="display: flex; align-items: center; justify-content: space-between;">
+                        <h3 style="margin: 0; font-size: 0.95rem; color: #333;">Członkowie</h3>
+                        <button onclick="closeGroupManageModal()" style="background: transparent; border: none; color: #999; cursor: pointer; font-size: 1.2rem; padding: 0;">✕</button>
+                    </div>
+                </div>
+                <div id="groupMembersContainer" style="overflow-y: auto; flex: 1; padding: 0.8rem;"></div>
+                <div style="padding: 0.8rem; border-top: 1px solid rgba(0,0,0,0.1); display: flex; flex-direction: column; gap: 0.5rem;">
+                    <button onclick="saveGroupMembers()" style="width: 100%; background: rgba(100,150,200,0.2); border: 1px solid rgba(100,150,200,0.3); color: #333; padding: 0.6rem; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 0.85rem;">Zapisz</button>
+                    <button onclick="openDeleteGroupDialog()" style="width: 100%; background: rgba(255,0,0,0.08); border: 1px solid rgba(255,0,0,0.2); color: #b00020; padding: 0.6rem; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 0.85rem;">🗑️ Usuń</button>
+                </div>
+            </div>
+            
+            <!-- Input bar -->
+            <div class="chat-input-area" style="position: sticky; bottom: 0; z-index: 99; padding: 0.8rem; border-top: 1px solid rgba(0,0,0,0.1); display: flex; align-items: center; gap: 0.5rem; background: var(--card-bg);">
+                <button onclick="document.getElementById('photoInput').click()" style="background: transparent; border: none; cursor: pointer; font-size: 1.2rem; padding: 0.4rem;">📷</button>
+                <input type="text" id="chatInput" placeholder="Aa" onkeypress="if(event.key==='Enter') sendMessage()" style="flex: 1; padding: 0.6rem 0.8rem; border: 1px solid rgba(0,0,0,0.1); border-radius: 20px; font-size: 0.9rem; background: rgba(0,0,0,0.03);">
+                <input type="file" id="photoInput" accept="image/*" style="display: none;" onchange="handlePhotoSelect()">
+                <button class="emoji-picker-btn" onclick="toggleEmojiPicker()" style="background: transparent; border: none; cursor: pointer; font-size: 1.2rem; padding: 0.4rem;">😊</button>
+                <button onclick="sendMessage()" style="background: transparent; border: none; cursor: pointer; font-size: 1.2rem; padding: 0.4rem; color: var(--accent-dark);">❤️</button>
+            </div>
+            
+            <!-- Emoji picker -->
+            <div id="emojiPicker" class="emoji-picker hidden" style="position: absolute; bottom: 60px; right: 0; background: white; border: 1px solid rgba(0,0,0,0.1); border-radius: 8px; padding: 0.5rem;">
+                <div class="emoji-grid" style="display: grid; grid-template-columns: repeat(6, 1fr); gap: 0.3rem;">
+                    <button class="emoji-btn" onclick="addEmoji('😊')">😊</button>
+                    <button class="emoji-btn" onclick="addEmoji('😂')">😂</button>
+                    <button class="emoji-btn" onclick="addEmoji('❤️')">❤️</button>
+                    <button class="emoji-btn" onclick="addEmoji('😍')">😍</button>
+                    <button class="emoji-btn" onclick="addEmoji('🔥')">🔥</button>
+                    <button class="emoji-btn" onclick="addEmoji('👍')">👍</button>
+                </div>
+            </div>
+            
+            <!-- Modal aktywnego połączenia -->
+            <div id="callModal" class="auth-overlay hidden" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 1000; align-items: center; justify-content: center;">
+                <div style="background: white; border-radius: 16px; padding: 2rem; text-align: center; min-width: 300px; box-shadow: 0 8px 32px rgba(0,0,0,0.2);">
+                    <div id="callType" style="font-size: 3rem; margin-bottom: 1rem;">☎️</div>
+                    <div style="font-size: 1.3rem; font-weight: 600; margin-bottom: 0.5rem; color: #333;" id="callUserName"></div>
+                    <div id="callDuration" style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 2rem;">Połączenie trwa...</div>
+                    <div style="display: flex; gap: 1rem; justify-content: center;">
+                        <button id="muteBtn" onclick="toggleMute()" title="Wycisz" style="background: rgba(100,100,100,0.2); border: 1px solid rgba(100,100,100,0.3); width: 50px; height: 50px; border-radius: 50%; cursor: pointer; font-size: 1.3rem;">🔊</button>
+                        <button id="endCallBtn" onclick="endCall()" title="Rozłącz" style="background: rgba(244,67,54,0.9); border: none; width: 60px; height: 60px; border-radius: 50%; cursor: pointer; font-size: 1.5rem; color: white;">📞</button>
+                        <button onclick="toggleSpeaker()" title="Głośnik" style="background: rgba(100,100,100,0.2); border: 1px solid rgba(100,100,100,0.3); width: 50px; height: 50px; border-radius: 50%; cursor: pointer; font-size: 1.3rem;">🔈</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal do usuwania grupy - na środku ekranu -->
+    <div id="deleteGroupModal" class="auth-overlay hidden" style="display: none;">
+    </div>
+
 <div class="floating-hearts">
     <div class="heart"></div>
     <div class="heart"></div>
@@ -1148,6 +1754,18 @@
     <source src="piosenka.mp3" type="audio/mpeg">
     Twoja przeglądarka nie obsługuje odtwarzacza audio.
 </audio>
+
+<button id="adminReturnBtn" class="admin-return-btn" onclick="backToAdminPanel()">
+    ← Wróć do panelu
+</button>
+
+<button id="userLogoutBtn" class="user-logout-btn" onclick="logout()">
+    Wyloguj
+</button>
+
+<button id="chatToggleBtn" class="chat-toggle-btn" onclick="toggleChat()">
+    💬 Czat
+</button>
 
 <div class="music-toggle">
     <button id="music-toggle-btn">
@@ -1409,7 +2027,10 @@
     <section id="reasons">
         <div class="container">
             <div class="section-header fade-on-scroll">
-                <div class="section-kicker">Za co Cię kocham</div>
+                <div style="display: flex; align-items: center; gap: 1rem; justify-content: center; margin-bottom: 1rem;">
+                    <div class="section-kicker">Za co Cię kocham</div>
+                    <button onclick="showProfilePanel()" title="Mój profil" style="width: 48px; height: 48px; border-radius: 50%; background: rgba(255,107,156,0.15); border: 2px solid var(--accent-dark); cursor: pointer; font-size: 1.2rem; display: flex; align-items: center; justify-content: center;" id="profileBtn">👤</button>
+                </div>
                 <h2 class="section-title">Małe rzeczy, które znaczą wszystko</h2>
                 <p class="section-subtitle">
                     Mógłbym wymieniać godzinami, ale spróbowałem zebrać choć kilka powodów,
@@ -1624,7 +2245,10 @@
 
     <!-- Lightbox for image zoom -->
     <div id="lightbox" class="lightbox" role="dialog" aria-modal="true" tabindex="-1">
-        <button class="lightbox-close" aria-label="Zamknij">&times;</button>
+        <div style="display: flex; gap: 0.8rem; position: absolute; top: 1rem; left: 1rem; z-index: 10001;">
+            <button class="lightbox-close" aria-label="Zamknij" style="order: 2;">&times;</button>
+            <button id="downloadPhotoBtn" onclick="downloadPhoto()" style="background: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.3); padding: 0.5rem 0.8rem; border-radius: 6px; cursor: pointer; font-size: 1rem; display: none; order: 1;">⬇️ Pobierz</button>
+        </div>
         <img src="" alt="">
     </div>
 
@@ -1689,12 +2313,10 @@
 
     function onFirstInteraction(e) {
         if (userInteracted) return;
-        // Jeśli nakładka hasła jest otwarta lub pole hasła ma fokus, ignorujemy tę interakcję
-        const pwOverlay = document.getElementById('pw-overlay');
-        const pwInputEl = document.getElementById('pw-input');
-        const overlayOpen = pwOverlay && !pwOverlay.classList.contains('hidden');
-        const inputFocused = pwInputEl && (document.activeElement === pwInputEl || pwInputEl.contains(document.activeElement));
-        if (overlayOpen || inputFocused) {
+        // Jeśli overlay logowania/rejestracji jest otwarty, ignorujemy tę interakcję
+        const authOverlay = document.getElementById('auth-overlay');
+        const overlayOpen = authOverlay && !authOverlay.classList.contains('hidden');
+        if (overlayOpen) {
             // Rejestrujemy nasłuchy ponownie, żeby następna interakcja (po zamknięciu) zadziałała
             document.addEventListener('click', onFirstInteraction, { once: true });
             document.addEventListener('keydown', onFirstInteraction, { once: true });
@@ -1874,170 +2496,1336 @@
         document.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
     })();
 
-    // Password overlay logic
-    (function(){
-        const pwOverlay = document.getElementById('pw-overlay');
-        const pwInput = document.getElementById('pw-input');
-        const pwSubmit = document.getElementById('pw-submit');
-        const pwError = document.getElementById('pw-error');
-        const CORRECT_PW = '12.12.2024';
-        let pwSavedScrollY = 0;
-        let pwAttempts = 0; // licznik nieudanych prób
+    // Nowy system logowania/rejestracji z PINem + panel admina
+    const MASTER_PIN = "12.12.2024"; // PIN do rejestracji
+    let currentUser = null;
 
-        const pwTitle = document.getElementById('pw-title');
-        const pwTitleWrap = document.querySelector('.pw-title-wrap');
-        const pwHint = document.getElementById('pw-hint');
-        const pwToggle = document.getElementById('pw-toggle-visibility');
+    function togglePasswordVisibility(fieldId) {
+      const field = document.getElementById(fieldId);
+      if (field.type === 'password') {
+        field.type = 'text';
+      } else {
+        field.type = 'password';
+      }
+    }
 
-        function lockSiteWithPw() {
-            // Reset state each time we lock
-            pwAttempts = 0;
-            if (pwOverlay.classList.contains('light')) pwOverlay.classList.remove('light');
-            if (pwTitle) pwTitle.classList.remove('faded');
-            if (pwTitleWrap) pwTitleWrap.classList.remove('collapsed');
-            if (pwHint) pwHint.style.opacity = '';
-            if (pwToggle) { pwToggle.setAttribute('aria-pressed','false'); pwToggle.textContent = 'Pokaż'; }
-            if (pwInput) pwInput.type = 'password';
+    // Funkcje czatu
+    let selectedChatUser = null;
+    let currentGroupId = null;
+    let selectedPhoto = null;
+    let currentCall = null;
+    let callStartTime = null;
+    let isMuted = false;
+    let isSpeakerOn = false;
 
-            document.body.classList.add('site-locked');
-            pwOverlay.classList.remove('hidden');
-            // Move focus into the overlay
-            setTimeout(() => pwInput.focus(), 20);
-            // prevent background scroll via saved scrollY trick
-            pwSavedScrollY = window.scrollY;
-            document.documentElement.style.overflow = 'hidden';
-            document.documentElement.style.paddingRight = (window.innerWidth - document.documentElement.clientWidth) + 'px';
-            // hide content from assistive tech
-            document.querySelectorAll('header, main, footer').forEach(el => el.setAttribute('aria-hidden','true'));
-        }
+    function getConversations() {
+      return JSON.parse(localStorage.getItem('chatConversations')) || {};
+    }
 
-        function unlockSite() {
-            pwOverlay.classList.add('hidden');
-            // clear any 'light' state
-            pwOverlay.classList.remove('light');
-            pwAttempts = 0;
-            if (pwTitle) pwTitle.classList.remove('faded');
-            if (pwTitleWrap) pwTitleWrap.classList.remove('collapsed');
-            if (pwHint) pwHint.style.opacity = '';
-            if (pwToggle) { pwToggle.setAttribute('aria-pressed','false'); pwToggle.textContent = 'Pokaż'; }
-            if (pwInput) pwInput.type = 'password';
+    function saveConversations(conversations) {
+      localStorage.setItem('chatConversations', JSON.stringify(conversations));
+    }
 
-            document.body.classList.remove('site-locked');
-            document.documentElement.style.overflow = '';
-            document.documentElement.style.paddingRight = '';
-            // restore scroll
-            window.scrollTo(0, pwSavedScrollY || 0);
-            pwError.classList.remove('visible');
-            pwError.textContent = '';
-            pwInput.value = '';
-            document.querySelectorAll('header, main, footer').forEach(el => el.removeAttribute('aria-hidden'));
-            // put focus on body for safety
-            document.body.focus();
-        }
+    function getConversationKey(user1, user2) {
+      // Sortujemy nazwy aby zawsze była ta sama kolejność
+      const sorted = [user1, user2].sort();
+      return sorted.join('_');
+    }
 
-        function showPwError(msg) {
-            pwError.textContent = msg;
-            // pokaż komunikat płynnie
-            pwError.classList.add('visible');
+    function getNicknames() {
+      return JSON.parse(localStorage.getItem('userNicknames')) || {};
+    }
 
-            // usuń wcześniejsze czasowe ukrywanie, jeśli istnieje
-            if (pwError._hideTimeout) clearTimeout(pwError._hideTimeout);
-            // po chwili komunikat sam się ukryje płynnie
-            pwError._hideTimeout = setTimeout(() => {
-                pwError.classList.remove('visible');
-                setTimeout(() => { pwError.textContent = ''; }, 260);
-            }, 2600);
+    function saveNicknames(nicknames) {
+      localStorage.setItem('userNicknames', JSON.stringify(nicknames));
+    }
 
-            pwInput.classList.add('shake');
-            setTimeout(() => pwInput.classList.remove('shake'), 650);
-        }
+    function getNicknameFor(username) {
+      const nicknames = getNicknames();
+      return nicknames[username] || username;
+    }
 
-        function checkPw() {
-            if (pwInput.value === CORRECT_PW) {
-                sessionStorage.setItem('site_unlocked', '1');
-                pwAttempts = 0;
-                unlockSite();
-            } else {
-                pwAttempts++;
-                // Jeśli to już druga (lub kolejna) nieudana próba, rozjaśniamy tło i bardziej rozmywamy
-                if (pwAttempts >= 2) {
-                    pwOverlay.classList.add('light');
-                    pwTitle.classList.add('faded');
-                    pwHint.style.opacity = '0.5';
-                }
-                showPwError('Niepoprawne hasło — spróbuj ponownie.');
-            }
-        }
+    function setNickname(username, nickname) {
+      const nicknames = getNicknames();
+      if (nickname.trim()) {
+        nicknames[username] = nickname.trim();
+      } else {
+        delete nicknames[username];
+      }
+      saveNicknames(nicknames);
+    }
 
-        pwSubmit.addEventListener('click', (e) => { e.preventDefault(); checkPw(); });
+    function getGroups() {
+      return JSON.parse(localStorage.getItem('chatGroups')) || [];
+    }
 
-        pwInput.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') checkPw();
-            if (e.key === 'Escape') {
-                // do not allow Escape to bypass the gate
-                e.stopPropagation();
-                e.preventDefault();
-            }
+    function saveGroups(groups) {
+      localStorage.setItem('chatGroups', JSON.stringify(groups));
+    }
+
+    function createGroup(groupName) {
+      if (!groupName.trim() || !currentUser) return null;
+      
+      const groups = getGroups();
+      const newGroup = {
+        id: `group-${Date.now()}`,
+        name: groupName.trim(),
+        members: [currentUser],
+        createdBy: currentUser,
+        createdAt: new Date().toLocaleString('pl-PL')
+      };
+      
+      groups.push(newGroup);
+      saveGroups(groups);
+      
+      // Utwórz pusty array wiadomości dla grupy
+      const conversations = getConversations();
+      conversations[newGroup.id] = [];
+      saveConversations(conversations);
+      
+      return newGroup;
+    }
+
+    function deleteGroup(groupId) {
+      const groups = getGroups();
+      const groupIndex = groups.findIndex(g => g.id === groupId);
+      if (groupIndex === -1) return;
+      
+      const group = groups[groupIndex];
+      
+      // Sprawdź czy jesteś twórcą grupy lub adminem
+      const user = getUsers().find(u => u.name === currentUser);
+      const isCreator = group.createdBy === currentUser;
+      const isAdmin = user && user.isAdmin;
+      
+      if (!isCreator && !isAdmin) {
+        alert('Tylko twórca lub admin może usunąć grupę');
+        return;
+      }
+      
+      groups.splice(groupIndex, 1);
+      saveGroups(groups);
+      
+      // Usuń wiadomości grupy
+      const conversations = getConversations();
+      delete conversations[groupId];
+      saveConversations(conversations);
+      
+      // Odśwież interfejs
+      selectedChatUser = null;
+      currentGroupId = null;
+      alert('Grupa została usunięta!');
+      loadUsersList();
+    }
+
+    function addUserToGroup(groupId, username) {
+      const groups = getGroups();
+      const group = groups.find(g => g.id === groupId);
+      if (!group) return;
+      
+      if (!group.members.includes(username)) {
+        group.members.push(username);
+        saveGroups(groups);
+      }
+    }
+
+    function removeUserFromGroup(groupId, username) {
+      const groups = getGroups();
+      const group = groups.find(g => g.id === groupId);
+      if (!group) return;
+      
+      if (group.createdBy === username) {
+        alert('Nie możesz usunąć twórcę grupy');
+        return;
+      }
+      
+      group.members = group.members.filter(m => m !== username);
+      saveGroups(groups);
+    }
+
+    function toggleChat() {
+      const chatPanel = document.getElementById('chatPanel');
+      if (chatPanel.classList.contains('hidden')) {
+        // Otwieranie
+        chatPanel.classList.remove('hidden');
+        loadUsersList();
+        setTimeout(() => document.getElementById('chatInput').focus(), 100);
+      } else {
+        // Zamykanie
+        chatPanel.classList.add('hidden');
+        // Po animacji resetuj
+        setTimeout(() => {
+          selectedChatUser = null;
+          document.getElementById('chatUsersList').style.display = 'flex';
+          document.getElementById('chatConversation').classList.add('hidden');
+        }, 500);
+      }
+    }
+
+    function backToUsersList() {
+      selectedChatUser = null;
+      currentGroupId = null;
+      document.getElementById('deleteGroupBtnHeader').style.display = 'none';
+      document.getElementById('chatUsersList').style.display = 'flex';
+      document.getElementById('chatConversation').classList.add('hidden');
+      loadUsersList();
+    }
+
+    function loadUsersList() {
+      const users = getUsers();
+      const groups = getGroups();
+      const container = document.getElementById('usersListContainer');
+      container.innerHTML = '';
+      
+      const conversations = getConversations();
+      
+      // Wyświetl grupy
+      if (groups.length > 0) {
+        const groupsHeader = document.createElement('div');
+        groupsHeader.style.cssText = 'padding: 0.5rem 0.8rem; font-weight: 600; color: var(--accent-dark); font-size: 0.9rem; margin-top: 0.5rem;';
+        groupsHeader.textContent = '👥 Grupy';
+        container.appendChild(groupsHeader);
+        
+        groups.forEach(group => {
+          // Sprawdź czy jesteś członkiem grupy
+          if (!group.members.includes(currentUser)) return;
+          
+          const groupEl = document.createElement('div');
+          groupEl.style.cssText = 'display: flex; justify-content: space-between; align-items: center; padding: 0.8rem; background: rgba(255,107,156,0.05); margin-bottom: 0.6rem; border-radius: 10px; border: 1px solid rgba(255,107,156,0.15); cursor: pointer; transition: all 0.3s ease;';
+          groupEl.onmouseover = () => groupEl.style.background = 'rgba(255,107,156,0.1)';
+          groupEl.onmouseout = () => groupEl.style.background = 'rgba(255,107,156,0.05)';
+          
+          const messages = conversations[group.id] || [];
+          
+          const groupInfoEl = document.createElement('div');
+          groupInfoEl.style.cssText = 'flex: 1; cursor: pointer;';
+          groupInfoEl.onclick = () => startGroupConversation(group.id);
+          groupInfoEl.innerHTML = `
+            <div style="font-weight: 600; color: var(--accent-dark); font-size: 0.95rem;">${group.name}</div>
+            <div style="font-size: 0.8rem; color: var(--text-muted);">${group.members.length} osób • ${messages.length} wiadomości</div>
+          `;
+          
+          const manageBtn = document.createElement('button');
+          manageBtn.style.cssText = 'background: rgba(255,107,156,0.1); border: 1px solid rgba(255,107,156,0.3); padding: 0.4rem 0.6rem; border-radius: 6px; cursor: pointer; font-size: 0.8rem; margin-left: 0.6rem;';
+          manageBtn.innerHTML = '⚙️';
+          manageBtn.onclick = (e) => {
+            e.stopPropagation();
+            showGroupManageDialog(group.id);
+          };
+          
+          groupEl.appendChild(groupInfoEl);
+          groupEl.appendChild(manageBtn);
+          container.appendChild(groupEl);
         });
-
-        // Hiding error when user types + fade title away on focus/input
-        pwInput.addEventListener('input', () => {
-            if (pwError.classList.contains('visible')) {
-                pwError.classList.remove('visible');
-                if (pwError._hideTimeout) clearTimeout(pwError._hideTimeout);
-                setTimeout(() => { pwError.textContent = ''; }, 260);
-            }
-            pwTitle.classList.add('faded');
-            if (pwTitleWrap) pwTitleWrap.classList.add('collapsed');
+      }
+      
+      // Wyświetl użytkowników
+      const usersHeader = document.createElement('div');
+      usersHeader.style.cssText = 'padding: 0.5rem 0.8rem; font-weight: 600; color: var(--accent-dark); font-size: 0.9rem; margin-top: 0.8rem;';
+      usersHeader.textContent = '👤 Czaty';
+      container.appendChild(usersHeader);
+      
+      // Filtruj użytkowników (nie pokazuj siebie)
+      const otherUsers = users.filter(u => u.name !== currentUser);
+      
+      if (otherUsers.length === 0) {
+        const noUsersEl = document.createElement('p');
+        noUsersEl.style.cssText = 'color: var(--text-muted); text-align: center; padding: 1rem; font-size: 0.9rem;';
+        noUsersEl.textContent = 'Brak innych użytkowników';
+        container.appendChild(noUsersEl);
+      } else {
+        otherUsers.forEach(user => {
+          const userEl = document.createElement('div');
+          userEl.style.cssText = 'display: flex; justify-content: space-between; align-items: center; padding: 0.8rem; background: var(--card-bg); margin-bottom: 0.6rem; border-radius: 10px; border: 1px solid rgba(255,107,156,0.1); cursor: pointer; transition: all 0.3s ease;';
+          userEl.onmouseover = () => userEl.style.background = 'rgba(255,107,156,0.08)';
+          userEl.onmouseout = () => userEl.style.background = 'var(--card-bg)';
+          
+          // Sprawdź czy są nowe wiadomości
+          const convKey = getConversationKey(currentUser, user.name);
+          const messages = conversations[convKey] || [];
+          const nickname = getNicknameFor(user.name);
+          
+          const userInfoEl = document.createElement('div');
+          userInfoEl.style.cssText = 'flex: 1; cursor: pointer;';
+          userInfoEl.onclick = () => startConversation(user.name);
+          userInfoEl.innerHTML = `
+            <div style="font-weight: 600; color: var(--accent-dark);">${nickname}</div>
+            <div style="font-size: 0.8rem; color: var(--text-muted);">${messages.length > 0 ? `${messages.length} wiadomości` : 'Brak wiadomości'}</div>
+          `;
+          
+          userEl.appendChild(userInfoEl);
+          container.appendChild(userEl);
         });
+      }
+    }
 
-        pwInput.addEventListener('focus', () => {
-            pwTitle.classList.add('faded');
-            if (pwTitleWrap) pwTitleWrap.classList.add('collapsed');
-        });
+    function showCreateGroupDialog() {
+      const groupName = prompt('Nazwa grupy:');
+      if (!groupName) return;
+      
+      const group = createGroup(groupName);
+      if (group) {
+        loadUsersList();
+        alert(`Grupa "${groupName}" utworzona! Zaproś inne osoby przyciskiem ⚙️`);
+      }
+    }
 
-        // Toggle visibility of password
-        if (pwToggle) {
-            pwToggle.addEventListener('click', (e) => {
-                const showing = pwInput.type === 'text';
-                pwInput.type = showing ? 'password' : 'text';
-                pwToggle.setAttribute('aria-pressed', String(!showing));
-                pwToggle.textContent = showing ? 'Pokaż' : 'Ukryj';
-                pwInput.focus();
-            });
+    function showGroupManageDialog(groupId) {
+      const groups = getGroups();
+      const group = groups.find(g => g.id === groupId);
+      if (!group) return;
+      
+      window.currentGroupToManage = groupId;
+      const users = getUsers();
+      const container = document.getElementById('groupMembersContainer');
+      container.innerHTML = '';
+      
+      users.forEach(user => {
+        if (user.name === currentUser) return; // Nie pokazuj siebie
+        
+        const isMember = group.members.includes(user.name);
+        const isCreator = user.name === group.createdBy;
+        
+        const labelEl = document.createElement('label');
+        labelEl.style.cssText = 'display: flex; align-items: center; gap: 0.6rem; padding: 0.5rem; margin-bottom: 0.3rem; background: rgba(255,107,156,0.05); border-radius: 6px; cursor: pointer; user-select: none;';
+        
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.checked = isMember;
+        checkbox.disabled = isCreator;
+        checkbox.className = 'group-member-checkbox';
+        checkbox.dataset.username = user.name;
+        checkbox.style.cssText = 'cursor: pointer; width: 16px; height: 16px;';
+        
+        const nameEl = document.createElement('span');
+        nameEl.style.cssText = `font-weight: 500; flex: 1; font-size: 0.9rem; ${isCreator ? 'opacity: 0.6; color: #999;' : 'color: #333;'}`;
+        nameEl.textContent = `${user.name}${isCreator ? ' (tw)' : ''}`;
+        
+        labelEl.appendChild(checkbox);
+        labelEl.appendChild(nameEl);
+        container.appendChild(labelEl);
+      });
+      
+      // Otwórz panel
+      document.getElementById('groupManageModal').style.width = '250px';
+      document.getElementById('groupManageModal').style.padding = '0';
+    }
+
+    function closeGroupManageModal() {
+      document.getElementById('groupManageModal').style.width = '0';
+      document.getElementById('groupManageModal').style.padding = '0';
+      window.currentGroupToManage = null;
+      document.getElementById('groupMembersContainer').innerHTML = '';
+    }
+
+    function saveGroupMembers() {
+      const groupId = window.currentGroupToManage;
+      if (!groupId) return;
+      
+      const groups = getGroups();
+      const group = groups.find(g => g.id === groupId);
+      if (!group) return;
+      
+      const checkboxes = document.querySelectorAll('.group-member-checkbox');
+      const newMembers = [group.createdBy]; // Zawsze zachowaj twórcę
+      
+      checkboxes.forEach(cb => {
+        if (cb.checked && !newMembers.includes(cb.dataset.username)) {
+          newMembers.push(cb.dataset.username);
         }
+      });
+      
+      group.members = newMembers;
+      saveGroups(groups);
+      
+      closeGroupManageModal();
+      loadUsersList();
+      alert('Członkowie grupy zostali zaktualizowani!');
+    }
 
-        // Prevent clicks from escaping overlay
-        pwOverlay.addEventListener('click', (e) => {
-            if (e.target === pwOverlay) {
-                pwInput.classList.add('shake');
-                setTimeout(() => pwInput.classList.remove('shake'), 650);
-            }
+    function deleteCurrentGroup() {
+      if (!window.currentGroupToManage) return;
+      
+      const groups = getGroups();
+      const group = groups.find(g => g.id === window.currentGroupToManage);
+      
+      if (!group) return;
+      
+      // Sprawdź czy jesteś twórcą lub adminem
+      const user = getUsers().find(u => u.name === currentUser);
+      const isCreator = group.createdBy === currentUser;
+      const isAdmin = user && user.isAdmin;
+      
+      if (!isCreator && !isAdmin) {
+        alert('Tylko twórca lub admin może usunąć grupę!');
+        return;
+      }
+      
+      if (confirm(`Czy na pewno chcesz usunąć grupę "${group.name}"? Ta operacja nie może być cofnięta.`)) {
+        deleteGroup(window.currentGroupToManage);
+        closeGroupManageModal();
+      }
+    }
+
+    function openDeleteGroupDialog() {
+      const groupId = window.currentGroupToManage || currentGroupId;
+      if (!groupId) return;
+      
+      const groups = getGroups();
+      const group = groups.find(g => g.id === groupId);
+      if (!group) return;
+      
+      // Sprawdź uprawnienia
+      const user = getUsers().find(u => u.name === currentUser);
+      const isCreator = group.createdBy === currentUser;
+      const isAdmin = user && user.isAdmin;
+      
+      if (!isCreator && !isAdmin) {
+        alert('Tylko twórca lub admin może usunąć grupę!');
+        return;
+      }
+      
+      // Bezpośrednio usuń
+      deleteGroup(groupId);
+      closeGroupManageModal();
+    }
+
+    function closeDeleteGroupModal() {
+      document.getElementById('deleteGroupModal').classList.add('hidden');
+      window.groupToDeleteId = null;
+    }
+
+    function confirmDeleteGroup() {
+      // Ta funkcja już nie potrzebna
+    }
+
+    function editUserNickname(username) {
+      const currentNickname = getNicknameFor(username);
+      const newNickname = prompt(`Ustaw nick dla ${username}:`, currentNickname === username ? '' : currentNickname);
+      
+      if (newNickname !== null) {
+        setNickname(username, newNickname);
+        loadUsersList();
+      }
+    }
+
+    function showGroupManageDialog(groupId) {
+        if (!groupId) return;
+        
+        const popup = document.getElementById('groupManagePopup');
+        const container = document.getElementById('groupMembersContainer');
+        
+        const groups = getGroups();
+        const group = groups.find(g => g.id === groupId);
+        if (!group) return;
+        
+        const nicknames = getNicknames();
+        // Pokaż listę członków
+        container.innerHTML = group.members.map((member, idx) => {
+            const userNick = nicknames[member] || member;
+            const isCreator = member === group.createdBy;
+            return `
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.8rem; padding: 0.5rem; background: rgba(100,150,200,0.05); border-radius: 8px;">
+                    <div style="flex: 1;">
+                        <div style="font-weight: 600; font-size: 0.9rem; color: #333;">${userNick}</div>
+                        <div style="font-size: 0.75rem; color: var(--text-muted);">${isCreator ? '👑 Twórca' : 'Członek'}</div>
+                    </div>
+                    ${currentUser === group.createdBy && member !== currentUser ? `
+                        <button onclick="removeMemberFromGroup('${groupId}', '${member}')" style="background: rgba(255,0,0,0.1); border: 1px solid rgba(255,0,0,0.2); color: #b00020; padding: 0.3rem 0.6rem; border-radius: 4px; cursor: pointer; font-size: 0.75rem;">✕</button>
+                    ` : ''}
+                </div>
+            `;
+        }).join('');
+        
+        popup.classList.remove('hidden');
+    }
+    
+    function removeMemberFromGroup(groupId, member) {
+        const groups = getGroups();
+        const group = groups.find(g => g.id === groupId);
+        if (!group || currentUser !== group.createdBy) {
+            alert('Tylko twórca może usuwać członków!');
+            return;
+        }
+        
+        group.members = group.members.filter(m => m !== member);
+        saveGroups(groups);
+        showGroupManageDialog(groupId);
+        const nicknames = getNicknames();
+        alert(`${nicknames[member] || member} został(a) usunięty z grupy`);
+    }
+    
+    function saveGroupMembers() {
+        saveGroups(getGroups());
+        closeGroupManageModal();
+        alert('Zmiany zapisane');
+    }
+
+    function startAudioCall() {
+        if (!selectedChatUser) {
+            alert('Wybierz osobę do rozmowy!');
+            return;
+        }
+        
+        const contactName = document.getElementById('chatWithUser').textContent;
+        initiateCall('audio', contactName);
+    }
+    
+    function startVideoCall() {
+        if (!selectedChatUser) {
+            alert('Wybierz osobę do rozmowy!');
+            return;
+        }
+        
+        const contactName = document.getElementById('chatWithUser').textContent;
+        initiateCall('video', contactName);
+    }
+    
+    function initiateCall(type, contactName) {
+        // Zapisz stan połączenia
+        currentCall = {
+            type: type,
+            contact: selectedChatUser,
+            startTime: Date.now(),
+            active: true
+        };
+        callStartTime = Date.now();
+        
+        // Pokaż modal
+        const modal = document.getElementById('callModal');
+        const callTypeEl = document.getElementById('callType');
+        const callUserEl = document.getElementById('callUserName');
+        
+        callTypeEl.textContent = type === 'video' ? '📹' : '☎️';
+        callUserEl.textContent = contactName;
+        
+        modal.classList.remove('hidden');
+        modal.style.display = 'flex';
+        
+        // Odtwórz dźwięk dzwonienia
+        playRingtone();
+        
+        // Zaktualizuj czas trwania
+        updateCallDuration();
+    }
+    
+    function updateCallDuration() {
+        if (!currentCall || !currentCall.active) return;
+        
+        const elapsed = Math.floor((Date.now() - callStartTime) / 1000);
+        const minutes = Math.floor(elapsed / 60);
+        const seconds = elapsed % 60;
+        const durationStr = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+        
+        const durationEl = document.getElementById('callDuration');
+        if (durationEl) {
+            durationEl.textContent = durationStr;
+        }
+        
+        if (currentCall.active) {
+            setTimeout(updateCallDuration, 1000);
+        }
+    }
+    
+    function endCall() {
+        if (!currentCall) return;
+        
+        currentCall.active = false;
+        const modal = document.getElementById('callModal');
+        modal.classList.add('hidden');
+        modal.style.display = 'none';
+        
+        // Dodaj wiadomość o połączeniu
+        const duration = Math.floor((Date.now() - callStartTime) / 1000);
+        const minutes = Math.floor(duration / 60);
+        const seconds = duration % 60;
+        const durationStr = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+        
+        const msg = `[${currentCall.type === 'video' ? '📹' : '☎️'} Połączenie ${currentCall.type === 'video' ? 'wideo' : 'audio'} - ${durationStr}]`;
+        
+        // Wyślij jako wiadomość
+        const conversations = getConversations();
+        const convKey = currentCall.type === 'video' ? getConversationKey(currentUser, currentCall.contact) : getConversationKey(currentUser, currentCall.contact);
+        
+        if (!conversations[convKey]) {
+            conversations[convKey] = [];
+        }
+        
+        conversations[convKey].push({
+            id: Date.now(),
+            from: currentUser,
+            to: currentCall.contact,
+            text: msg,
+            photo: null,
+            timestamp: new Date().toLocaleTimeString('pl-PL', { hour: '2-digit', minute: '2-digit' }),
+            isDeleted: false,
+            isEdited: false,
+            originalText: msg,
+            reactions: {},
+            isCall: true
         });
+        
+        saveConversations(conversations);
+        displayConversation(selectedChatUser);
+        
+        currentCall = null;
+        isMuted = false;
+        isSpeakerOn = false;
+    }
+    
+    function toggleMute() {
+        if (!currentCall) return;
+        
+        isMuted = !isMuted;
+        const muteBtn = document.getElementById('muteBtn');
+        muteBtn.textContent = isMuted ? '🔇' : '🔊';
+        muteBtn.style.background = isMuted ? 'rgba(255,152,0,0.2)' : 'rgba(100,100,100,0.2)';
+    }
+    
+    function toggleSpeaker() {
+        if (!currentCall) return;
+        
+        isSpeakerOn = !isSpeakerOn;
+        const speakerBtn = document.getElementById('callModal').querySelector('button:last-child');
+        speakerBtn.textContent = isSpeakerOn ? '🔊' : '🔈';
+        speakerBtn.style.background = isSpeakerOn ? 'rgba(76,175,80,0.2)' : 'rgba(100,100,100,0.2)';
+    }
+    
+    function playRingtone() {
+        // Odtwórz proste beeping dzwonka za pomocą Web Audio API
+        try {
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            // Ustawienia dźwięku
+            oscillator.frequency.value = 800; // Częstotliwość
+            oscillator.type = 'sine';
+            gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+            
+            // Krótkie beeping
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + 0.1);
+        } catch (e) {
+            // Fallback - jeśli Web Audio nie działa
+            console.log('Dzwonienie (Web Audio niedostępny)');
+        }
+    }
 
-        // Focus trap
-        pwOverlay.addEventListener('keydown', (e) => {
-            if (e.key !== 'Tab') return;
-            const focusable = Array.from(pwOverlay.querySelectorAll('button, input, [tabindex]:not([tabindex="-1"])')).filter(el => !el.disabled);
-            if (focusable.length === 0) return;
-            const first = focusable[0];
-            const last = focusable[focusable.length - 1];
-            if (e.shiftKey && document.activeElement === first) {
-                e.preventDefault(); last.focus();
-            } else if (!e.shiftKey && document.activeElement === last) {
-                e.preventDefault(); first.focus();
-            }
-        });
+    function editNicknameInChat() {
+        if (!selectedChatUser) return;
+        const currentNickname = getNicknameFor(selectedChatUser);
+        const newNickname = prompt(`Ustaw nick dla ${selectedChatUser}:`, currentNickname === selectedChatUser ? '' : currentNickname);
+        
+        if (newNickname !== null) {
+            setNickname(selectedChatUser, newNickname);
+            const nickname = getNicknameFor(selectedChatUser);
+            document.getElementById('chatWithUser').textContent = nickname;
+        }
+    }
 
-        // If previously unlocked in session, hide overlay
-        if (sessionStorage.getItem('site_unlocked') === '1') {
-            pwOverlay.classList.add('hidden');
+    let currentPhotoData = null;
+
+    function openPhotoLightbox(imgId) {
+      const img = document.getElementById(imgId);
+      if (!img) return;
+      
+      const lightbox = document.getElementById('lightbox');
+      const imgEl = lightbox.querySelector('img');
+      const downloadBtn = document.getElementById('downloadPhotoBtn');
+      
+      currentPhotoData = img.src;
+      imgEl.src = img.src;
+      imgEl.alt = 'Zdjęcie';
+      downloadBtn.style.display = 'block';
+      
+      // Pokaż lightbox (kod z istniejącego lightboxa)
+      const savedScrollY = window.scrollY || document.documentElement.scrollTop || 0;
+      const scrollBarWidth = window.innerWidth - document.documentElement.clientWidth;
+      if (scrollBarWidth > 0) {
+        document.documentElement.style.paddingRight = `${scrollBarWidth}px`;
+      }
+      document.documentElement.style.overflow = 'hidden';
+      lightbox.classList.add('open');
+    }
+
+    function downloadPhoto() {
+      if (!currentPhotoData) return;
+      
+      const link = document.createElement('a');
+      link.href = currentPhotoData;
+      link.download = `photo-${Date.now()}.png`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+    function startConversation(userName) {
+      selectedChatUser = userName;
+      currentGroupId = null; // Nie jesteśmy w grupie
+      document.getElementById('chatUsersList').style.display = 'none';
+      document.getElementById('chatConversation').classList.remove('hidden');
+      const nickname = getNicknameFor(userName);
+      document.getElementById('chatWithUser').textContent = nickname;
+      document.getElementById('chatWithUser').title = `Login: ${userName}`;
+      document.getElementById('deleteGroupBtnHeader').style.display = 'none';
+      document.getElementById('manageGroupBtn').style.display = 'none';
+      displayConversation(userName);
+      document.getElementById('chatInput').focus();
+    }
+
+    function startGroupConversation(groupId) {
+      selectedChatUser = groupId;
+      currentGroupId = groupId; // Zapamiętaj ID grupy
+      document.getElementById('chatUsersList').style.display = 'none';
+      document.getElementById('chatConversation').classList.remove('hidden');
+      
+      const groups = getGroups();
+      const group = groups.find(g => g.id === groupId);
+      if (!group) return;
+      
+      document.getElementById('chatWithUser').textContent = group.name;
+      document.getElementById('chatWithUser').title = `Członkowie: ${group.members.join(', ')}`;
+      
+      // Pokaż przycisk usuwania dla twórcy i admina
+      const user = getUsers().find(u => u.name === currentUser);
+      const isCreator = group.createdBy === currentUser;
+      const isAdmin = user && user.isAdmin;
+      document.getElementById('deleteGroupBtnHeader').style.display = (isCreator || isAdmin) ? 'block' : 'none';
+      document.getElementById('manageGroupBtn').style.display = (isCreator || isAdmin) ? 'block' : 'none';
+      
+      displayConversation(groupId, true);
+      document.getElementById('chatInput').focus();
+    }
+
+    function displayConversation(idOrName, isGroup = false) {
+      let convKey;
+      
+      if (isGroup) {
+        convKey = idOrName; // groupId
+      } else {
+        convKey = getConversationKey(currentUser, idOrName); // userName
+      }
+      
+      const conversations = getConversations();
+      const messages = conversations[convKey] || [];
+      const messagesDiv = document.getElementById('chatMessages');
+      
+      messagesDiv.innerHTML = '';
+      
+      messages.forEach(msg => {
+        const msgEl = document.createElement('div');
+        
+        // Sprawdź czy to moja wiadomość
+        const isMyMessage = msg.from === currentUser;
+        msgEl.className = `chat-message ${isMyMessage ? 'own' : 'other'}`;
+        
+        let messageContent = '';
+        if (msg.isDeleted) {
+          messageContent = '<em>wiadomość usunięta</em>';
         } else {
-            // Lock site immediately
-            lockSiteWithPw();
+          messageContent = msg.text;
+          if (msg.isEdited) {
+            messageContent += ' <span style="font-size: 0.7rem; opacity: 0.7;">(edytowana)</span>';
+          }
         }
-    })();
+        
+        // Pobierz nickname dla autora wiadomości
+        const senderNickname = getNicknameFor(msg.from);
+        const senderProfile = getUserProfile(msg.from);
+        const senderAvatar = senderProfile.avatar || msg.from.charAt(0).toUpperCase();
+        
+        // Reactions
+        let reactionsHTML = '';
+        if (msg.reactions && Object.keys(msg.reactions).length > 0) {
+          reactionsHTML = '<div style="display: flex; gap: 0.3rem; flex-wrap: wrap; margin-top: 0.4rem; justify-content: ' + (isMyMessage ? 'flex-end' : 'flex-start') + ';">';
+          for (const [emoji, users] of Object.entries(msg.reactions)) {
+            reactionsHTML += `<span style="background: rgba(0,0,0,0.15); padding: 0.15rem 0.5rem; border-radius: 14px; font-size: 0.85rem; cursor: pointer; transition: 0.2s;" title="${users.join(', ')}" onmouseover="this.style.background='rgba(0,0,0,0.25)'" onmouseout="this.style.background='rgba(0,0,0,0.15)'">${emoji}</span>`;
+          }
+          reactionsHTML += '</div>';
+        }
+        
+        // Bubble content
+        let bubbleHTML = `
+          <div class="chat-bubble">
+            <div class="chat-message-text">${messageContent}</div>
+        `;
+        
+        // Zdjęcie
+        if (msg.photo) {
+          const photoId = `photo-${msg.id}`;
+          bubbleHTML += `<img id="${photoId}" src="${msg.photo}" style="max-width: 100%; max-height: 220px; border-radius: 12px; margin-top: 0.6rem; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.15);" onclick="openPhotoLightbox('${photoId}')">`;
+        }
+        
+        bubbleHTML += `</div>`;
+        
+        // Avatar (tylko dla innych)
+        let avatarHTML = '';
+        if (!isMyMessage) {
+          avatarHTML = `<div class="chat-avatar" title="${senderNickname}">${senderAvatar}</div>`;
+        }
+        
+        msgEl.innerHTML = avatarHTML + bubbleHTML;
+        
+        // Dodaj reactions pod bubble
+        const reactionsWrapper = document.createElement('div');
+        reactionsWrapper.style.cssText = `display: flex; ${isMyMessage ? 'justify-content: flex-end' : 'justify-content: flex-start'}; width: 100%; margin-bottom: 0.3rem;`;
+        reactionsWrapper.innerHTML = reactionsHTML;
+        
+        messagesDiv.appendChild(msgEl);
+        if (reactionsHTML) {
+          messagesDiv.appendChild(reactionsWrapper);
+        }
+      });
+      
+      // Scroll na koniec
+      messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    }
+
+
+    function editMessage(convKey, msgId) {
+      const conversations = getConversations();
+      const messages = conversations[convKey];
+      const msg = messages.find(m => m.id === msgId);
+      
+      if (!msg) return;
+      
+      const newText = prompt('Edytuj wiadomość:', msg.text);
+      if (newText && newText.trim()) {
+        msg.text = newText.trim();
+        msg.isEdited = true;
+        saveConversations(conversations);
+        displayConversation(selectedChatUser);
+      }
+    }
+
+    function deleteMessage(convKey, msgId) {
+      if (!confirm('Na pewno chcesz usunąć tę wiadomość?')) return;
+      
+      const conversations = getConversations();
+      const messages = conversations[convKey];
+      const msgIndex = messages.findIndex(m => m.id === msgId);
+      
+      if (msgIndex === -1) return;
+      
+      // Całkowicie usuń wiadomość z tablicy
+      messages.splice(msgIndex, 1);
+      saveConversations(conversations);
+      displayConversation(selectedChatUser);
+    }
+
+    function toggleEmojiPicker() {
+      const picker = document.getElementById('emojiPicker');
+      picker.classList.toggle('hidden');
+    }
+
+    function addEmoji(emoji) {
+      const input = document.getElementById('chatInput');
+      input.value += emoji;
+      input.focus();
+    }
+
+    function addReaction(convKey, msgId, emoji) {
+      const conversations = getConversations();
+      const messages = conversations[convKey];
+      const msg = messages.find(m => m.id === msgId);
+      
+      if (!msg) return;
+      
+      if (!msg.reactions) {
+        msg.reactions = {};
+      }
+      
+      if (!msg.reactions[emoji]) {
+        msg.reactions[emoji] = [];
+      }
+      
+      // Jeśli już mam tę reaction, usuń ją
+      if (msg.reactions[emoji].includes(currentUser)) {
+        msg.reactions[emoji] = msg.reactions[emoji].filter(u => u !== currentUser);
+        if (msg.reactions[emoji].length === 0) {
+          delete msg.reactions[emoji];
+        }
+      } else {
+        msg.reactions[emoji].push(currentUser);
+      }
+      
+      saveConversations(conversations);
+      displayConversation(selectedChatUser);
+    }
+
+    function handlePhotoSelect() {
+      const input = document.getElementById('photoInput');
+      const file = input.files[0];
+      
+      if (!file) return;
+      
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        selectedPhoto = e.target.result;
+        input.value = ''; // Wyczyść input
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function sendMessage() {
+      if (!currentUser || !selectedChatUser) return;
+      
+      const input = document.getElementById('chatInput');
+      const message = input.value.trim();
+      
+      if (!message && !selectedPhoto) return;
+      
+      const conversations = getConversations();
+      
+      // Sprawdź czy to grupa czy prywatny czat
+      const isGroup = selectedChatUser.startsWith('group-');
+      let convKey;
+      
+      if (isGroup) {
+        convKey = selectedChatUser;
+      } else {
+        convKey = getConversationKey(currentUser, selectedChatUser);
+      }
+      
+      if (!conversations[convKey]) {
+        conversations[convKey] = [];
+      }
+      
+      conversations[convKey].push({
+        id: Date.now(),
+        from: currentUser,
+        to: isGroup ? selectedChatUser : selectedChatUser,
+        text: message,
+        photo: selectedPhoto || null,
+        timestamp: new Date().toLocaleTimeString('pl-PL', { hour: '2-digit', minute: '2-digit' }),
+        isDeleted: false,
+        isEdited: false,
+        originalText: message,
+        reactions: {}
+      });
+      
+      saveConversations(conversations);
+      input.value = '';
+      selectedPhoto = null;
+      toggleEmojiPicker(); // Zamknij emoji picker po wysłaniu
+      displayConversation(selectedChatUser, isGroup);
+    }
+
+    function showChatIfLoggedIn() {
+      if (currentUser) {
+        document.getElementById('chatToggleBtn').classList.remove('hidden');
+      } else {
+        document.getElementById('chatToggleBtn').classList.add('hidden');
+        document.getElementById('chatPanel').classList.add('hidden');
+      }
+    }
+
+    // Inicjalizacja bazy użytkowników
+    function initUsers() {
+      let users = JSON.parse(localStorage.getItem('users'));
+      if (!users) {
+        users = [
+          { id: 1, name: 'admin', pass: 'admin', isAdmin: true, isBlocked: false }
+        ];
+        localStorage.setItem('users', JSON.stringify(users));
+      }
+      return users;
+    }
+
+    function getUsers() {
+      return JSON.parse(localStorage.getItem('users')) || [];
+    }
+
+    function saveUsers(users) {
+      localStorage.setItem('users', JSON.stringify(users));
+    }
+
+    // Profil użytkownika
+    function getUserProfile(username) {
+      const profiles = JSON.parse(localStorage.getItem('userProfiles')) || {};
+      return profiles[username] || {
+        username: username,
+        avatar: username.charAt(0).toUpperCase(),
+        theme: 'default',
+        bio: ''
+      };
+    }
+
+    function saveUserProfile(username, profile) {
+      const profiles = JSON.parse(localStorage.getItem('userProfiles')) || {};
+      profiles[username] = profile;
+      localStorage.setItem('userProfiles', JSON.stringify(profiles));
+    }
+
+    function showProfilePanel() {
+      if (!currentUser) return;
+      const profile = getUserProfile(currentUser);
+      
+      const modal = document.createElement('div');
+      modal.id = 'profileModal';
+      modal.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 2000; display: flex; align-items: center; justify-content: center;';
+      
+      modal.innerHTML = `
+        <div style="background: white; border-radius: 16px; padding: 2rem; min-width: 350px; box-shadow: 0 8px 32px rgba(0,0,0,0.2);">
+          <h2 style="margin: 0 0 1.5rem 0; color: #333;">Mój Profil</h2>
+          
+          <div style="margin-bottom: 1.5rem; text-align: center;">
+            <div style="width: 80px; height: 80px; border-radius: 50%; background: rgba(255,107,156,0.2); display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 2rem; margin: 0 auto 1rem; color: var(--accent-dark);">
+              ${profile.avatar}
+            </div>
+            <input type="text" id="profileAvatar" value="${profile.avatar}" maxlength="1" style="width: 60px; padding: 0.5rem; text-align: center; border: 1px solid rgba(0,0,0,0.1); border-radius: 8px; font-size: 1rem; font-weight: bold;" placeholder="A">
+            <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.3rem;">1 znak - Twój avatar</div>
+          </div>
+          
+          <div style="margin-bottom: 1.5rem;">
+            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #333;">O mnie</label>
+            <textarea id="profileBio" style="width: 100%; padding: 0.8rem; border: 1px solid rgba(0,0,0,0.1); border-radius: 8px; font-size: 0.9rem; resize: none; height: 80px; font-family: Poppins, sans-serif;" placeholder="Napisz coś o sobie...">${profile.bio || ''}</textarea>
+          </div>
+          
+          <div style="margin-bottom: 1.5rem;">
+            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #333;">Mój motyw</label>
+            <select id="profileTheme" style="width: 100%; padding: 0.8rem; border: 1px solid rgba(0,0,0,0.1); border-radius: 8px; font-size: 0.9rem; font-family: Poppins, sans-serif;">
+              <option value="default" ${profile.theme === 'default' ? 'selected' : ''}>🌸 Domyślny (różowy)</option>
+              <option value="blue" ${profile.theme === 'blue' ? 'selected' : ''}>💙 Niebieski</option>
+              <option value="dark" ${profile.theme === 'dark' ? 'selected' : ''}>🖤 Ciemny</option>
+            </select>
+          </div>
+          
+          <div style="display: flex; gap: 1rem;">
+            <button onclick="saveMyProfile()" style="flex: 1; background: var(--accent-dark); border: none; color: white; padding: 0.8rem; border-radius: 8px; cursor: pointer; font-weight: 600;">Zapisz</button>
+            <button onclick="closeProfileModal()" style="flex: 1; background: rgba(0,0,0,0.1); border: none; color: #333; padding: 0.8rem; border-radius: 8px; cursor: pointer; font-weight: 600;">Zamknij</button>
+          </div>
+        </div>
+      `;
+      
+      document.body.appendChild(modal);
+      modal.onclick = (e) => { if (e.target === modal) closeProfileModal(); };
+    }
+
+    function closeProfileModal() {
+      const modal = document.getElementById('profileModal');
+      if (modal) modal.remove();
+    }
+
+    function saveMyProfile() {
+      if (!currentUser) return;
+      
+      const avatar = document.getElementById('profileAvatar').value || currentUser.charAt(0).toUpperCase();
+      const bio = document.getElementById('profileBio').value;
+      const theme = document.getElementById('profileTheme').value;
+      
+      const profile = {
+        username: currentUser,
+        avatar: avatar.substring(0, 1),
+        theme: theme,
+        bio: bio
+      };
+      
+      saveUserProfile(currentUser, profile);
+      closeProfileModal();
+      alert('Profil zapisany!');
+    }
+
+    function showLogin() {
+      document.getElementById('choiceBox').classList.add('hidden');
+      document.getElementById('loginBox').classList.remove('hidden');
+      document.getElementById('loginError').textContent = '';
+      document.getElementById('loginError').classList.remove('visible');
+    }
+
+    function showRegister() {
+      document.getElementById('choiceBox').classList.add('hidden');
+      document.getElementById('registerBox').classList.remove('hidden');
+      document.getElementById('regError').textContent = '';
+      document.getElementById('regError').classList.remove('visible');
+    }
+
+    function backToChoice() {
+      document.getElementById('loginBox').classList.add('hidden');
+      document.getElementById('registerBox').classList.add('hidden');
+      document.getElementById('choiceBox').classList.remove('hidden');
+    }
+
+    function login() {
+      const name = document.getElementById('loginName').value;
+      const pass = document.getElementById('loginPass').value;
+      const users = getUsers();
+      const errorEl = document.getElementById('loginError');
+      
+      // Najpierw sprawdzaj czy użytkownik istnieje (po nazwie)
+      const userByName = users.find(u => u.name === name);
+      
+      // Jeśli użytkownik istnieje i jest zablokowany, pokaż to od razu
+      if (userByName && userByName.isBlocked) {
+        errorEl.textContent = 'Konto zablokowane.';
+        errorEl.classList.add('visible');
+        return;
+      }
+      
+      // Teraz sprawdzaj hasło
+      const user = users.find(u => u.name === name && u.pass === pass);
+      
+      if (!user) {
+        errorEl.textContent = 'Nieprawidłowa nazwa lub hasło.';
+        errorEl.classList.add('visible');
+        return;
+      }
+      
+      currentUser = user.name;
+      
+      // Dla admina pokaż panel, dla zwykłych użytkowników ukryj overlay i pokaż przycisk wylogowania
+      if (user.isAdmin) {
+        showAdminPanel();
+      } else {
+        unlockSite();
+        document.getElementById('userLogoutBtn').classList.add('show');
+        showChatIfLoggedIn();
+      }
+    }
+
+    function register() {
+      const name = document.getElementById('regName').value;
+      const pass = document.getElementById('regPass').value;
+      const pin = document.getElementById('regPin').value;
+      const errorEl = document.getElementById('regError');
+      
+      if (!name || !pass || !pin) {
+        errorEl.textContent = 'Wypełnij wszystkie pola.';
+        errorEl.classList.add('visible');
+        return;
+      }
+      
+      if (pin !== MASTER_PIN) {
+        errorEl.textContent = 'Nieprawidłowy PIN.';
+        errorEl.classList.add('visible');
+        return;
+      }
+      
+      const users = getUsers();
+      if (users.find(u => u.name === name)) {
+        errorEl.textContent = 'Użytkownik już istnieje.';
+        errorEl.classList.add('visible');
+        return;
+      }
+      
+      const newUser = {
+        id: Math.max(...users.map(u => u.id), 0) + 1,
+        name: name,
+        pass: pass,
+        isAdmin: false,
+        isBlocked: false
+      };
+      users.push(newUser);
+      saveUsers(users);
+      currentUser = newUser.name;
+      unlockSite();
+      document.getElementById('userLogoutBtn').classList.add('show');
+      showChatIfLoggedIn();
+    }
+
+    function logout() {
+      currentUser = null;
+      document.getElementById('auth-overlay').classList.remove('hidden');
+      document.body.classList.add('site-locked');
+      document.getElementById('choiceBox').classList.remove('hidden');
+      document.getElementById('loginBox').classList.add('hidden');
+      document.getElementById('registerBox').classList.add('hidden');
+      document.getElementById('adminPanel').classList.add('hidden');
+      document.getElementById('userPanel').classList.add('hidden');
+      document.getElementById('userLogoutBtn').classList.remove('show');
+      document.getElementById('chatToggleBtn').classList.add('hidden');
+      document.getElementById('chatPanel').classList.add('hidden');
+      document.getElementById('loginName').value = '';
+      document.getElementById('loginPass').value = '';
+    }
+
+    function unlockSite() {
+      if (currentUser && currentUser.isAdmin) {
+        // Admin: ukryj overlay aby widział stronę
+        document.getElementById('auth-overlay').classList.add('hidden');
+        document.getElementById('adminPanel').classList.add('hidden');
+      } else {
+        // Zwykły użytkownik: ukryj overlay
+        document.getElementById('auth-overlay').classList.add('hidden');
+      }
+      document.body.classList.remove('site-locked');
+    }
+
+    function goToSite() {
+      // Admin wychodzi z panelu na stronę
+      document.getElementById('adminPanel').classList.add('hidden');
+      document.getElementById('auth-overlay').classList.add('hidden');
+      document.body.classList.remove('site-locked');
+      // Usuń rozmycie dla admina
+      document.querySelectorAll('header, main, footer').forEach(el => el.style.filter = 'none');
+      // Pokaż przycisk powrotu dla admina (zamiast wylogowania zwykłego użytkownika)
+      document.getElementById('adminReturnBtn').classList.add('show');
+      document.getElementById('userLogoutBtn').classList.remove('show');
+    }
+
+    function backToAdminPanel() {
+      // Admin wraca do panelu z strony
+      document.getElementById('auth-overlay').classList.remove('hidden');
+      document.getElementById('adminPanel').classList.remove('hidden');
+      document.getElementById('adminReturnBtn').classList.remove('show');
+      refreshUsersList();
+    }
+
+    function showAdminPanel() {
+      document.getElementById('auth-overlay').classList.remove('hidden');
+      document.getElementById('choiceBox').classList.add('hidden');
+      document.getElementById('loginBox').classList.add('hidden');
+      document.getElementById('registerBox').classList.add('hidden');
+      document.getElementById('adminPanel').classList.remove('hidden');
+      refreshUsersList();
+      displayAdminMessages();
+      switchAdminTab('users');
+    }
+
+    function switchAdminTab(tab) {
+      // Ukryj wszystkie zakładki
+      document.getElementById('adminUsersTab').style.display = 'none';
+      document.getElementById('adminMessagesTab').style.display = 'none';
+      
+      // Usuń active z przycisków
+      document.querySelectorAll('.admin-tab-btn').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      
+      // Pokaż wybraną zakładkę
+      if (tab === 'users') {
+        document.getElementById('adminUsersTab').style.display = 'block';
+        document.querySelectorAll('.admin-tab-btn')[0].classList.add('active');
+        document.querySelectorAll('.admin-tab-btn')[0].style.color = 'var(--accent-dark)';
+        document.querySelectorAll('.admin-tab-btn')[1].style.color = 'var(--text-muted)';
+      } else if (tab === 'messages') {
+        document.getElementById('adminMessagesTab').style.display = 'block';
+        document.querySelectorAll('.admin-tab-btn')[1].classList.add('active');
+        document.querySelectorAll('.admin-tab-btn')[0].style.color = 'var(--text-muted)';
+        document.querySelectorAll('.admin-tab-btn')[1].style.color = 'var(--accent-dark)';
+        displayAdminMessages();
+      }
+    }
+
+    function displayAdminMessages() {
+      const conversations = getConversations();
+      const messagesDiv = document.getElementById('adminChatMessages');
+      messagesDiv.innerHTML = '';
+      
+      if (Object.keys(conversations).length === 0) {
+        messagesDiv.innerHTML = '<p style="color: var(--text-muted); text-align: center;">Brak wiadomości</p>';
+        return;
+      }
+      
+      // Wyświetl wszystkie konwersacje
+      Object.entries(conversations).forEach(([key, messages]) => {
+        const [user1, user2] = key.split('_');
+        
+        // Nagłówek konwersacji
+        const headerEl = document.createElement('div');
+        headerEl.style.cssText = 'margin-bottom: 1rem; padding-bottom: 0.8rem; border-bottom: 2px solid var(--accent);';
+        headerEl.innerHTML = `<strong style="color: var(--accent-dark);">💬 ${user1} ↔ ${user2}</strong>`;
+        messagesDiv.appendChild(headerEl);
+        
+        // Wiadomości
+        messages.forEach(msg => {
+          const msgEl = document.createElement('div');
+          msgEl.style.cssText = 'padding: 0.6rem 0.8rem; margin-bottom: 0.5rem; background: rgba(255,107,156,0.05); border-radius: 6px; border-left: 3px solid var(--accent);';
+          
+          let msgContent = '';
+          if (msg.isDeleted) {
+            msgContent = '<em style="color: var(--text-muted);">wiadomość usunięta</em>';
+          } else {
+            msgContent = msg.text;
+            if (msg.isEdited) {
+              msgContent += ' <span style="font-size: 0.75rem; color: var(--text-muted);">(edytowana)</span>';
+            }
+          }
+          
+          // Reactions
+          let reactionsHTML = '';
+          if (msg.reactions && Object.keys(msg.reactions).length > 0) {
+            reactionsHTML = '<div style="display: flex; gap: 0.3rem; flex-wrap: wrap; margin-top: 0.4rem;">';
+            for (const [emoji, users] of Object.entries(msg.reactions)) {
+              reactionsHTML += `<span style="background: rgba(255,107,156,0.15); padding: 0.2rem 0.5rem; border-radius: 8px; font-size: 0.8rem;">${emoji} (${users.length})</span>`;
+            }
+            reactionsHTML += '</div>';
+          }
+          
+          const groupProfile = getUserProfile(msg.from);
+          const themeDisplay = groupProfile.theme && groupProfile.theme !== 'default' ? ` • motyw: ${groupProfile.theme}` : '';
+          
+          msgEl.innerHTML = `
+            <div style="display: flex; justify-content: space-between; margin-bottom: 0.3rem; font-size: 0.85rem;">
+              <span style="font-weight: 600; color: var(--accent-dark);">${msg.from}</span>
+              <span style="color: var(--text-muted);">${msg.timestamp}${themeDisplay}</span>
+            </div>
+            <div style="color: var(--text-main); font-size: 0.9rem; word-break: break-word;">${msgContent}</div>
+            ${reactionsHTML}
+          `;
+          messagesDiv.appendChild(msgEl);
+        });
+      });
+    }
+
+    function refreshUsersList() {
+      const users = getUsers();
+      const tbody = document.getElementById('usersTableBody');
+      tbody.innerHTML = '';
+      users.forEach(user => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td style="padding: 0.8rem;">${user.name}</td>
+          <td style="padding: 0.8rem;"><code style="background: rgba(0,0,0,0.05); padding: 0.3rem 0.6rem; border-radius: 4px;">${user.pass}</code></td>
+          <td style="padding: 0.8rem;">${user.isAdmin ? 'Admin' : 'User'}</td>
+          <td style="padding: 0.8rem;">${user.isBlocked ? 'Zablokowany' : 'Aktywny'}</td>
+          <td style="padding: 0.8rem;">
+            ${!user.isAdmin ? `
+              ${user.isBlocked ? 
+                `<button class="btn-outline" onclick="toggleUserBlock(${user.id}, false)" style="padding: 0.4rem 0.8rem; font-size: 0.85rem; margin-right: 0.4rem;">Odblokuj</button>` :
+                `<button class="btn-outline" onclick="toggleUserBlock(${user.id}, true)" style="padding: 0.4rem 0.8rem; font-size: 0.85rem; margin-right: 0.4rem;">Zablokuj</button>`
+              }
+              <button class="btn-outline" onclick="deleteUser(${user.id})" style="padding: 0.4rem 0.8rem; font-size: 0.85rem; color: #b00020;">Usuń</button>
+            ` : '<em>Brak akcji</em>'}
+          </td>
+        `;
+        tbody.appendChild(row);
+      });
+    }
+
+    function toggleUserBlock(userId, block) {
+      const users = getUsers();
+      const user = users.find(u => u.id === userId);
+      if (user) {
+        user.isBlocked = block;
+        saveUsers(users);
+        refreshUsersList();
+      }
+    }
+
+    function deleteUser(userId) {
+      if (confirm('Czy na pewno chcesz usunąć tego użytkownika?')) {
+        let users = getUsers();
+        users = users.filter(u => u.id !== userId);
+        saveUsers(users);
+        refreshUsersList();
+      }
+    }
+
+    window.onload = function() {
+      initUsers();
+      document.body.classList.add('site-locked');
+      const users = getUsers();
+      if (users.length > 1) {
+        showLogin();
+      }
+    }
 </script>
 
 </body>
 </html>
+
