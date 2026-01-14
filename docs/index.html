@@ -13,6 +13,10 @@
             padding: 0;
         }
 
+        html {
+            scroll-behavior: smooth;
+        }
+
         :root {
             --bg-gradient: radial-gradient(circle at top left, #ffe6f7 0%, #ffc3a0 40%, #ffafbd 80%);
             --card-bg: rgba(255, 255, 255, 0.88);
@@ -33,9 +37,10 @@
             line-height: 1.6;
             -webkit-font-smoothing: antialiased;
             scroll-behavior: smooth;
+            overflow-x: hidden;
             /* płynne pojawienie się całej strony */
             opacity: 0;
-            transition: opacity 0.6s ease-out;
+            transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         body.loaded {
@@ -169,7 +174,7 @@
             color: var(--text-muted);
             position: relative;
             padding-bottom: 0.2rem;
-            transition: color var(--transition-fast);
+            transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         nav a::after {
@@ -181,7 +186,7 @@
             height: 2px;
             border-radius: 999px;
             background: linear-gradient(90deg, var(--accent), var(--accent-dark));
-            transition: width var(--transition-fast);
+            transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         nav a:hover {
@@ -190,6 +195,20 @@
 
         nav a:hover::after {
             width: 100%;
+        }
+
+        #headerProfileBtn {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            will-change: transform, background;
+        }
+
+        #headerProfileBtn:hover {
+            background: rgba(255,107,156,0.25) !important;
+            transform: scale(1.05);
+        }
+
+        #headerProfileBtn:active {
+            transform: scale(0.95);
         }
 
         .hero {
@@ -286,7 +305,8 @@
             color: #fff;
             box-shadow: 0 14px 35px rgba(255, 107, 156, 0.4);
             transform: translateY(0);
-            transition: transform var(--transition-fast), box-shadow var(--transition-fast), filter var(--transition-fast);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1), filter 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            will-change: transform, box-shadow;
         }
 
         .btn-primary:hover {
@@ -353,7 +373,8 @@
         #profileBtn:hover {
             background: rgba(255,107,156,0.25);
             transform: scale(1.1);
-            transition: 0.3s ease;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), background 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            will-change: transform, background;
         }
 
         .section-kicker {
@@ -909,7 +930,9 @@
             gap: 0.5rem;
             margin-bottom: 0.2rem;
             padding: 0 0.5rem;
-            animation: slideIn 0.3s ease-out;
+            animation: slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            opacity: 0;
+            animation-fill-mode: forwards;
         }
 
         .chat-message.own {
@@ -917,17 +940,19 @@
         }
 
         .chat-message.own .chat-bubble {
-            background: rgba(255,200,150,0.95);
+            background: rgba(240, 240, 240, 0.98);
             color: #333;
             border-radius: 18px 18px 4px 18px;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+            box-shadow: 0 1px 2px rgba(0,0,0,0.08);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
 
         .chat-message.other .chat-bubble {
-            background: rgba(100,150,200,0.95);
+            background: rgba(80, 120, 160, 0.92);
             color: white;
             border-radius: 18px 18px 18px 4px;
             box-shadow: 0 1px 2px rgba(0,0,0,0.15);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
 
         :root.theme-stitch .chat-avatar {
@@ -1070,6 +1095,22 @@
             }
         }
 
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
         .emoji-grid {
             display: grid;
             grid-template-columns: repeat(6, 1fr);
@@ -1101,11 +1142,13 @@
             padding: 0.8rem 1rem;
             border-bottom: 1px solid rgba(255,107,156,0.1);
             cursor: pointer;
-            transition: background 0.2s ease;
+            transition: background 0.2s ease, transform 0.15s ease;
+            animation: fadeIn 0.3s ease-out;
         }
 
         .chat-user-item:hover {
             background: rgba(255,107,156,0.08);
+            transform: translateX(4px);
         }
 
         .chat-user-item-name {
@@ -1587,6 +1630,7 @@
                 <div style="display: flex; gap: 0.5rem; margin-bottom: 1.5rem; border-bottom: 2px solid rgba(255,107,156,0.2); padding-bottom: 0.5rem;">
                     <button class="admin-tab-btn active" onclick="switchAdminTab('users')" style="padding: 0.5rem 1rem; background: transparent; border: none; cursor: pointer; color: var(--accent-dark); font-weight: 600; border-bottom: 3px solid var(--accent); margin-bottom: -0.5rem;">Użytkownicy</button>
                     <button class="admin-tab-btn" onclick="switchAdminTab('messages')" style="padding: 0.5rem 1rem; background: transparent; border: none; cursor: pointer; color: var(--text-muted); font-weight: 500;">Wiadomości</button>
+                    <button class="admin-tab-btn" onclick="switchAdminTab('sync')" style="padding: 0.5rem 1rem; background: transparent; border: none; cursor: pointer; color: var(--text-muted); font-weight: 500;">🔄 Synchronizacja</button>
                 </div>
 
                 <!-- Zakładka użytkowników -->
@@ -1611,6 +1655,26 @@
                 <div id="adminMessagesTab" style="display: none;">
                     <div style="max-height: 400px; overflow-y: auto; margin-bottom: 1.5rem; border: 1px solid rgba(255,107,156,0.2); border-radius: 10px; padding: 1rem;">
                         <div id="adminChatMessages"></div>
+                    </div>
+                </div>
+
+                <!-- Zakładka synchronizacji -->
+                <div id="adminSyncTab" style="display: none;">
+                    <div style="background: rgba(100,150,200,0.05); border: 1px solid rgba(100,150,200,0.2); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem;">
+                        <h3 style="margin: 0 0 1rem 0; color: #333; font-size: 1.1rem;">📤 Eksportuj dane</h3>
+                        <p style="margin-bottom: 1rem; color: var(--text-muted); font-size: 0.9rem;">Wygeneruj kod synchronizacji, aby przenieść dane na inne urządzenie:</p>
+                        <button onclick="exportData()" class="btn-primary" style="margin: 0 0 1rem 0; width: 100%;">Wygeneruj kod synchronizacji</button>
+                        <div id="exportCode" style="display: none; margin-top: 1rem;">
+                            <textarea id="exportCodeText" readonly style="width: 100%; height: 150px; padding: 0.8rem; border: 1px solid rgba(0,0,0,0.2); border-radius: 8px; font-family: monospace; font-size: 0.85rem; resize: none;"></textarea>
+                            <button onclick="copyExportCode()" style="margin-top: 0.5rem; width: 100%; padding: 0.6rem; background: rgba(76,175,80,0.1); border: 1px solid rgba(76,175,80,0.3); color: #4CAF50; border-radius: 8px; cursor: pointer; font-weight: 600;">📋 Skopiuj kod</button>
+                        </div>
+                    </div>
+                    
+                    <div style="background: rgba(255,107,156,0.05); border: 1px solid rgba(255,107,156,0.2); border-radius: 12px; padding: 1.5rem;">
+                        <h3 style="margin: 0 0 1rem 0; color: #333; font-size: 1.1rem;">📥 Importuj dane</h3>
+                        <p style="margin-bottom: 1rem; color: var(--text-muted); font-size: 0.9rem;">Wklej kod synchronizacji z innego urządzenia:</p>
+                        <textarea id="importCodeText" placeholder="Wklej tutaj kod synchronizacji..." style="width: 100%; height: 150px; padding: 0.8rem; border: 1px solid rgba(0,0,0,0.2); border-radius: 8px; font-family: monospace; font-size: 0.85rem; resize: none; margin-bottom: 1rem;"></textarea>
+                        <button onclick="importData()" class="btn-primary" style="margin: 0; width: 100%;">Zaimportuj dane</button>
                     </div>
                 </div>
 
@@ -1790,6 +1854,7 @@
                     <li><a href="#confession">Wyznanie</a></li>
                 </ul>
             </nav>
+            <button onclick="showProfilePanel()" title="Mój profil" style="width: 44px; height: 44px; border-radius: 50%; background: rgba(255,107,156,0.15); border: 2px solid var(--accent-dark); cursor: pointer; font-size: 1.1rem; display: flex; align-items: center; justify-content: center; flex-shrink: 0;" id="headerProfileBtn">👤</button>
         </div>
     </div>
 </header>
@@ -2029,7 +2094,6 @@
             <div class="section-header fade-on-scroll">
                 <div style="display: flex; align-items: center; gap: 1rem; justify-content: center; margin-bottom: 1rem;">
                     <div class="section-kicker">Za co Cię kocham</div>
-                    <button onclick="showProfilePanel()" title="Mój profil" style="width: 48px; height: 48px; border-radius: 50%; background: rgba(255,107,156,0.15); border: 2px solid var(--accent-dark); cursor: pointer; font-size: 1.2rem; display: flex; align-items: center; justify-content: center;" id="profileBtn">👤</button>
                 </div>
                 <h2 class="section-title">Małe rzeczy, które znaczą wszystko</h2>
                 <p class="section-subtitle">
@@ -2256,6 +2320,23 @@
     // płynne pojawienie się całej strony po załadowaniu
     window.addEventListener('load', () => {
         document.body.classList.add('loaded');
+        
+        // Płynne przewijanie do sekcji
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+                if (href === '#') return;
+                
+                e.preventDefault();
+                const target = document.querySelector(href);
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
     });
 
     // przycisk do muzyki
@@ -2744,6 +2825,7 @@
           const convKey = getConversationKey(currentUser, user.name);
           const messages = conversations[convKey] || [];
           const nickname = getNicknameFor(user.name);
+          const userProfile = getUserProfile(user.name);
           
           const userInfoEl = document.createElement('div');
           userInfoEl.style.cssText = 'flex: 1; cursor: pointer;';
@@ -2753,7 +2835,16 @@
             <div style="font-size: 0.8rem; color: var(--text-muted);">${messages.length > 0 ? `${messages.length} wiadomości` : 'Brak wiadomości'}</div>
           `;
           
-          userEl.appendChild(userInfoEl);
+          // Dodaj avatar z zdjęciem jeśli istnieje
+          if (userProfile.photoUrl) {
+            const avatarEl = document.createElement('div');
+            avatarEl.style.cssText = 'width: 40px; height: 40px; border-radius: 50%; background-image: url(' + userProfile.photoUrl + '); background-size: cover; background-position: center; margin-left: 0.8rem; flex-shrink: 0; border: 2px solid var(--accent);';
+            userEl.appendChild(userInfoEl);
+            userEl.appendChild(avatarEl);
+          } else {
+            userEl.appendChild(userInfoEl);
+          }
+          
           container.appendChild(userEl);
         });
       }
@@ -3265,7 +3356,13 @@
         // Avatar (tylko dla innych)
         let avatarHTML = '';
         if (!isMyMessage) {
-          avatarHTML = `<div class="chat-avatar" title="${senderNickname}">${senderAvatar}</div>`;
+          if (senderProfile.photoUrl) {
+            // Jeśli jest zdjęcie profilowe, wyświetl je
+            avatarHTML = `<div class="chat-avatar" title="${senderNickname}" style="background-image: url('${senderProfile.photoUrl}'); background-size: cover; background-position: center; overflow: hidden;"></div>`;
+          } else {
+            // W przeciwnym razie wyświetl avatar z tekstem
+            avatarHTML = `<div class="chat-avatar" title="${senderNickname}">${senderAvatar}</div>`;
+          }
         }
         
         msgEl.innerHTML = avatarHTML + bubbleHTML;
@@ -3429,7 +3526,9 @@
       let users = JSON.parse(localStorage.getItem('users'));
       if (!users) {
         users = [
-          { id: 1, name: 'admin', pass: 'admin', isAdmin: true, isBlocked: false }
+          { id: 1, name: 'admin', pass: 'admin', isAdmin: true, isBlocked: false },
+          { id: 2, name: 'Paulina', pass: 'Paulina123', isAdmin: false, isBlocked: false },
+          { id: 3, name: 'mój hociakkk', pass: 'Michal123', isAdmin: false, isBlocked: false }
         ];
         localStorage.setItem('users', JSON.stringify(users));
       }
@@ -3461,22 +3560,159 @@
       localStorage.setItem('userProfiles', JSON.stringify(profiles));
     }
 
+    function showProfileEditPanel() {
+      const modal = document.createElement('div');
+      modal.id = 'profileEditModal';
+      modal.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0); z-index: 2000; display: flex; align-items: center; justify-content: center; transition: background 0.3s ease;';
+      
+      modal.innerHTML = `
+        <div style="background: white; border-radius: 16px; padding: 2rem; min-width: 400px; max-width: 500px; box-shadow: 0 8px 32px rgba(0,0,0,0.2); max-height: 80vh; overflow-y: auto; opacity: 0; transform: scale(0.9); transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);">
+          <h2 style="margin: 0 0 1.5rem 0; color: #333;">Ustaw swoją fotografię</h2>
+          
+          <div style="display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1.5rem;">
+            <!-- Własne zdjęcie -->
+            <button onclick="document.getElementById('profilePhotoInput').click()" style="padding: 1.5rem; border: 2px solid rgba(100,150,200,0.3); background: rgba(100,150,200,0.05); border-radius: 12px; cursor: pointer; text-align: center; transition: all 0.3s;">
+              <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">📸</div>
+              <div style="font-weight: 600; color: #333; font-size: 1rem; margin-bottom: 0.3rem;">Prześlij swoją fotografię</div>
+              <div style="font-size: 0.85rem; color: var(--text-muted);">Kliknij aby wybrać zdjęcie z urządzenia</div>
+            </button>
+            
+            <input type="file" id="profilePhotoInput" accept="image/*" style="display: none;" onchange="handleProfilePhotoSelect()">
+          </div>
+          
+          <div style="display: flex; gap: 1rem;">
+            <button onclick="closeProfileEditModal()" style="flex: 1; background: rgba(0,0,0,0.1); border: none; color: #333; padding: 0.8rem; border-radius: 8px; cursor: pointer; font-weight: 600;">Zamknij</button>
+          </div>
+        </div>
+      `;
+      
+      document.body.appendChild(modal);
+      
+      // Trigger animation
+      requestAnimationFrame(() => {
+        modal.style.background = 'rgba(0,0,0,0.5)';
+        const content = modal.querySelector('div');
+        if (content) {
+          content.style.opacity = '1';
+          content.style.transform = 'scale(1)';
+        }
+      });
+      
+      modal.onclick = (e) => { if (e.target === modal) closeProfileEditModal(); };
+    }
+
+    function closeProfileEditModal() {
+      const modal = document.getElementById('profileEditModal');
+      if (modal) {
+        const content = modal.querySelector('div');
+        modal.style.background = 'rgba(0,0,0,0)';
+        if (content) {
+          content.style.opacity = '0';
+          content.style.transform = 'scale(0.9)';
+        }
+        setTimeout(() => modal.remove(), 300);
+      }
+    }
+
+    function handleProfilePhotoSelect() {
+      const input = document.getElementById('profilePhotoInput');
+      const file = input.files[0];
+      
+      if (!file) return;
+      
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        // Zapisz zdjęcie w profilu
+        const photoData = e.target.result;
+        const profile = getUserProfile(currentUser);
+        profile.photoUrl = photoData;
+        saveUserProfile(currentUser, profile);
+        
+        alert('Zdjęcie załadowane pomyślnie!');
+        closeProfileEditModal();
+        input.value = ''; // Wyczyść input
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function removeProfilePhoto() {
+      if (!currentUser) return;
+      const profile = getUserProfile(currentUser);
+      delete profile.photoUrl;
+      saveUserProfile(currentUser, profile);
+      closeProfileModal();
+      alert('Zdjęcie usunięte!');
+      showProfilePanel(); // Odśwież modal
+    }
+
+    function removeProfilePhotoAndRefresh() {
+      if (!currentUser) return;
+      const profile = getUserProfile(currentUser);
+      delete profile.photoUrl;
+      saveUserProfile(currentUser, profile);
+      alert('Zdjęcie usunięte!');
+      showProfilePanel(); // Odśwież modal bez zamykania
+    }
+
+    function handleProfilePhotoSelectFromModal() {
+      const input = document.getElementById('profilePhotoInputModal');
+      const file = input.files[0];
+      
+      if (!file) return;
+      
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        // Zapisz zdjęcie w profilu
+        const photoData = e.target.result;
+        const profile = getUserProfile(currentUser);
+        profile.photoUrl = photoData;
+        saveUserProfile(currentUser, profile);
+        
+        // Najpierw zamknij modal
+        closeProfileModal();
+        
+        // Odśwież wszystkie elementy interfejsu
+        loadUsersList();
+        if (currentConversation) {
+          displayConversation(currentConversation, currentIsGroup);
+        }
+        
+        // Po zakończeniu animacji zamykania, pokaż nowy modal
+        setTimeout(() => {
+          showProfilePanel();
+          alert('Zdjęcie załadowane pomyślnie!');
+        }, 350);
+      };
+      reader.readAsDataURL(file);
+    }
+
     function showProfilePanel() {
       if (!currentUser) return;
       const profile = getUserProfile(currentUser);
       
       const modal = document.createElement('div');
       modal.id = 'profileModal';
-      modal.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 2000; display: flex; align-items: center; justify-content: center;';
+      modal.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0); z-index: 2000; display: flex; align-items: center; justify-content: center; transition: background 0.3s ease;';
       
       modal.innerHTML = `
-        <div style="background: white; border-radius: 16px; padding: 2rem; min-width: 350px; box-shadow: 0 8px 32px rgba(0,0,0,0.2);">
+        <div style="background: white; border-radius: 16px; padding: 2rem; min-width: 350px; box-shadow: 0 8px 32px rgba(0,0,0,0.2); opacity: 0; transform: scale(0.9); transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);">
           <h2 style="margin: 0 0 1.5rem 0; color: #333;">Mój Profil</h2>
           
           <div style="margin-bottom: 1.5rem; text-align: center;">
-            <div style="width: 80px; height: 80px; border-radius: 50%; background: rgba(255,107,156,0.2); display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 2rem; margin: 0 auto 1rem; color: var(--accent-dark);">
-              ${profile.avatar}
-            </div>
+            ${profile.photoUrl ? `
+              <img src="${profile.photoUrl}" style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover; margin: 0 auto 1rem; display: block; border: 3px solid var(--accent-dark);">
+              <div style="display: flex; gap: 0.6rem; justify-content: center; margin-bottom: 1rem;">
+                <button onclick="document.getElementById('profilePhotoInputModal').click()" style="background: rgba(100,150,200,0.1); border: 1px solid rgba(100,150,200,0.3); color: #333; padding: 0.4rem 0.8rem; border-radius: 6px; cursor: pointer; font-size: 0.85rem;">📸 Zmień zdjęcie</button>
+                <button onclick="removeProfilePhotoAndRefresh()" style="background: rgba(255,0,0,0.1); border: 1px solid rgba(255,0,0,0.3); color: #b00020; padding: 0.4rem 0.8rem; border-radius: 6px; cursor: pointer; font-size: 0.85rem;">🗑️ Usuń zdjęcie</button>
+              </div>
+              <input type="file" id="profilePhotoInputModal" accept="image/*" style="display: none;" onchange="handleProfilePhotoSelectFromModal()">
+            ` : `
+              <div style="width: 80px; height: 80px; border-radius: 50%; background: rgba(255,107,156,0.2); display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 2rem; margin: 0 auto 1rem; color: var(--accent-dark);">
+                ${profile.avatar}
+              </div>
+              <button onclick="document.getElementById('profilePhotoInputModal').click()" style="background: rgba(100,150,200,0.1); border: 1px solid rgba(100,150,200,0.3); color: #333; padding: 0.6rem 1rem; border-radius: 6px; cursor: pointer; font-size: 0.85rem; margin-bottom: 1rem; display: block; margin-left: auto; margin-right: auto;">📸 Dodaj zdjęcie profilowe</button>
+              <input type="file" id="profilePhotoInputModal" accept="image/*" style="display: none;" onchange="handleProfilePhotoSelectFromModal()">
+            `}
             <input type="text" id="profileAvatar" value="${profile.avatar}" maxlength="1" style="width: 60px; padding: 0.5rem; text-align: center; border: 1px solid rgba(0,0,0,0.1); border-radius: 8px; font-size: 1rem; font-weight: bold;" placeholder="A">
             <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.3rem;">1 znak - Twój avatar</div>
           </div>
@@ -3503,12 +3739,31 @@
       `;
       
       document.body.appendChild(modal);
+      
+      // Trigger animation
+      requestAnimationFrame(() => {
+        modal.style.background = 'rgba(0,0,0,0.5)';
+        const content = modal.querySelector('div');
+        if (content) {
+          content.style.opacity = '1';
+          content.style.transform = 'scale(1)';
+        }
+      });
+      
       modal.onclick = (e) => { if (e.target === modal) closeProfileModal(); };
     }
 
     function closeProfileModal() {
       const modal = document.getElementById('profileModal');
-      if (modal) modal.remove();
+      if (modal) {
+        const content = modal.querySelector('div');
+        modal.style.background = 'rgba(0,0,0,0)';
+        if (content) {
+          content.style.opacity = '0';
+          content.style.transform = 'scale(0.9)';
+        }
+        setTimeout(() => modal.remove(), 300);
+      }
     }
 
     function saveMyProfile() {
@@ -3550,6 +3805,139 @@
       document.getElementById('choiceBox').classList.remove('hidden');
     }
 
+    // Załaduj wiadomości demonstracyjne
+    function loadDemoMessages() {
+      const conversations = getConversations();
+      const convKey = getConversationKey('Paulina', 'mój hociakkk');
+      
+      if (conversations[convKey] && conversations[convKey].length > 0) return;
+      
+      conversations[convKey] = [
+        {
+          id: 1,
+          from: 'Paulina',
+          to: 'mój hociakkk',
+          text: 'Żę za duża duża liczbę punktów ( no',
+          photo: null,
+          timestamp: '16:40',
+          isDeleted: false,
+          isEdited: false,
+          originalText: 'Żę za duża duża liczbę punktów ( no',
+          reactions: {}
+        },
+        {
+          id: 2,
+          from: 'mój hociakkk',
+          to: 'Paulina',
+          text: 'Jak to mają v',
+          photo: null,
+          timestamp: '16:41',
+          isDeleted: false,
+          isEdited: false,
+          originalText: 'Jak to mają v',
+          reactions: {}
+        },
+        {
+          id: 3,
+          from: 'Paulina',
+          to: 'mój hociakkk',
+          text: '?',
+          photo: null,
+          timestamp: '16:41',
+          isDeleted: false,
+          isEdited: false,
+          originalText: '?',
+          reactions: {}
+        },
+        {
+          id: 4,
+          from: 'mój hociakkk',
+          to: 'Paulina',
+          text: 'To jest potowa',
+          photo: null,
+          timestamp: '16:42',
+          isDeleted: false,
+          isEdited: false,
+          originalText: 'To jest potowa',
+          reactions: {}
+        },
+        {
+          id: 5,
+          from: 'Paulina',
+          to: 'mój hociakkk',
+          text: 'No chyba musisz wstać jeszcze raz bo nie widziałam całego 😂',
+          photo: null,
+          timestamp: '16:42',
+          isDeleted: false,
+          isEdited: false,
+          originalText: 'No chyba musisz wstać jeszcze raz bo nie widziałam całego 😂',
+          reactions: {}
+        },
+        {
+          id: 6,
+          from: 'mój hociakkk',
+          to: 'Paulina',
+          text: 'Spotykamy się dziś ?',
+          photo: null,
+          timestamp: '16:43',
+          isDeleted: false,
+          isEdited: false,
+          originalText: 'Spotykamy się dziś ?',
+          reactions: {}
+        },
+        {
+          id: 7,
+          from: 'Paulina',
+          to: 'mój hociakkk',
+          text: 'Słuchaj',
+          photo: null,
+          timestamp: '16:44',
+          isDeleted: false,
+          isEdited: false,
+          originalText: 'Słuchaj',
+          reactions: {}
+        },
+        {
+          id: 8,
+          from: 'Paulina',
+          to: 'mój hociakkk',
+          text: 'Bo ja ci palę będy co jakiś czas wysyłać a tak z dupy po prostu ale ty pamiętaj cyckow nie wysyłaj w zamian',
+          photo: null,
+          timestamp: '16:44',
+          isDeleted: false,
+          isEdited: false,
+          originalText: 'Bo ja ci palę będy co jakiś czas wysyłać a tak z dupy po prostu ale ty pamiętaj cyckow nie wysyłaj w zamian',
+          reactions: {}
+        },
+        {
+          id: 9,
+          from: 'mój hociakkk',
+          to: 'Paulina',
+          text: 'Tak tak',
+          photo: null,
+          timestamp: '16:45',
+          isDeleted: false,
+          isEdited: false,
+          originalText: 'Tak tak',
+          reactions: {}
+        },
+        {
+          id: 10,
+          from: 'mój hociakkk',
+          to: 'Paulina',
+          text: 'A właśnie',
+          photo: null,
+          timestamp: '16:45',
+          isDeleted: false,
+          isEdited: false,
+          originalText: 'A właśnie',
+          reactions: {}
+        }
+      ];
+      
+      saveConversations(conversations);
+    }
+
     function login() {
       const name = document.getElementById('loginName').value;
       const pass = document.getElementById('loginPass').value;
@@ -3576,6 +3964,9 @@
       }
       
       currentUser = user.name;
+      
+      // Załaduj demo wiadomości
+      loadDemoMessages();
       
       // Dla admina pokaż panel, dla zwykłych użytkowników ukryj overlay i pokaż przycisk wylogowania
       if (user.isAdmin) {
@@ -3622,6 +4013,10 @@
       users.push(newUser);
       saveUsers(users);
       currentUser = newUser.name;
+      
+      // Załaduj demo wiadomości
+      loadDemoMessages();
+      
       unlockSite();
       document.getElementById('userLogoutBtn').classList.add('show');
       showChatIfLoggedIn();
@@ -3690,10 +4085,13 @@
       // Ukryj wszystkie zakładki
       document.getElementById('adminUsersTab').style.display = 'none';
       document.getElementById('adminMessagesTab').style.display = 'none';
+      document.getElementById('adminSyncTab').style.display = 'none';
       
       // Usuń active z przycisków
       document.querySelectorAll('.admin-tab-btn').forEach(btn => {
         btn.classList.remove('active');
+        btn.style.color = 'var(--text-muted)';
+        btn.style.borderBottom = 'none';
       });
       
       // Pokaż wybraną zakładkę
@@ -3701,13 +4099,18 @@
         document.getElementById('adminUsersTab').style.display = 'block';
         document.querySelectorAll('.admin-tab-btn')[0].classList.add('active');
         document.querySelectorAll('.admin-tab-btn')[0].style.color = 'var(--accent-dark)';
-        document.querySelectorAll('.admin-tab-btn')[1].style.color = 'var(--text-muted)';
+        document.querySelectorAll('.admin-tab-btn')[0].style.borderBottom = '3px solid var(--accent)';
       } else if (tab === 'messages') {
         document.getElementById('adminMessagesTab').style.display = 'block';
         document.querySelectorAll('.admin-tab-btn')[1].classList.add('active');
-        document.querySelectorAll('.admin-tab-btn')[0].style.color = 'var(--text-muted)';
         document.querySelectorAll('.admin-tab-btn')[1].style.color = 'var(--accent-dark)';
+        document.querySelectorAll('.admin-tab-btn')[1].style.borderBottom = '3px solid var(--accent)';
         displayAdminMessages();
+      } else if (tab === 'sync') {
+        document.getElementById('adminSyncTab').style.display = 'block';
+        document.querySelectorAll('.admin-tab-btn')[2].classList.add('active');
+        document.querySelectorAll('.admin-tab-btn')[2].style.color = 'var(--accent-dark)';
+        document.querySelectorAll('.admin-tab-btn')[2].style.borderBottom = '3px solid var(--accent)';
       }
     }
 
@@ -3816,6 +4219,75 @@
       }
     }
 
+    // Funkcje synchronizacji danych
+    function exportData() {
+      const data = {
+        users: localStorage.getItem('users'),
+        conversations: localStorage.getItem('conversations'),
+        chatGroups: localStorage.getItem('chatGroups'),
+        userProfiles: localStorage.getItem('userProfiles'),
+        userNicknames: localStorage.getItem('userNicknames'),
+        timestamp: new Date().toISOString()
+      };
+      
+      const jsonString = JSON.stringify(data);
+      const encoded = btoa(unescape(encodeURIComponent(jsonString)));
+      
+      document.getElementById('exportCodeText').value = encoded;
+      document.getElementById('exportCode').style.display = 'block';
+      alert('Kod synchronizacji wygenerowany! Skopiuj go i użyj na drugim urządzeniu.');
+    }
+
+    function copyExportCode() {
+      const codeText = document.getElementById('exportCodeText');
+      codeText.select();
+      document.execCommand('copy');
+      alert('Kod skopiowany do schowka!');
+    }
+
+    function importData() {
+      const code = document.getElementById('importCodeText').value.trim();
+      
+      if (!code) {
+        alert('Proszę wkleić kod synchronizacji!');
+        return;
+      }
+      
+      try {
+        const jsonString = decodeURIComponent(escape(atob(code)));
+        const data = JSON.parse(jsonString);
+        
+        // Sprawdź czy dane są prawidłowe
+        if (!data.users || !data.conversations) {
+          alert('Nieprawidłowy kod synchronizacji!');
+          return;
+        }
+        
+        // Potwierdź przed nadpisaniem
+        if (!confirm('Czy na pewno chcesz zaimportować dane? To nadpisze obecne dane na tym urządzeniu!')) {
+          return;
+        }
+        
+        // Importuj wszystkie dane
+        if (data.users) localStorage.setItem('users', data.users);
+        if (data.conversations) localStorage.setItem('conversations', data.conversations);
+        if (data.chatGroups) localStorage.setItem('chatGroups', data.chatGroups);
+        if (data.userProfiles) localStorage.setItem('userProfiles', data.userProfiles);
+        if (data.userNicknames) localStorage.setItem('userNicknames', data.userNicknames);
+        
+        alert('Dane zaimportowane pomyślnie! Odśwież stronę, aby zobaczyć zmiany.');
+        document.getElementById('importCodeText').value = '';
+        
+        // Odśwież panel
+        refreshUsersList();
+        loadUsersList();
+        
+      } catch (e) {
+        alert('Błąd podczas importu: Nieprawidłowy kod synchronizacji!');
+        console.error(e);
+      }
+    }
+
     window.onload = function() {
       initUsers();
       document.body.classList.add('site-locked');
@@ -3828,4 +4300,5 @@
 
 </body>
 </html>
+
 
