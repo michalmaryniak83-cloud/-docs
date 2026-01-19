@@ -3245,6 +3245,12 @@
             // zapamiętaj pozycję scrolla
             savedScrollY = window.scrollY || document.documentElement.scrollTop || 0;
 
+            // Pokaż przyciski (zamknij i pobierz) dla zdjęć
+            const buttonsContainer = lightbox.querySelector('div[style*="position: absolute"]');
+            if (buttonsContainer) {
+                buttonsContainer.style.display = 'flex';
+            }
+
             // kompensacja szerokości paska przewijania, żeby nie powodować przesunięcia layoutu
             const scrollBarWidth = window.innerWidth - document.documentElement.clientWidth;
             if (scrollBarWidth > 0) {
@@ -3353,6 +3359,12 @@
             // Zapisz pozycję scrolla
             savedScrollY = window.scrollY || document.documentElement.scrollTop;
             
+            // Ukryj przyciski (zamknij i pobierz) dla kart
+            const buttonsContainer = lightbox.querySelector('div[style*="position: absolute"]');
+            if (buttonsContainer) {
+                buttonsContainer.style.display = 'none';
+            }
+            
             // Kompensacja szerokości paska przewijania
             const scrollBarWidth = window.innerWidth - document.documentElement.clientWidth;
             if (scrollBarWidth > 0) {
@@ -3395,6 +3407,12 @@
         function openTimeline(title, text, meta) {
             // Zapisz pozycję scrolla
             savedScrollY = window.scrollY || document.documentElement.scrollTop;
+            
+            // Ukryj przyciski (zamknij i pobierz) dla timeline
+            const buttonsContainer = lightbox.querySelector('div[style*="position: absolute"]');
+            if (buttonsContainer) {
+                buttonsContainer.style.display = 'none';
+            }
             
             // Kompensacja szerokości paska przewijania
             const scrollBarWidth = window.innerWidth - document.documentElement.clientWidth;
