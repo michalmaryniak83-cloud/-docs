@@ -553,6 +553,7 @@
             /* płynne powiększenie i poprawa wydajności */
             transition: transform 340ms cubic-bezier(.22,.9,.31,1), box-shadow 340ms cubic-bezier(.22,.9,.31,1);
             will-change: transform, box-shadow;
+            cursor: pointer;
         }
 
         .timeline-content strong {
@@ -768,6 +769,7 @@
             /* płynne powiększanie na hover oraz poprawa wydajności */
             transition: transform 340ms cubic-bezier(.22,.9,.31,1), box-shadow 340ms cubic-bezier(.22,.9,.31,1);
             will-change: transform, box-shadow;
+            cursor: pointer;
         }
 
         /* efekt tylko na urządzeniach, które obsługują hover (unikać niechcianych efektów na dotykowych) */
@@ -954,35 +956,6 @@
         }
 
         /* Chat styles */
-        .chat-toggle-btn {
-            position: fixed;
-            right: 20rem;
-            bottom: 1.4rem;
-            z-index: 20;
-            border-radius: 999px;
-            border: none;
-            background: rgba(0,0,0,0.72);
-            color: #fff;
-            padding: 0.6rem 1.1rem;
-            font-size: 0.86rem;
-            display: flex;
-            align-items: center;
-            gap: 0.4rem;
-            cursor: pointer;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 12px 30px rgba(0,0,0,0.45);
-            transition: transform var(--transition-fast), box-shadow var(--transition-fast), background var(--transition-fast);
-        }
-
-        .chat-toggle-btn:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 16px 40px rgba(0,0,0,0.6);
-            background: rgba(0,0,0,0.85);
-        }
-
-        .chat-toggle-btn.hidden {
-            display: none;
-        }
 
         .chat-panel {
             position: fixed;
@@ -1657,6 +1630,99 @@
         backdrop-filter: blur(6px);
     }
 
+    .lightbox .card-lightbox-content {
+        background: var(--card-bg);
+        border-radius: var(--radius-large);
+        padding: 2.5rem 2rem;
+        max-width: 70vw;
+        max-height: 80vh;
+        width: auto;
+        box-shadow: 0 28px 80px rgba(0,0,0,0.6);
+        transform: scale(0.95);
+        transition: transform 0.28s ease, opacity 0.28s ease;
+        opacity: 0;
+        cursor: default;
+        overflow-y: auto;
+        display: none !important;
+        gap: 1rem;
+        align-items: flex-start;
+    }
+
+    .lightbox .timeline-lightbox-content {
+        background: var(--card-bg);
+        border-radius: var(--radius-large);
+        padding: 2.5rem 2.5rem;
+        max-width: 70vw;
+        max-height: 80vh;
+        width: auto;
+        box-shadow: 0 28px 80px rgba(0,0,0,0.6);
+        transform: scale(0.95);
+        transition: transform 0.28s ease, opacity 0.28s ease;
+        opacity: 0;
+        cursor: default;
+        overflow-y: auto;
+        display: none !important;
+        text-align: center;
+    }
+
+    .lightbox.open .card-lightbox-content {
+        opacity: 1;
+        transform: scale(1);
+        display: flex !important;
+    }
+
+    .lightbox.open .timeline-lightbox-content {
+        opacity: 1;
+        transform: scale(1);
+        display: block !important;
+    }
+
+    .lightbox .timeline-lightbox-content strong {
+        font-size: 1.8rem;
+        color: var(--text-main);
+        display: block;
+        margin-bottom: 1.5rem;
+    }
+
+    .lightbox .timeline-lightbox-content .timeline-text {
+        font-size: 1.2rem;
+        color: var(--text-muted);
+        line-height: 1.8;
+    }
+
+    .lightbox .timeline-lightbox-content .timeline-meta-large {
+        font-size: 1rem;
+        color: var(--accent-dark);
+        margin-top: 1.5rem;
+        font-weight: 500;
+    }
+
+    .lightbox .card-lightbox-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 999px;
+        background: radial-gradient(circle at 30% 20%, #ffe6f7, var(--accent));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        font-size: 1.8rem;
+        flex-shrink: 0;
+        box-shadow: 0 8px 20px rgba(255,107,156,0.5);
+    }
+
+    .lightbox .card-lightbox-text h3 {
+        font-size: 1.8rem;
+        margin-bottom: 1rem;
+        color: var(--text-main);
+    }
+
+    .lightbox .card-lightbox-text p {
+        font-size: 1.2rem;
+        color: var(--text-muted);
+        line-height: 1.8;
+    }
+
     .lightbox.open {
         opacity: 1;
         visibility: visible;
@@ -2119,10 +2185,6 @@
 
 <button id="userLogoutBtn" class="user-logout-btn" onclick="logout()">
     Wyloguj
-</button>
-
-<button id="chatToggleBtn" class="chat-toggle-btn" onclick="toggleChat()">
-    💬 Czat
 </button>
 
 <button id="installAppBtn" class="install-app-btn">
@@ -3042,7 +3104,65 @@
         fadeEls.forEach(el => el.classList.add('visible'));
     }
 
+    // Obsługa klawisza Enter w formularzach logowania i rejestracji
+    (function() {
+        // Formularz logowania
+        const loginName = document.getElementById('loginName');
+        const loginPass = document.getElementById('loginPass');
+        
+        if (loginName) {
+            loginName.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    login();
+                }
+            });
+        }
+        
+        if (loginPass) {
+            loginPass.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    login();
+                }
+            });
+        }
+        
+        // Formularz rejestracji
+        const regName = document.getElementById('regName');
+        const regPass = document.getElementById('regPass');
+        const regPin = document.getElementById('regPin');
+        
+        if (regName) {
+            regName.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    register();
+                }
+            });
+        }
+        
+        if (regPass) {
+            regPass.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    register();
+                }
+            });
+        }
+        
+        if (regPin) {
+            regPin.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    register();
+                }
+            });
+        }
+    })();
+
     // Kliknięcie w logotyp przewija stronę na samą górę (płynnie) i obsługa klawiatury
+    // Długie przytrzymanie otwiera czat
     (function() {
         const logo = document.querySelector('.logo');
         if (!logo) return;
@@ -3050,9 +3170,61 @@
         logo.style.cursor = 'pointer';
         // dostępność klawiatury
         if (!logo.hasAttribute('tabindex')) logo.setAttribute('tabindex', '0');
-        logo.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+        
+        let pressTimer = null;
+        let isLongPress = false;
+        
+        // Obsługa myszy
+        logo.addEventListener('mousedown', (e) => {
+            isLongPress = false;
+            pressTimer = setTimeout(() => {
+                isLongPress = true;
+                toggleChat(); // Otwórz czat po długim naciśnięciu
+            }, 500); // 500ms = 0.5 sekundy przytrzymania
+        });
+        
+        logo.addEventListener('mouseup', (e) => {
+            clearTimeout(pressTimer);
+            if (!isLongPress) {
+                // Krótkie kliknięcie - przewiń do góry
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        });
+        
+        logo.addEventListener('mouseleave', () => {
+            clearTimeout(pressTimer);
+        });
+        
+        // Obsługa dotyku (mobile)
+        logo.addEventListener('touchstart', (e) => {
+            isLongPress = false;
+            pressTimer = setTimeout(() => {
+                isLongPress = true;
+                toggleChat();
+            }, 500);
+        });
+        
+        logo.addEventListener('touchend', (e) => {
+            clearTimeout(pressTimer);
+            if (!isLongPress) {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        });
+        
+        logo.addEventListener('touchcancel', () => {
+            clearTimeout(pressTimer);
+        });
+        
+        // Obsługa klawiatury - Enter przewija, Shift+Enter otwiera czat
         logo.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter' || e.key === ' ') {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                if (e.shiftKey) {
+                    toggleChat();
+                } else {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+            } else if (e.key === ' ') {
                 e.preventDefault();
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             }
@@ -3105,10 +3277,21 @@
                 document.documentElement.style.overflow = '';
                 document.documentElement.style.paddingRight = '';
 
-                // Przywróć scroll do zapisanej pozycji (na wszelki wypadek)
+                // Przywróć scroll do zapisanej pozycji
                 window.scrollTo(0, savedScrollY);
 
+                // Wyczyść zawartość
                 imgEl.src = '';
+                imgEl.style.display = 'block';
+                const cardContent = lightbox.querySelector('.card-lightbox-content');
+                if (cardContent) {
+                    // Nie usuwamy elementu, tylko pozwalamy CSS schować go przez display: none
+                    cardContent.innerHTML = '';
+                }
+                const timelineContent = lightbox.querySelector('.timeline-lightbox-content');
+                if (timelineContent) {
+                    timelineContent.innerHTML = '';
+                }
 
                 // Przywróć wcześniejsze zachowanie przewijania (jeśli było ustawione)
                 setTimeout(() => { html.style.scrollBehavior = prevScrollBehavior; }, 60);
@@ -3129,15 +3312,137 @@
         // Click-to-open lightbox: otwieramy na wszystkich urządzeniach (desktop + touch)
         document.addEventListener('click', (e) => {
             const z = e.target.closest && e.target.closest('img.zoomable');
-            if (!z) return;
-            open(z.src, z.alt);
+            if (z) {
+                open(z.src, z.alt);
+                return;
+            }
+            
+            // Obsługa kliknięcia w reason-card
+            const card = e.target.closest && e.target.closest('.reason-card');
+            if (card) {
+                const icon = card.querySelector('.reason-icon');
+                const title = card.querySelector('.reason-text h3');
+                const text = card.querySelector('.reason-text p');
+                
+                if (icon && title && text) {
+                    openCard(icon.innerHTML, title.innerHTML, text.innerHTML);
+                }
+                return;
+            }
+            
+            // Obsługa kliknięcia w timeline-content
+            const timelineContent = e.target.closest && e.target.closest('.timeline-content');
+            if (timelineContent) {
+                const strong = timelineContent.querySelector('strong');
+                const timelineItem = timelineContent.closest('.timeline-item');
+                const meta = timelineItem ? timelineItem.querySelector('.timeline-meta') : null;
+                
+                // Pobierz tekst bez elementu strong
+                const fullText = timelineContent.innerHTML;
+                const strongText = strong ? strong.outerHTML : '';
+                const contentText = fullText.replace(strongText, '').replace(/<br>/gi, '').trim();
+                
+                if (strong) {
+                    openTimeline(strong.innerHTML, contentText, meta ? meta.innerHTML : '');
+                }
+            }
         });
+
+        // Funkcja do otwierania karty w lightboxie
+        function openCard(icon, title, text) {
+            // Zapisz pozycję scrolla
+            savedScrollY = window.scrollY || document.documentElement.scrollTop;
+            
+            // Kompensacja szerokości paska przewijania
+            const scrollBarWidth = window.innerWidth - document.documentElement.clientWidth;
+            if (scrollBarWidth > 0) {
+                document.documentElement.style.paddingRight = `${scrollBarWidth}px`;
+            }
+            
+            // Zablokuj przewijanie
+            document.documentElement.style.overflow = 'hidden';
+            
+            // Ukryj obrazek
+            imgEl.style.display = 'none';
+            
+            // Ukryj timeline content jeśli istnieje
+            const timelineContent = lightbox.querySelector('.timeline-lightbox-content');
+            if (timelineContent) {
+                timelineContent.style.display = 'none';
+            }
+            
+            // Tworzymy kontener dla karty
+            let cardContent = lightbox.querySelector('.card-lightbox-content');
+            if (!cardContent) {
+                cardContent = document.createElement('div');
+                cardContent.className = 'card-lightbox-content';
+                lightbox.appendChild(cardContent);
+            }
+            
+            cardContent.innerHTML = `
+                <div class="card-lightbox-icon">${icon}</div>
+                <div class="card-lightbox-text">
+                    <h3>${title}</h3>
+                    <p>${text}</p>
+                </div>
+            `;
+            
+            // Otwórz lightbox
+            lightbox.classList.add('open');
+        }
+
+        // Funkcja do otwierania timeline w lightboxie
+        function openTimeline(title, text, meta) {
+            // Zapisz pozycję scrolla
+            savedScrollY = window.scrollY || document.documentElement.scrollTop;
+            
+            // Kompensacja szerokości paska przewijania
+            const scrollBarWidth = window.innerWidth - document.documentElement.clientWidth;
+            if (scrollBarWidth > 0) {
+                document.documentElement.style.paddingRight = `${scrollBarWidth}px`;
+            }
+            
+            // Zablokuj przewijanie
+            document.documentElement.style.overflow = 'hidden';
+            
+            // Ukryj obrazek
+            imgEl.style.display = 'none';
+            
+            // Ukryj card content jeśli istnieje
+            const cardContent = lightbox.querySelector('.card-lightbox-content');
+            if (cardContent) {
+                cardContent.style.display = 'none';
+            }
+            
+            // Tworzymy kontener dla timeline
+            let timelineContent = lightbox.querySelector('.timeline-lightbox-content');
+            if (!timelineContent) {
+                timelineContent = document.createElement('div');
+                timelineContent.className = 'timeline-lightbox-content';
+                lightbox.appendChild(timelineContent);
+            }
+            
+            timelineContent.innerHTML = `
+                <strong>${title}</strong>
+                <div class="timeline-text">${text}</div>
+                <div class="timeline-meta-large">${meta}</div>
+            `;
+            
+            // Otwórz lightbox
+            lightbox.classList.add('open');
+        }
 
         lightbox.addEventListener('click', (e) => {
-            if (e.target === lightbox || e.target === closeBtn) close();
+            if (e.target === lightbox || e.target === closeBtn) {
+                close();
+            }
         });
 
-        document.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
+        document.addEventListener('keydown', (e) => { 
+            if (e.key === 'Escape') {
+                close();
+            }
+        });
     })();
 
     // Nowy system logowania/rejestracji z PINem + panel admina
@@ -4083,9 +4388,8 @@
 
     function showChatIfLoggedIn() {
       if (currentUser) {
-        document.getElementById('chatToggleBtn').classList.remove('hidden');
+        // Czat dostępny przez długie przytrzymanie logo
       } else {
-        document.getElementById('chatToggleBtn').classList.add('hidden');
         document.getElementById('chatPanel').classList.remove('show');
       }
     }
@@ -4617,7 +4921,6 @@
       document.getElementById('adminPanel').classList.add('hidden');
       document.getElementById('userPanel').classList.add('hidden');
       document.getElementById('userLogoutBtn').classList.remove('show');
-      document.getElementById('chatToggleBtn').classList.add('hidden');
       document.getElementById('chatPanel').classList.remove('show');
       document.getElementById('loginName').value = '';
       document.getElementById('loginPass').value = '';
@@ -4890,7 +5193,7 @@
     // Rejestracja Service Worker
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
-        navigator.serviceWorker.register('sw.js')
+        navigator.serviceWorker.register('/sw.js')
           .then(reg => console.log('Service Worker zarejestrowany:', reg.scope))
           .catch(err => console.log('Błąd rejestracji Service Worker:', err));
       });
@@ -5051,5 +5354,3 @@
 
 </body>
 </html>
-
-
