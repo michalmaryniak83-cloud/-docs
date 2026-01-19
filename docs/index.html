@@ -4,6 +4,14 @@
     <title>Michał &amp; Paulina – Nasza historia</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Michał i Paulina – nasza historia, wspomnienia i wyznanie miłości.">
+    
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#ff6b9c">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="M&P Historia">
+    <link rel="manifest" href="manifest.json">
+    
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Great+Vibes&display=swap" rel="stylesheet">
 
     <style>
@@ -615,6 +623,131 @@
             pointer-events: none;
         }
 
+        .photos-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 2rem;
+            margin-top: 1.6rem;
+        }
+
+        .photo-card {
+            background: var(--card-bg);
+            border-radius: var(--radius-large);
+            padding: 1.6rem;
+            box-shadow: var(--shadow-soft);
+            text-align: center;
+            transition: transform 340ms cubic-bezier(.22,.9,.31,1), box-shadow 340ms cubic-bezier(.22,.9,.31,1);
+            will-change: transform, box-shadow;
+        }
+
+        @media (hover: hover) {
+            .photo-card:hover {
+                transform: translateY(-8px) scale(1.03);
+                box-shadow: 0 26px 56px rgba(0,0,0,0.18);
+            }
+        }
+
+        .photo-card h3 {
+            font-family: 'Great Vibes', cursive;
+            font-size: 2rem;
+            color: var(--accent-dark);
+            margin-bottom: 1rem;
+        }
+
+        .photo-frame {
+            border-radius: 18px;
+            overflow: hidden;
+            border: 3px solid rgba(255, 107, 156, 0.3);
+            box-shadow: 0 16px 40px rgba(0,0,0,0.14);
+            position: relative;
+            margin-bottom: 1rem;
+            cursor: pointer;
+        }
+
+        .photo-frame.placeholder {
+            background: linear-gradient(135deg, rgba(255,107,156,0.08), rgba(255,175,189,0.08));
+            border: 3px dashed rgba(255, 107, 156, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 350px;
+            transition: all 0.3s ease;
+        }
+
+        .photo-frame.placeholder:hover {
+            background: linear-gradient(135deg, rgba(255,107,156,0.15), rgba(255,175,189,0.15));
+            border-color: var(--accent);
+        }
+
+        .photo-placeholder-content {
+            text-align: center;
+            color: var(--accent-dark);
+        }
+
+        .photo-placeholder-content .icon {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+            opacity: 0.7;
+        }
+
+        .photo-placeholder-content .text {
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        .photo-frame img {
+            display: block;
+            width: 100%;
+            height: 350px;
+            object-fit: cover;
+            transition: transform 420ms cubic-bezier(.16,.84,.34,1);
+        }
+
+        @media (hover: hover) {
+            .photo-frame:hover img {
+                transform: scale(1.05);
+            }
+        }
+
+        .delete-photo-btn {
+            position: absolute;
+            top: 0.8rem;
+            right: 0.8rem;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(220, 53, 69, 0.9);
+            border: 2px solid white;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            z-index: 10;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+
+        .delete-photo-btn:hover {
+            background: rgba(200, 35, 51, 1);
+            transform: scale(1.1);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.4);
+        }
+
+        .photo-caption {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            font-style: italic;
+        }
+
+        @media (max-width: 768px) {
+            .photos-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+        }
+
         .reasons-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -863,19 +996,16 @@
             display: flex;
             flex-direction: column;
             transform: translateX(100%);
-            opacity: 0;
-            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease-out;
+            visibility: hidden;
+            transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1), visibility 0s linear 0.45s;
             pointer-events: none;
         }
 
-        .chat-panel:not(.hidden) {
+        .chat-panel.show {
             transform: translateX(0);
-            opacity: 1;
+            visibility: visible;
+            transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1), visibility 0s linear 0s;
             pointer-events: auto;
-        }
-
-        .chat-panel.hidden {
-            display: none;
         }
 
         .chat-header {
@@ -1188,11 +1318,164 @@
             border-bottom-color: var(--accent);
         }
 
+        .install-app-btn {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            z-index: 30;
+            padding: 0.7rem 1.2rem;
+            background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+            color: white;
+            border: none;
+            border-radius: 999px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            box-shadow: 0 8px 24px rgba(255,107,156,0.4);
+            display: none;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .install-app-btn.show {
+            display: flex;
+        }
+
+        .install-app-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 32px rgba(255,107,156,0.6);
+        }
+
+        .install-app-btn:active {
+            transform: translateY(0);
+        }
+
         .music-toggle {
             position: fixed;
             right: 1.4rem;
             bottom: 1.4rem;
             z-index: 20;
+        }
+
+        .music-toggle button {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .long-press-indicator {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 3px;
+            background: var(--accent);
+            width: 0;
+            transition: width 2s linear;
+            border-radius: 0 0 999px 999px;
+        }
+
+        .long-press-indicator.active {
+            width: 100%;
+        }
+
+        .volume-menu {
+            position: fixed;
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 1.2rem;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+            z-index: 21;
+            display: none;
+            min-width: 220px;
+        }
+
+        .volume-menu.show {
+            display: block;
+        }
+
+        .volume-menu h4 {
+            margin: 0 0 1rem 0;
+            font-size: 0.95rem;
+            color: var(--accent-dark);
+        }
+
+        .volume-control {
+            margin-bottom: 1rem;
+        }
+
+        .volume-control:last-child {
+            margin-bottom: 0;
+        }
+
+        .volume-label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+            font-size: 0.85rem;
+            color: var(--text-main);
+        }
+
+        .volume-value {
+            font-weight: 600;
+            color: var(--accent-dark);
+        }
+
+        .volume-slider {
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: rgba(255,107,156,0.2);
+            outline: none;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        .volume-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--accent);
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(255,107,156,0.4);
+            transition: all 0.2s ease;
+        }
+
+        .volume-slider::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+            box-shadow: 0 4px 12px rgba(255,107,156,0.6);
+        }
+
+        .volume-slider::-moz-range-thumb {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--accent);
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 2px 8px rgba(255,107,156,0.4);
+            transition: all 0.2s ease;
+        }
+
+        .volume-slider::-moz-range-thumb:hover {
+            transform: scale(1.2);
+            box-shadow: 0 4px 12px rgba(255,107,156,0.6);
+        }
+
+        .volume-slider::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: rgba(255,107,156,0.2);
+        }
+
+        .volume-slider::-moz-range-track {
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: rgba(255,107,156,0.2);
         }
 
         .music-toggle button {
@@ -1437,20 +1720,31 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        /* przyciemnij nieco mniej, ale zwiększ rozmycie tła */
-        background: rgba(0,0,0,0.94);
-        backdrop-filter: blur(9px);
-        transition: background .26s ease, backdrop-filter .26s ease;
+        background: rgba(0,0,0,0);
+        backdrop-filter: blur(0px);
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.35s ease, backdrop-filter 0.35s ease, background 0.35s ease, visibility 0s linear 0.35s;
         z-index: 100000;
         padding: 2vh 2vw;
+        pointer-events: none;
+    }
+
+    .pw-overlay.show {
+        background: rgba(0,0,0,0.94);
+        backdrop-filter: blur(9px);
+        opacity: 1;
+        visibility: visible;
+        transition: opacity 0.35s ease, backdrop-filter 0.35s ease, background 0.35s ease, visibility 0s linear 0s;
+        pointer-events: auto;
     }
 
     .hidden { display: none !important; }
 
-    .pw-overlay.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
-
     .pw-card {
         width: min(560px, 94%);
+        max-height: 90vh;
+        overflow-y: auto;
         background: var(--card-bg);
         border-radius: 16px;
         padding: 1.6rem 1.4rem;
@@ -1527,8 +1821,8 @@
     #adminPanel,
     #userPanel {
         opacity: 0;
-        transform: scale(0.95) translateY(10px);
-        transition: opacity 0.4s ease-out, transform 0.4s ease-out;
+        transform: translateY(40px) scale(0.95);
+        transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1), transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         pointer-events: none;
     }
 
@@ -1538,7 +1832,7 @@
     #adminPanel:not(.hidden),
     #userPanel:not(.hidden) {
         opacity: 1;
-        transform: scale(1) translateY(0);
+        transform: translateY(0) scale(1);
         pointer-events: auto;
     }
 
@@ -1565,7 +1859,7 @@
 <div class="background-overlay"></div>
 
     <!-- Nowy overlay logowania/rejestracji -->
-    <div id="auth-overlay" class="pw-overlay" role="dialog" aria-modal="true">
+    <div id="auth-overlay" class="pw-overlay show" role="dialog" aria-modal="true">
         <div class="pw-card" role="document">
             <div id="choiceBox">
                 <h2 style="margin-bottom: 2rem;">Wybierz opcję</h2>
@@ -1653,27 +1947,27 @@
 
                 <!-- Zakładka wiadomości -->
                 <div id="adminMessagesTab" style="display: none;">
-                    <div style="max-height: 400px; overflow-y: auto; margin-bottom: 1.5rem; border: 1px solid rgba(255,107,156,0.2); border-radius: 10px; padding: 1rem;">
+                    <div style="max-height: 300px; overflow-y: auto; margin-bottom: 1.5rem; border: 1px solid rgba(255,107,156,0.2); border-radius: 10px; padding: 1rem;">
                         <div id="adminChatMessages"></div>
                     </div>
                 </div>
 
                 <!-- Zakładka synchronizacji -->
                 <div id="adminSyncTab" style="display: none;">
-                    <div style="background: rgba(100,150,200,0.05); border: 1px solid rgba(100,150,200,0.2); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem;">
-                        <h3 style="margin: 0 0 1rem 0; color: #333; font-size: 1.1rem;">📤 Eksportuj dane</h3>
-                        <p style="margin-bottom: 1rem; color: var(--text-muted); font-size: 0.9rem;">Wygeneruj kod synchronizacji, aby przenieść dane na inne urządzenie:</p>
-                        <button onclick="exportData()" class="btn-primary" style="margin: 0 0 1rem 0; width: 100%;">Wygeneruj kod synchronizacji</button>
-                        <div id="exportCode" style="display: none; margin-top: 1rem;">
-                            <textarea id="exportCodeText" readonly style="width: 100%; height: 150px; padding: 0.8rem; border: 1px solid rgba(0,0,0,0.2); border-radius: 8px; font-family: monospace; font-size: 0.85rem; resize: none;"></textarea>
-                            <button onclick="copyExportCode()" style="margin-top: 0.5rem; width: 100%; padding: 0.6rem; background: rgba(76,175,80,0.1); border: 1px solid rgba(76,175,80,0.3); color: #4CAF50; border-radius: 8px; cursor: pointer; font-weight: 600;">📋 Skopiuj kod</button>
+                    <div style="background: rgba(100,150,200,0.05); border: 1px solid rgba(100,150,200,0.2); border-radius: 12px; padding: 1rem; margin-bottom: 1rem;">
+                        <h3 style="margin: 0 0 0.8rem 0; color: #333; font-size: 1rem;">📤 Eksportuj dane</h3>
+                        <p style="margin-bottom: 0.8rem; color: var(--text-muted); font-size: 0.85rem;">Wygeneruj kod synchronizacji, aby przenieść dane na inne urządzenie:</p>
+                        <button onclick="exportData()" class="btn-primary" style="margin: 0 0 0.8rem 0; width: 100%;">Wygeneruj kod synchronizacji</button>
+                        <div id="exportCode" style="display: none; margin-top: 0.8rem;">
+                            <textarea id="exportCodeText" readonly style="width: 100%; height: 100px; padding: 0.6rem; border: 1px solid rgba(0,0,0,0.2); border-radius: 8px; font-family: monospace; font-size: 0.8rem; resize: none;"></textarea>
+                            <button onclick="copyExportCode()" style="margin-top: 0.5rem; width: 100%; padding: 0.5rem; background: rgba(76,175,80,0.1); border: 1px solid rgba(76,175,80,0.3); color: #4CAF50; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 0.85rem;">📋 Skopiuj kod</button>
                         </div>
                     </div>
                     
-                    <div style="background: rgba(255,107,156,0.05); border: 1px solid rgba(255,107,156,0.2); border-radius: 12px; padding: 1.5rem;">
-                        <h3 style="margin: 0 0 1rem 0; color: #333; font-size: 1.1rem;">📥 Importuj dane</h3>
-                        <p style="margin-bottom: 1rem; color: var(--text-muted); font-size: 0.9rem;">Wklej kod synchronizacji z innego urządzenia:</p>
-                        <textarea id="importCodeText" placeholder="Wklej tutaj kod synchronizacji..." style="width: 100%; height: 150px; padding: 0.8rem; border: 1px solid rgba(0,0,0,0.2); border-radius: 8px; font-family: monospace; font-size: 0.85rem; resize: none; margin-bottom: 1rem;"></textarea>
+                    <div style="background: rgba(255,107,156,0.05); border: 1px solid rgba(255,107,156,0.2); border-radius: 12px; padding: 1rem; margin-bottom: 1rem;">
+                        <h3 style="margin: 0 0 0.8rem 0; color: #333; font-size: 1rem;">📥 Importuj dane</h3>
+                        <p style="margin-bottom: 0.8rem; color: var(--text-muted); font-size: 0.85rem;">Wklej kod synchronizacji z innego urządzenia:</p>
+                        <textarea id="importCodeText" placeholder="Wklej tutaj kod synchronizacji..." style="width: 100%; height: 100px; padding: 0.6rem; border: 1px solid rgba(0,0,0,0.2); border-radius: 8px; font-family: monospace; font-size: 0.8rem; resize: none; margin-bottom: 0.8rem;"></textarea>
                         <button onclick="importData()" class="btn-primary" style="margin: 0; width: 100%;">Zaimportuj dane</button>
                     </div>
                 </div>
@@ -1687,7 +1981,7 @@
     </div>
 
     <!-- Panel czatu -->
-    <div id="chatPanel" class="chat-panel hidden">
+    <div id="chatPanel" class="chat-panel">
         <div class="chat-header">
             <h3 id="chatTitle">💬 Czat</h3>
             <button class="chat-close" onclick="toggleChat()">✕</button>
@@ -1831,11 +2125,37 @@
     💬 Czat
 </button>
 
+<button id="installAppBtn" class="install-app-btn">
+    📱 Zainstaluj aplikację
+</button>
+
 <div class="music-toggle">
     <button id="music-toggle-btn">
         ♪ Włącz muzykę
-        <span class="music-toggle-status">(kliknij, jeśli chcesz)</span>
+        <span class="music-toggle-status">(przytrzymaj 2s - ustawienia)</span>
+        <div class="long-press-indicator" id="longPressIndicator"></div>
     </button>
+</div>
+
+<!-- Menu kontekstowe głośności -->
+<div id="volumeMenu" class="volume-menu">
+    <h4>🔊 Regulacja głośności</h4>
+    
+    <div class="volume-control">
+        <div class="volume-label">
+            <span>🎵 Muzyka w tle</span>
+            <span class="volume-value" id="musicVolumeValue">60%</span>
+        </div>
+        <input type="range" min="0" max="100" value="60" class="volume-slider" id="musicVolumeSlider">
+    </div>
+    
+    <div class="volume-control">
+        <div class="volume-label">
+            <span>🔊 Efekty dźwiękowe</span>
+            <span class="volume-value" id="sfxVolumeValue">70%</span>
+        </div>
+        <input type="range" min="0" max="100" value="70" class="volume-slider" id="sfxVolumeSlider">
+    </div>
 </div>
 
 <header>
@@ -1850,6 +2170,7 @@
                     <li><a href="#about">O nas</a></li>
                     <li><a href="#timeline">Nasza historia</a></li>
                     <li><a href="#gallery">Galeria</a></li>
+                    <li><a href="#photos">Zdjęcia z dnia</a></li>
                     <li><a href="#reasons">Za co Cię kocham</a></li>
                     <li><a href="#confession">Wyznanie</a></li>
                 </ul>
@@ -2087,6 +2408,51 @@
             </div>
         </div>
     </section>
+
+    <!-- ZDJĘCIA Z DANEGO DNIA -->
+    <section id="photos">
+        <div class="container">
+            <div class="section-header fade-on-scroll">
+                <div class="section-kicker">Nasz dzień</div>
+                <h2 class="section-title">Zdjęcia z danego dnia</h2>
+                <p class="section-subtitle">
+                    Kliknij w ramkę, aby dodać swoje zdjęcie z tego wyjątkowego dnia.
+                </p>
+            </div>
+
+            <div class="photos-grid fade-on-scroll">
+                <div class="photo-card">
+                    <h3>Michał</h3>
+                    <div class="photo-frame placeholder" id="michalPhotoFrame" onclick="openPhotoUpload('michal')">
+                        <div class="photo-placeholder-content">
+                            <div class="icon">📷</div>
+                            <div class="text">Kliknij, aby dodać zdjęcie</div>
+                        </div>
+                    </div>
+                    <p class="photo-caption" id="michalCaption">
+                        Mój kadr z tego dnia
+                    </p>
+                </div>
+
+                <div class="photo-card">
+                    <h3>Paulina</h3>
+                    <div class="photo-frame placeholder" id="paulinaPhotoFrame" onclick="openPhotoUpload('paulina')">
+                        <div class="photo-placeholder-content">
+                            <div class="icon">📷</div>
+                            <div class="text">Kliknij, aby dodać zdjęcie</div>
+                        </div>
+                    </div>
+                    <p class="photo-caption" id="paulinaCaption">
+                        Twój kadr z tego dnia
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Hidden file inputs -->
+    <input type="file" id="michalPhotoInput" accept="image/*" style="display: none;" onchange="handlePhotoUpload('michal', this)">
+    <input type="file" id="paulinaPhotoInput" accept="image/*" style="display: none;" onchange="handlePhotoUpload('paulina', this)">
 
     <!-- ZA CO JĄ KOCHASZ -->
     <section id="reasons">
@@ -2339,6 +2705,189 @@
         });
     });
 
+    // System efektów dźwiękowych
+    const SoundEffects = {
+        audioContext: null,
+        masterVolume: 0.7,
+        
+        init() {
+            if (!this.audioContext) {
+                this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            // Załaduj ustawienia z localStorage
+            const savedVolume = localStorage.getItem('sfxVolume');
+            if (savedVolume !== null) {
+                this.masterVolume = parseFloat(savedVolume);
+            }
+        },
+        
+        playClick() {
+            this.playTone(800, 0.05, 'sine', this.masterVolume * 0.3);
+        },
+        
+        playSuccess() {
+            this.playTone(523.25, 0.1, 'sine', this.masterVolume * 0.4);
+            setTimeout(() => this.playTone(659.25, 0.15, 'sine', this.masterVolume * 0.4), 80);
+        },
+        
+        playError() {
+            this.playTone(200, 0.2, 'sawtooth', this.masterVolume * 0.3);
+        },
+        
+        playNotification() {
+            this.playTone(1000, 0.08, 'sine', this.masterVolume * 0.35);
+            setTimeout(() => this.playTone(1200, 0.08, 'sine', this.masterVolume * 0.35), 100);
+        },
+        
+        playTone(frequency, duration, type = 'sine', volume = 0.3) {
+            if (!this.audioContext || this.masterVolume === 0) return;
+            
+            try {
+                const oscillator = this.audioContext.createOscillator();
+                const gainNode = this.audioContext.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(this.audioContext.destination);
+                
+                oscillator.frequency.value = frequency;
+                oscillator.type = type;
+                
+                gainNode.gain.setValueAtTime(volume, this.audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, this.audioContext.currentTime + duration);
+                
+                oscillator.start(this.audioContext.currentTime);
+                oscillator.stop(this.audioContext.currentTime + duration);
+            } catch (e) {
+                console.error('Błąd odtwarzania dźwięku:', e);
+            }
+        },
+        
+        setVolume(volume) {
+            this.masterVolume = Math.max(0, Math.min(1, volume));
+            localStorage.setItem('sfxVolume', this.masterVolume.toString());
+        }
+    };
+
+    // Inicjalizacja systemów audio
+    SoundEffects.init();
+
+    // Menu kontekstowe głośności
+    const volumeMenu = document.getElementById('volumeMenu');
+    const musicToggleBtn = document.getElementById('music-toggle-btn');
+    const longPressIndicator = document.getElementById('longPressIndicator');
+    const musicVolumeSlider = document.getElementById('musicVolumeSlider');
+    const sfxVolumeSlider = document.getElementById('sfxVolumeSlider');
+    const musicVolumeValue = document.getElementById('musicVolumeValue');
+    const sfxVolumeValue = document.getElementById('sfxVolumeValue');
+
+    // Załaduj zapisane ustawienia głośności
+    const savedMusicVolume = localStorage.getItem('musicVolume');
+    const savedSfxVolume = localStorage.getItem('sfxVolume');
+    
+    if (savedMusicVolume !== null) {
+        musicVolumeSlider.value = parseFloat(savedMusicVolume) * 100;
+        musicVolumeValue.textContent = Math.round(parseFloat(savedMusicVolume) * 100) + '%';
+    }
+    
+    if (savedSfxVolume !== null) {
+        sfxVolumeSlider.value = parseFloat(savedSfxVolume) * 100;
+        sfxVolumeValue.textContent = Math.round(parseFloat(savedSfxVolume) * 100) + '%';
+    }
+
+    // Funkcja do otwierania/zamykania menu
+    function toggleVolumeMenu(e) {
+        e.preventDefault();
+        SoundEffects.playClick();
+        
+        if (volumeMenu.classList.contains('show')) {
+            volumeMenu.classList.remove('show');
+        } else {
+            // Pozycjonowanie menu
+            const rect = musicToggleBtn.getBoundingClientRect();
+            volumeMenu.style.right = (window.innerWidth - rect.right) + 'px';
+            volumeMenu.style.bottom = (window.innerHeight - rect.top + 10) + 'px';
+            volumeMenu.classList.add('show');
+        }
+    }
+
+    // Long press handler
+    let longPressTimer = null;
+    let longPressActive = false;
+    let wasLongPress = false;
+
+    function startLongPress(e) {
+        longPressActive = true;
+        wasLongPress = false;
+        longPressIndicator.classList.add('active');
+        
+        longPressTimer = setTimeout(() => {
+            if (longPressActive) {
+                wasLongPress = true;
+                toggleVolumeMenu(e);
+                longPressIndicator.classList.remove('active');
+            }
+        }, 2000);
+    }
+
+    function cancelLongPress() {
+        longPressActive = false;
+        longPressIndicator.classList.remove('active');
+        
+        if (longPressTimer) {
+            clearTimeout(longPressTimer);
+            longPressTimer = null;
+        }
+    }
+
+    // Obsługa długiego naciśnięcia (touch i mouse)
+    musicToggleBtn.addEventListener('mousedown', startLongPress);
+    musicToggleBtn.addEventListener('touchstart', startLongPress, { passive: true });
+    
+    musicToggleBtn.addEventListener('mouseup', cancelLongPress);
+    musicToggleBtn.addEventListener('mouseleave', cancelLongPress);
+    musicToggleBtn.addEventListener('touchend', cancelLongPress);
+    musicToggleBtn.addEventListener('touchcancel', cancelLongPress);
+
+    // Obsługa prawo przycisku myszy (desktop)
+    musicToggleBtn.addEventListener('contextmenu', (e) => {
+        cancelLongPress();
+        toggleVolumeMenu(e);
+    });
+
+    // Zamknij menu po kliknięciu poza nim
+    document.addEventListener('click', (e) => {
+        if (!volumeMenu.contains(e.target) && e.target !== musicToggleBtn) {
+            volumeMenu.classList.remove('show');
+        }
+    });
+
+    // Obsługa suwaka muzyki
+    musicVolumeSlider.addEventListener('input', (e) => {
+        const volume = e.target.value / 100;
+        musicVolumeValue.textContent = e.target.value + '%';
+        if (music) {
+            music.volume = volume;
+            localStorage.setItem('musicVolume', volume.toString());
+        }
+    });
+
+    // Obsługa suwaka efektów
+    sfxVolumeSlider.addEventListener('input', (e) => {
+        const volume = e.target.value / 100;
+        sfxVolumeValue.textContent = e.target.value + '%';
+        SoundEffects.setVolume(volume);
+        // Test dźwięku
+        SoundEffects.playClick();
+    });
+
+    // Dodaj efekty dźwiękowe do przycisków
+    document.addEventListener('click', (e) => {
+        const button = e.target.closest('button, .btn-primary, .btn-outline');
+        if (button && !button.classList.contains('chat-close')) {
+            SoundEffects.playClick();
+        }
+    });
+
     // przycisk do muzyki
     const music = document.getElementById('bg-music');
     const musicBtn = document.getElementById('music-toggle-btn');
@@ -2347,7 +2896,15 @@
     let isPlaying = false;
 
     // Autoplay muted + unmute-on-first-interaction (z fade-in)
-    const AUTOPLAY_TARGET_VOLUME = 0.6;
+    let AUTOPLAY_TARGET_VOLUME = 0.6;
+    
+    // Załaduj zapisaną głośność muzyki
+    const savedMusicVol = localStorage.getItem('musicVolume');
+    if (savedMusicVol !== null) {
+        AUTOPLAY_TARGET_VOLUME = parseFloat(savedMusicVol);
+        music.volume = AUTOPLAY_TARGET_VOLUME;
+    }
+    
     let autoplayBlocked = false;
     let userInteracted = false;
 
@@ -2431,6 +2988,12 @@
     });
 
     musicBtn.addEventListener('click', async () => {
+        // Ignoruj kliknięcie jeśli było przytrzymanie
+        if (wasLongPress) {
+            wasLongPress = false;
+            return;
+        }
+        
         try {
             if (!isPlaying) {
                 await music.play();
@@ -2726,20 +3289,23 @@
 
     function toggleChat() {
       const chatPanel = document.getElementById('chatPanel');
-      if (chatPanel.classList.contains('hidden')) {
+      if (!chatPanel.classList.contains('show')) {
         // Otwieranie
-        chatPanel.classList.remove('hidden');
+        chatPanel.classList.add('show');
         loadUsersList();
-        setTimeout(() => document.getElementById('chatInput').focus(), 100);
+        setTimeout(() => {
+          const input = document.getElementById('chatInput');
+          if (input) input.focus();
+        }, 500);
       } else {
         // Zamykanie
-        chatPanel.classList.add('hidden');
+        chatPanel.classList.remove('show');
         // Po animacji resetuj
         setTimeout(() => {
           selectedChatUser = null;
           document.getElementById('chatUsersList').style.display = 'flex';
           document.getElementById('chatConversation').classList.add('hidden');
-        }, 500);
+        }, 450);
       }
     }
 
@@ -3510,6 +4076,9 @@
       selectedPhoto = null;
       toggleEmojiPicker(); // Zamknij emoji picker po wysłaniu
       displayConversation(selectedChatUser, isGroup);
+      
+      // Efekt dźwiękowy wysłania wiadomości
+      SoundEffects.playSuccess();
     }
 
     function showChatIfLoggedIn() {
@@ -3517,7 +4086,7 @@
         document.getElementById('chatToggleBtn').classList.remove('hidden');
       } else {
         document.getElementById('chatToggleBtn').classList.add('hidden');
-        document.getElementById('chatPanel').classList.add('hidden');
+        document.getElementById('chatPanel').classList.remove('show');
       }
     }
 
@@ -3785,6 +4354,14 @@
       alert('Profil zapisany!');
     }
 
+    function showOverlay() {
+      document.getElementById('auth-overlay').classList.add('show');
+    }
+
+    function hideOverlay() {
+      document.getElementById('auth-overlay').classList.remove('show');
+    }
+
     function showLogin() {
       document.getElementById('choiceBox').classList.add('hidden');
       document.getElementById('loginBox').classList.remove('hidden');
@@ -3951,6 +4528,7 @@
       if (userByName && userByName.isBlocked) {
         errorEl.textContent = 'Konto zablokowane.';
         errorEl.classList.add('visible');
+        SoundEffects.playError();
         return;
       }
       
@@ -3960,6 +4538,7 @@
       if (!user) {
         errorEl.textContent = 'Nieprawidłowa nazwa lub hasło.';
         errorEl.classList.add('visible');
+        SoundEffects.playError();
         return;
       }
       
@@ -3987,12 +4566,14 @@
       if (!name || !pass || !pin) {
         errorEl.textContent = 'Wypełnij wszystkie pola.';
         errorEl.classList.add('visible');
+        SoundEffects.playError();
         return;
       }
       
       if (pin !== MASTER_PIN) {
         errorEl.textContent = 'Nieprawidłowy PIN.';
         errorEl.classList.add('visible');
+        SoundEffects.playError();
         return;
       }
       
@@ -4000,6 +4581,7 @@
       if (users.find(u => u.name === name)) {
         errorEl.textContent = 'Użytkownik już istnieje.';
         errorEl.classList.add('visible');
+        SoundEffects.playError();
         return;
       }
       
@@ -4020,11 +4602,14 @@
       unlockSite();
       document.getElementById('userLogoutBtn').classList.add('show');
       showChatIfLoggedIn();
+      
+      // Dźwięk sukcesu
+      SoundEffects.playSuccess();
     }
 
     function logout() {
       currentUser = null;
-      document.getElementById('auth-overlay').classList.remove('hidden');
+      showOverlay();
       document.body.classList.add('site-locked');
       document.getElementById('choiceBox').classList.remove('hidden');
       document.getElementById('loginBox').classList.add('hidden');
@@ -4033,7 +4618,7 @@
       document.getElementById('userPanel').classList.add('hidden');
       document.getElementById('userLogoutBtn').classList.remove('show');
       document.getElementById('chatToggleBtn').classList.add('hidden');
-      document.getElementById('chatPanel').classList.add('hidden');
+      document.getElementById('chatPanel').classList.remove('show');
       document.getElementById('loginName').value = '';
       document.getElementById('loginPass').value = '';
     }
@@ -4041,11 +4626,11 @@
     function unlockSite() {
       if (currentUser && currentUser.isAdmin) {
         // Admin: ukryj overlay aby widział stronę
-        document.getElementById('auth-overlay').classList.add('hidden');
+        hideOverlay();
         document.getElementById('adminPanel').classList.add('hidden');
       } else {
         // Zwykły użytkownik: ukryj overlay
-        document.getElementById('auth-overlay').classList.add('hidden');
+        hideOverlay();
       }
       document.body.classList.remove('site-locked');
     }
@@ -4053,7 +4638,7 @@
     function goToSite() {
       // Admin wychodzi z panelu na stronę
       document.getElementById('adminPanel').classList.add('hidden');
-      document.getElementById('auth-overlay').classList.add('hidden');
+      hideOverlay();
       document.body.classList.remove('site-locked');
       // Usuń rozmycie dla admina
       document.querySelectorAll('header, main, footer').forEach(el => el.style.filter = 'none');
@@ -4064,14 +4649,14 @@
 
     function backToAdminPanel() {
       // Admin wraca do panelu z strony
-      document.getElementById('auth-overlay').classList.remove('hidden');
+      showOverlay();
       document.getElementById('adminPanel').classList.remove('hidden');
       document.getElementById('adminReturnBtn').classList.remove('show');
       refreshUsersList();
     }
 
     function showAdminPanel() {
-      document.getElementById('auth-overlay').classList.remove('hidden');
+      showOverlay();
       document.getElementById('choiceBox').classList.add('hidden');
       document.getElementById('loginBox').classList.add('hidden');
       document.getElementById('registerBox').classList.add('hidden');
@@ -4294,6 +4879,172 @@
       const users = getUsers();
       if (users.length > 1) {
         showLogin();
+      }
+      loadUserPhotos();
+    }
+
+    // PWA - Service Worker i instalacja
+    let deferredPrompt;
+    const installBtn = document.getElementById('installAppBtn');
+
+    // Rejestracja Service Worker
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js')
+          .then(reg => console.log('Service Worker zarejestrowany:', reg.scope))
+          .catch(err => console.log('Błąd rejestracji Service Worker:', err));
+      });
+    }
+
+    // Obsługa zdarzenia beforeinstallprompt
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      installBtn.classList.add('show');
+    });
+
+    // Obsługa kliknięcia przycisku instalacji
+    installBtn.addEventListener('click', async () => {
+      if (!deferredPrompt) return;
+      
+      deferredPrompt.prompt();
+      const { outcome } = await deferredPrompt.userChoice;
+      
+      if (outcome === 'accepted') {
+        console.log('Użytkownik zainstalował aplikację');
+        SoundEffects.playSuccess();
+      }
+      
+      deferredPrompt = null;
+      installBtn.classList.remove('show');
+    });
+
+    // Ukryj przycisk po zainstalowaniu
+    window.addEventListener('appinstalled', () => {
+      installBtn.classList.remove('show');
+      deferredPrompt = null;
+    });
+
+    // Funkcje zarządzania zdjęciami użytkowników
+    function getUserPhotos() {
+      return JSON.parse(localStorage.getItem('userPhotos')) || {};
+    }
+
+    function saveUserPhotos(photos) {
+      localStorage.setItem('userPhotos', JSON.stringify(photos));
+    }
+
+    function openPhotoUpload(photoType) {
+      if (!currentUser) {
+        alert('Musisz być zalogowany, aby dodać zdjęcie!');
+        return;
+      }
+      document.getElementById(photoType + 'PhotoInput').click();
+    }
+
+    function handlePhotoUpload(photoType, input) {
+      if (!input.files || !input.files[0]) return;
+      
+      const file = input.files[0];
+      const maxSize = 5 * 1024 * 1024; // 5MB
+      
+      if (file.size > maxSize) {
+        alert('Zdjęcie jest za duże! Maksymalny rozmiar to 5MB.');
+        return;
+      }
+      
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const photos = getUserPhotos();
+        photos[photoType] = {
+          data: e.target.result,
+          uploadedBy: currentUser,
+          uploadedAt: new Date().toLocaleString('pl-PL')
+        };
+        saveUserPhotos(photos);
+        loadUserPhotos();
+        alert('Zdjęcie dodane!');
+      };
+      reader.readAsDataURL(file);
+      
+      // Reset input
+      input.value = '';
+    }
+
+    function deleteUserPhoto(photoType) {
+      const photos = getUserPhotos();
+      const photo = photos[photoType];
+      
+      if (!photo) return;
+      
+      // Sprawdź uprawnienia
+      const users = getUsers();
+      const currentUserObj = users.find(u => u.name === currentUser);
+      const isOwner = photo.uploadedBy === currentUser;
+      const isAdmin = currentUserObj && currentUserObj.isAdmin;
+      
+      if (!isOwner && !isAdmin) {
+        alert('Nie masz uprawnień do usunięcia tego zdjęcia!');
+        return;
+      }
+      
+      if (confirm('Czy na pewno chcesz usunąć to zdjęcie?')) {
+        delete photos[photoType];
+        saveUserPhotos(photos);
+        loadUserPhotos();
+      }
+    }
+
+    function loadUserPhotos() {
+      const photos = getUserPhotos();
+      const users = getUsers();
+      const currentUserObj = users.find(u => u.name === currentUser);
+      const isAdmin = currentUserObj && currentUserObj.isAdmin;
+      
+      // Load Michał's photo
+      const michalFrame = document.getElementById('michalPhotoFrame');
+      if (photos.michal) {
+        const isOwner = photos.michal.uploadedBy === currentUser;
+        const canDelete = isOwner || isAdmin;
+        
+        michalFrame.innerHTML = `
+          <img class="zoomable" src="${photos.michal.data}" alt="Michał - zdjęcie z danego dnia">
+          ${canDelete ? '<button class="delete-photo-btn" onclick="event.stopPropagation(); deleteUserPhoto(\'michal\')" title="Usuń zdjęcie">🗑️</button>' : ''}
+        `;
+        michalFrame.classList.remove('placeholder');
+        michalFrame.onclick = null;
+      } else {
+        michalFrame.innerHTML = `
+          <div class="photo-placeholder-content">
+            <div class="icon">📷</div>
+            <div class="text">Kliknij, aby dodać zdjęcie</div>
+          </div>
+        `;
+        michalFrame.classList.add('placeholder');
+        michalFrame.onclick = () => openPhotoUpload('michal');
+      }
+      
+      // Load Paulina's photo
+      const paulinaFrame = document.getElementById('paulinaPhotoFrame');
+      if (photos.paulina) {
+        const isOwner = photos.paulina.uploadedBy === currentUser;
+        const canDelete = isOwner || isAdmin;
+        
+        paulinaFrame.innerHTML = `
+          <img class="zoomable" src="${photos.paulina.data}" alt="Paulina - zdjęcie z danego dnia">
+          ${canDelete ? '<button class="delete-photo-btn" onclick="event.stopPropagation(); deleteUserPhoto(\'paulina\')" title="Usuń zdjęcie">🗑️</button>' : ''}
+        `;
+        paulinaFrame.classList.remove('placeholder');
+        paulinaFrame.onclick = null;
+      } else {
+        paulinaFrame.innerHTML = `
+          <div class="photo-placeholder-content">
+            <div class="icon">📷</div>
+            <div class="text">Kliknij, aby dodać zdjęcie</div>
+          </div>
+        `;
+        paulinaFrame.classList.add('placeholder');
+        paulinaFrame.onclick = () => openPhotoUpload('paulina');
       }
     }
 </script>
