@@ -369,6 +369,852 @@
             color: var(--text-muted);
         }
 
+        /* Counter styles */
+        .counter-section {
+            padding: 2rem 0;
+            background: transparent;
+        }
+
+        .counter-card {
+            background: var(--card-bg);
+            border-radius: var(--radius-large);
+            padding: 2rem 2rem 2.2rem;
+            box-shadow: var(--shadow-soft);
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto;
+            border: 2px solid rgba(255,107,156,0.15);
+            cursor: pointer;
+            transition: transform 340ms cubic-bezier(.22,.9,.31,1), box-shadow 340ms cubic-bezier(.22,.9,.31,1);
+            will-change: transform, box-shadow;
+        }
+
+        @media (hover: hover) {
+            .counter-card:hover,
+            .counter-card:focus-within {
+                transform: translateY(-8px) scale(1.06);
+                box-shadow: 0 26px 56px rgba(0,0,0,0.18);
+            }
+        }
+
+        .counter-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8rem;
+            margin-bottom: 1.8rem;
+        }
+
+        .counter-heart {
+            font-size: 1.8rem;
+            color: var(--accent);
+            animation: heartbeat 1.5s ease-in-out infinite;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            25% { transform: scale(1.1); }
+            50% { transform: scale(1); }
+        }
+
+        .counter-header h3 {
+            font-size: 1.2rem;
+            color: var(--text-main);
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .counter-display {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .counter-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 80px;
+        }
+
+        .counter-value {
+            font-size: 2.8rem;
+            font-weight: 700;
+            color: var(--accent-dark);
+            line-height: 1;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .counter-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 0.4rem;
+            font-weight: 500;
+        }
+
+        .counter-separator {
+            font-size: 2rem;
+            color: var(--accent);
+            font-weight: 600;
+            margin: 0 0.2rem;
+            padding-bottom: 1.5rem;
+        }
+
+        .counter-message {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            font-style: italic;
+            margin: 0;
+        }
+
+        @media (max-width: 600px) {
+            .counter-card {
+                padding: 1.5rem 1rem;
+            }
+
+            .counter-value {
+                font-size: 2.2rem;
+            }
+
+            .counter-item {
+                min-width: 60px;
+            }
+
+            .counter-separator {
+                font-size: 1.6rem;
+            }
+
+            .counter-display {
+                gap: 0.5rem;
+            }
+        }
+
+        /* Smile Counter */
+        .smile-counter-card {
+            background: var(--card-bg);
+            border-radius: var(--radius-large);
+            padding: 2rem 2rem;
+            box-shadow: var(--shadow-soft);
+            text-align: center;
+            max-width: 500px;
+            margin: 2rem auto 0;
+            border: 2px solid rgba(255,107,156,0.15);
+        }
+
+        .smile-counter-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .smile-icon {
+            font-size: 2rem;
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        .smile-counter-header h4 {
+            font-size: 1.1rem;
+            color: var(--text-main);
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .smile-counter-display {
+            margin-bottom: 1.5rem;
+        }
+
+        .smile-count {
+            font-size: 4rem;
+            font-weight: 700;
+            color: var(--accent-dark);
+            line-height: 1;
+            font-family: 'Poppins', sans-serif;
+            transition: transform 0.3s ease;
+        }
+
+        .smile-count.pulse {
+            animation: pulse 0.5s ease;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        .smile-label {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-top: 0.5rem;
+            font-weight: 500;
+        }
+
+        .btn-smile {
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%);
+            color: white;
+            border: none;
+            border-radius: 999px;
+            padding: 0.8rem 2rem;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: 0 8px 20px rgba(255,107,156,0.3);
+            margin-bottom: 1rem;
+        }
+
+        .btn-smile:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgba(255,107,156,0.4);
+        }
+
+        .btn-smile:active {
+            transform: translateY(0);
+        }
+
+        .smile-message {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-style: italic;
+            margin: 0;
+        }
+
+        .smile-progress-container {
+            margin: 1.5rem 0;
+        }
+
+        .smile-progress-bar {
+            width: 100%;
+            height: 40px;
+            background: rgba(255,107,156,0.1);
+            border-radius: 20px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: inset 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .smile-progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #FFB6C1 0%, var(--accent) 50%, var(--accent-dark) 100%);
+            border-radius: 20px;
+            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            box-shadow: 0 2px 10px rgba(255,107,156,0.5);
+        }
+
+        .smile-progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, 
+                transparent 0%, 
+                rgba(255,255,255,0.3) 50%, 
+                transparent 100%);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .smile-progress-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 0.5rem;
+            padding: 0 0.5rem;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .btn-reset {
+            background: linear-gradient(135deg, #9CA3AF 0%, #6B7280 100%);
+            color: white;
+            border: none;
+            border-radius: 999px;
+            padding: 0.8rem 2rem;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: 0 8px 20px rgba(107,114,128,0.3);
+        }
+
+        .btn-reset:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgba(107,114,128,0.4);
+        }
+
+        .btn-reset:active {
+            transform: translateY(0);
+        }
+
+        /* Gra: Odkryj moje myśli */
+        .thoughts-game-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 20px;
+            padding: 2rem;
+            margin: 2rem auto;
+            max-width: 500px;
+            color: white;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 10px 40px rgba(102, 126, 234, 0.3);
+        }
+
+        .thoughts-game-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 15px 50px rgba(102, 126, 234, 0.5);
+        }
+
+        .thoughts-game-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .thoughts-game-card h4 {
+            font-size: 1.8rem;
+            margin: 0.5rem 0;
+            font-weight: 700;
+        }
+
+        .thoughts-game-description {
+            font-size: 1rem;
+            opacity: 0.9;
+            margin: 0.5rem 0 0 0;
+        }
+
+        .thoughts-game-lightbox {
+            padding: 2rem;
+            max-width: 90%;
+            width: 1200px;
+            max-height: 80vh;
+            overflow-y: auto;
+            margin: 0 auto;
+            text-align: center;
+            background: white;
+            border-radius: 20px;
+        }
+
+        .thoughts-game-header {
+            margin-bottom: 2rem;
+        }
+
+        .thoughts-game-header h3 {
+            font-size: 2rem;
+            color: var(--accent);
+            margin: 0 0 0.5rem 0;
+        }
+
+        .thoughts-game-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            font-style: italic;
+        }
+
+        .thoughts-cards-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        @media (max-width: 992px) {
+            .thoughts-cards-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .thought-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 15px;
+            min-height: 200px;
+            cursor: pointer;
+            position: relative;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+            perspective: 1000px;
+        }
+
+        .thought-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 35px rgba(102, 126, 234, 0.5);
+        }
+
+        .thought-card-inner {
+            position: relative;
+            width: 100%;
+            min-height: 200px;
+            text-align: center;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+
+        .thought-card.flipped .thought-card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .thought-card-front,
+        .thought-card-back {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            min-height: 200px;
+            backface-visibility: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            padding: 2rem;
+            border-radius: 15px;
+        }
+
+        .thought-card-front {
+            color: white;
+        }
+
+        .thought-card-front .envelope-icon {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .thought-card-front p {
+            font-size: 1rem;
+            opacity: 0.9;
+            margin: 0;
+        }
+
+        .thought-card-back {
+            background: white;
+            transform: rotateY(180deg);
+            color: var(--text-dark);
+        }
+
+        .thought-card-back p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: var(--text-dark);
+            margin: 0;
+            text-align: center;
+        }
+
+        .thought-card-back .heart-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            color: var(--accent);
+        }
+
+        @media (max-width: 768px) {
+            .thoughts-cards-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .thought-card {
+                min-height: 150px;
+            }
+
+            .thoughts-game-lightbox {
+                padding: 1rem;
+            }
+        }
+
+        /* Gra: Pytanie do serca */
+        .heart-question-card {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            border-radius: 20px;
+            padding: 2rem;
+            margin: 2rem auto;
+            max-width: 500px;
+            color: white;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 10px 40px rgba(245, 87, 108, 0.3);
+        }
+
+        .heart-question-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 15px 50px rgba(245, 87, 108, 0.5);
+        }
+
+        .heart-question-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            animation: heartbeat 1.5s ease-in-out infinite;
+        }
+
+        .heart-question-card h4 {
+            font-size: 1.8rem;
+            margin: 0.5rem 0;
+            font-weight: 700;
+        }
+
+        .heart-question-description {
+            font-size: 1rem;
+            opacity: 0.9;
+            margin: 0.5rem 0 0 0;
+        }
+
+        .heart-question-lightbox {
+            padding: 3rem;
+            max-width: 90%;
+            width: 800px;
+            max-height: 80vh;
+            overflow-y: auto;
+            margin: 0 auto;
+            text-align: center;
+            background: white;
+            border-radius: 20px;
+        }
+
+        .heart-question-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 400px;
+        }
+
+        .heart-icon-large {
+            font-size: 5rem;
+            margin-bottom: 2rem;
+            animation: heartbeat 1.5s ease-in-out infinite;
+        }
+
+        .heart-question-title {
+            font-size: 2rem;
+            color: var(--accent);
+            margin-bottom: 2rem;
+        }
+
+        .btn-ask-heart {
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%);
+            color: white;
+            border: none;
+            border-radius: 999px;
+            padding: 1.2rem 3rem;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: 0 10px 30px rgba(255,107,156,0.4);
+        }
+
+        .btn-ask-heart:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(255,107,156,0.6);
+        }
+
+        .btn-ask-heart:active {
+            transform: translateY(0);
+        }
+
+        .question-display {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 2.5rem;
+            border-radius: 15px;
+            margin: 2rem 0;
+            font-size: 1.5rem;
+            font-weight: 600;
+            line-height: 1.6;
+            box-shadow: 0 10px 30px rgba(245, 87, 108, 0.3);
+            animation: fadeInScale 0.5s ease;
+        }
+
+        .answer-display {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            color: var(--text-dark);
+            padding: 2.5rem;
+            border-radius: 15px;
+            margin: 2rem 0;
+            font-size: 1.2rem;
+            line-height: 1.8;
+            box-shadow: 0 10px 30px rgba(252, 182, 159, 0.3);
+            animation: fadeInScale 0.5s ease 0.3s both;
+        }
+
+        .answer-display::before {
+            content: '"❤️"';
+            display: block;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .btn-ask-again {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 999px;
+            padding: 1rem 2.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+            margin-top: 1.5rem;
+        }
+
+        .btn-ask-again:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 35px rgba(102, 126, 234, 0.6);
+        }
+
+        .btn-ask-again:active {
+            transform: translateY(0);
+        }
+
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* Dodatkowe style dla przycisków i elementów gry */
+        .question-counter {
+            font-size: 1rem;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+            font-weight: 500;
+        }
+
+        .btn-next-question {
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%);
+            color: white;
+            border: none;
+            border-radius: 999px;
+            padding: 1.2rem 3rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: 0 10px 30px rgba(255,107,156,0.4);
+            margin-top: 1rem;
+        }
+
+        .btn-next-question:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(255,107,156,0.6);
+        }
+
+        .btn-next-question:active {
+            transform: translateY(-1px);
+        }
+
+        .btn-next-question:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: 0 10px 30px rgba(255,107,156,0.2);
+        }
+
+        .summary-container {
+            text-align: left;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .summary-item {
+            background: linear-gradient(135deg, #fafafa 0%, #f5f5f5 100%);
+            padding: 2rem;
+            border-radius: 15px;
+            margin-bottom: 1.5rem;
+            border-left: 5px solid var(--accent);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .summary-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 6px 20px rgba(255,107,156,0.15);
+        }
+
+        .summary-question {
+            font-weight: 600;
+            color: var(--accent);
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .summary-answer {
+            color: var(--text-dark);
+            line-height: 1.8;
+            font-size: 1rem;
+        }
+
+        .btn-save-results,
+        .btn-delete-game {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 999px;
+            padding: 1.2rem 2.5rem;
+            font-size: 1.05rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+            margin: 0.5rem;
+        }
+
+        .btn-save-results:hover,
+        .btn-delete-game:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.6);
+        }
+
+        .btn-save-results:active,
+        .btn-delete-game:active {
+            transform: translateY(-1px);
+        }
+
+        .btn-delete-game {
+            background: linear-gradient(135deg, #ff6b6b 0%, #c92a2a 100%);
+            box-shadow: 0 10px 30px rgba(255, 107, 107, 0.4);
+        }
+
+        .btn-delete-game:hover {
+            box-shadow: 0 15px 40px rgba(255, 107, 107, 0.6);
+        }
+
+        .saved-game-item {
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            padding: 2rem;
+            border-radius: 15px;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            position: relative;
+        }
+
+        .saved-game-item::before {
+            content: '💖';
+            position: absolute;
+            right: 1.5rem;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 2rem;
+            opacity: 0.3;
+            transition: opacity 0.3s ease;
+        }
+
+        .saved-game-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 35px rgba(255,107,156,0.3);
+            border-color: var(--accent);
+        }
+
+        .saved-game-item:hover::before {
+            opacity: 0.8;
+        }
+
+        .saved-game-date {
+            font-size: 1rem;
+            color: var(--accent);
+            margin-bottom: 0.8rem;
+            font-weight: 600;
+        }
+
+        .saved-game-preview {
+            font-size: 1.05rem;
+            color: var(--text-dark);
+            font-weight: 500;
+        }
+
+        .no-saved-games {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-muted);
+            font-style: italic;
+        }
+
+        .saved-games-card::after {
+            content: '← Kliknij tutaj';
+            display: block;
+            margin-top: 1rem;
+            font-size: 0.85rem;
+            opacity: 0.7;
+            font-style: italic;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @media (max-width: 768px) {
+            .heart-question-lightbox {
+                padding: 1.5rem;
+            }
+
+            .question-display {
+                font-size: 1.2rem;
+                padding: 2rem;
+            }
+
+            .answer-display {
+                font-size: 1rem;
+                padding: 2rem;
+            }
+
+            .btn-ask-heart {
+                padding: 1rem 2rem;
+                font-size: 1rem;
+            }
+        }
+
+        /* Input dla odpowiedzi użytkownika w grze */
+        .answer-input {
+            width: 100%;
+            min-height: 150px;
+            padding: 1.5rem;
+            font-size: 1.05rem;
+            border: none;
+            border-radius: 15px;
+            font-family: 'Poppins', sans-serif;
+            resize: vertical;
+            margin: 1.5rem 0;
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            color: var(--text-dark);
+            box-shadow: 0 8px 25px rgba(252, 182, 159, 0.3);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            line-height: 1.6;
+        }
+
+        .answer-input:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 35px rgba(252, 182, 159, 0.4);
+        }
+
+        .answer-input:focus {
+            outline: none;
+            transform: translateY(-2px);
+            box-shadow: 0 0 0 3px rgba(255, 107, 156, 0.2), 0 12px 35px rgba(252, 182, 159, 0.5);
+        }
+
+        .answer-input::placeholder {
+            color: rgba(139, 69, 19, 0.5);
+            font-style: italic;
+        }
+
         section {
             padding: 2.8rem 0;
         }
@@ -1478,6 +2324,46 @@
             opacity: 0.8;
         }
 
+        /* Compliments Generator */
+        .compliments-wrapper {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .compliment-card {
+            background: var(--card-bg);
+            border-radius: var(--radius-large);
+            padding: 3rem 2.5rem;
+            box-shadow: var(--shadow-soft);
+            text-align: center;
+            border: 2px solid rgba(255,107,156,0.15);
+        }
+
+        .compliment-icon {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .compliment-text {
+            font-size: 1.3rem;
+            line-height: 1.8;
+            color: var(--text-main);
+            font-weight: 500;
+            min-height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            font-style: italic;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
         footer {
             padding: 2rem 0 1.8rem;
             text-align: center;
@@ -1665,6 +2551,23 @@
         text-align: center;
     }
 
+    .lightbox .counter-lightbox-content {
+        background: var(--card-bg);
+        border-radius: var(--radius-large);
+        padding: 3rem 2.5rem;
+        max-width: 70vw;
+        max-height: 80vh;
+        width: auto;
+        box-shadow: 0 28px 80px rgba(0,0,0,0.6);
+        transform: scale(0.95);
+        transition: transform 0.28s ease, opacity 0.28s ease;
+        opacity: 0;
+        cursor: default;
+        overflow-y: auto;
+        display: none !important;
+        text-align: center;
+    }
+
     .lightbox.open .card-lightbox-content {
         opacity: 1;
         transform: scale(1);
@@ -1675,6 +2578,72 @@
         opacity: 1;
         transform: scale(1);
         display: block !important;
+    }
+
+    .lightbox.open .counter-lightbox-content {
+        opacity: 1;
+        transform: scale(1);
+        display: block !important;
+    }
+
+    .lightbox .counter-lightbox-content .counter-heart-large {
+        font-size: 3rem;
+        color: var(--accent);
+        animation: heartbeat 1.5s ease-in-out infinite;
+        display: block;
+        margin-bottom: 1rem;
+    }
+
+    .lightbox .counter-lightbox-content h3 {
+        font-size: 1.8rem;
+        color: var(--text-main);
+        font-weight: 600;
+        margin-bottom: 2rem;
+    }
+
+    .lightbox .counter-lightbox-content .counter-display-large {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+    }
+
+    .lightbox .counter-lightbox-content .counter-item-large {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-width: 100px;
+    }
+
+    .lightbox .counter-lightbox-content .counter-value-large {
+        font-size: 3.5rem;
+        font-weight: 700;
+        color: var(--accent-dark);
+        line-height: 1;
+        font-family: 'Poppins', sans-serif;
+    }
+
+    .lightbox .counter-lightbox-content .counter-label-large {
+        font-size: 1.1rem;
+        color: var(--text-muted);
+        margin-top: 0.5rem;
+        font-weight: 500;
+    }
+
+    .lightbox .counter-lightbox-content .counter-separator-large {
+        font-size: 2.5rem;
+        color: var(--accent);
+        font-weight: 600;
+        margin: 0 0.3rem;
+        padding-bottom: 2rem;
+    }
+
+    .lightbox .counter-lightbox-content .counter-message-large {
+        font-size: 1.2rem;
+        color: var(--text-muted);
+        font-style: italic;
+        margin: 0;
     }
 
     .lightbox .timeline-lightbox-content strong {
@@ -2302,6 +3271,97 @@
         </div>
     </section>
 
+    <!-- LICZNIK CZASU RAZEM -->
+    <section class="counter-section">
+        <div class="container">
+            <div class="counter-card fade-on-scroll">
+                <div class="counter-header">
+                    <span class="counter-heart">♥</span>
+                    <h3>Razem od 12 grudnia 2024</h3>
+                </div>
+                <div class="counter-display">
+                    <div class="counter-item">
+                        <div class="counter-value" id="days">0</div>
+                        <div class="counter-label">dni</div>
+                    </div>
+                    <div class="counter-separator">:</div>
+                    <div class="counter-item">
+                        <div class="counter-value" id="hours">0</div>
+                        <div class="counter-label">godzin</div>
+                    </div>
+                    <div class="counter-separator">:</div>
+                    <div class="counter-item">
+                        <div class="counter-value" id="minutes">0</div>
+                        <div class="counter-label">minut</div>
+                    </div>
+                    <div class="counter-separator">:</div>
+                    <div class="counter-item">
+                        <div class="counter-value" id="seconds">0</div>
+                        <div class="counter-label">sekund</div>
+                    </div>
+                </div>
+                <p class="counter-message">...i każda minuta z Tobą jest wyjątkowa</p>
+            </div>
+
+            <!-- GRA: ODKRYJ MOJE MYŚLI -->
+            <div class="thoughts-game-card fade-on-scroll" onclick="openThoughtsGame()">
+                <div class="thoughts-game-icon">💭</div>
+                <h4>Odkryj moje myśli</h4>
+                <p class="thoughts-game-description">Kliknij, aby odkryć, co o Tobie myślę...</p>
+            </div>
+
+            <!-- GRA: PYTANIE DO SERCA -->
+            <div class="heart-question-card fade-on-scroll" onclick="openHeartQuestion()">
+                <div class="heart-question-icon">❤️</div>
+                <h4>Pytanie do serca</h4>
+                <p class="heart-question-description">Kliknij i zapytaj moje serce...</p>
+            </div>
+
+            <!-- ZAPISANE GRY -->
+            <div class="saved-games-card fade-on-scroll" onclick="openSavedGames()">
+                <div class="saved-games-icon">📚</div>
+                <h4>Zapisane odpowiedzi</h4>
+                <p class="saved-games-description">Zobacz swoje wcześniejsze odpowiedzi...</p>
+            </div>
+
+            <!-- LICZNIK UŚMIECHÓW -->
+            <div class="smile-counter-card fade-on-scroll">
+                <div class="smile-counter-header">
+                    <span class="smile-icon" id="smileIcon">😊</span>
+                    <h4>Dzisiejsze uśmiechy</h4>
+                </div>
+                <div class="smile-counter-display">
+                    <div class="smile-count" id="smileCount">0</div>
+                    <div class="smile-label">uśmiechów</div>
+                </div>
+                
+                <!-- Pasek postępu -->
+                <div class="smile-progress-container">
+                    <div class="smile-progress-bar" id="smileProgressBar">
+                        <div class="smile-progress-fill" id="smileProgressFill"></div>
+                    </div>
+                    <div class="smile-progress-labels" id="smileProgressLabels">
+                        <span id="label0">0</span>
+                        <span id="label1">25</span>
+                        <span id="label2">50</span>
+                        <span id="label3">75</span>
+                        <span id="label4">100</span>
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 0.8rem; justify-content: center; flex-wrap: wrap;">
+                    <button class="btn-smile" onclick="addSmile()">
+                        Dodaj uśmiech 😊
+                    </button>
+                    <button class="btn-reset" onclick="resetSmiles()">
+                        Resetuj 🔄
+                    </button>
+                </div>
+                <p class="smile-message">Kliknij, aby dodać uśmiech do dzisiejszego licznika!</p>
+            </div>
+        </div>
+    </section>
+
     <!-- O NAS -->
     <section id="about">
         <div class="container">
@@ -2729,6 +3789,32 @@
         </div>
     </section>
 
+    <!-- GENERATOR KOMPLEMENTÓW -->
+    <section id="compliments">
+        <div class="container">
+            <div class="section-header fade-on-scroll">
+                <div class="section-kicker">Dla Ciebie</div>
+                <h2 class="section-title">Generator komplementów</h2>
+                <p class="section-subtitle">
+                    Kliknij w przycisk, a zobaczysz, co dla Ciebie przygotowałem ♥
+                </p>
+            </div>
+
+            <div class="compliments-wrapper fade-on-scroll">
+                <div class="compliment-card">
+                    <div class="compliment-icon">✨</div>
+                    <div class="compliment-text" id="complimentText">
+                        Kliknij przycisk, aby wygenerować komplement
+                    </div>
+                    <button class="btn-primary" onclick="generateCompliment()" style="margin-top: 2rem;">
+                        Wygeneruj komplement
+                        <span style="margin-left: 0.5rem;">🎲</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
 </main>
 
 <footer>
@@ -2737,7 +3823,7 @@
 
     <!-- Lightbox for image zoom -->
     <div id="lightbox" class="lightbox" role="dialog" aria-modal="true" tabindex="-1">
-        <div style="display: flex; gap: 0.8rem; position: absolute; top: 1rem; left: 1rem; z-index: 10001;">
+        <div id="lightboxButtons" style="display: flex; gap: 0.8rem; position: absolute; top: 1rem; left: 1rem; z-index: 10001;">
             <button class="lightbox-close" aria-label="Zamknij" style="order: 2;">&times;</button>
             <button id="downloadPhotoBtn" onclick="downloadPhoto()" style="background: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.3); padding: 0.5rem 0.8rem; border-radius: 6px; cursor: pointer; font-size: 1rem; display: none; order: 1;">⬇️ Pobierz</button>
         </div>
@@ -2766,6 +3852,726 @@
             });
         });
     });
+
+    // Licznik uśmiechów z resetowaniem co dzień
+    (function() {
+        const STORAGE_KEY = 'smileCounter';
+        const DATE_KEY = 'smileCounterDate';
+
+        function getTodayDate() {
+            const today = new Date();
+            return today.toISOString().split('T')[0]; // Format: YYYY-MM-DD
+        }
+
+        function getSmileData() {
+            try {
+                const savedDate = localStorage.getItem(DATE_KEY);
+                const savedCount = parseInt(localStorage.getItem(STORAGE_KEY)) || 0;
+                const today = getTodayDate();
+
+                // Jeśli data się zmieniła, resetuj licznik
+                if (savedDate !== today) {
+                    localStorage.setItem(DATE_KEY, today);
+                    localStorage.setItem(STORAGE_KEY, '0');
+                    return 0;
+                }
+
+                return savedCount;
+            } catch (e) {
+                console.error('Błąd odczytu licznika uśmiechów:', e);
+                return 0;
+            }
+        }
+
+        function saveSmileCount(count) {
+            try {
+                localStorage.setItem(STORAGE_KEY, count.toString());
+                localStorage.setItem(DATE_KEY, getTodayDate());
+            } catch (e) {
+                console.error('Błąd zapisu licznika uśmiechów:', e);
+            }
+        }
+
+        function updateSmileDisplay() {
+            const count = getSmileData();
+            const countEl = document.getElementById('smileCount');
+            const iconEl = document.getElementById('smileIcon');
+            const progressFill = document.getElementById('smileProgressFill');
+
+            if (countEl) {
+                countEl.textContent = count;
+            }
+
+            // Dynamiczne rozszerzanie paska postępu
+            if (progressFill) {
+                let percentage;
+                let maxValue;
+                
+                if (count < 100) {
+                    // Skala 0-100
+                    percentage = count;
+                    maxValue = 100;
+                } else {
+                    // Skala 0-1000 (po osiągnięciu 100)
+                    percentage = (count / 1000) * 100;
+                    maxValue = 1000;
+                }
+                
+                progressFill.style.width = Math.min(percentage, 100) + '%';
+                
+                // Aktualizacja etykiet
+                updateProgressLabels(maxValue);
+            }
+
+            // Zmiana emotikonu w zależności od liczby uśmiechów
+            if (iconEl) {
+                if (count === 0) {
+                    iconEl.textContent = '😊';
+                } else if (count < 5) {
+                    iconEl.textContent = '😄';
+                } else if (count < 10) {
+                    iconEl.textContent = '😁';
+                } else if (count < 20) {
+                    iconEl.textContent = '🤩';
+                } else if (count < 50) {
+                    iconEl.textContent = '😍';
+                } else if (count < 100) {
+                    iconEl.textContent = '🥰';
+                } else if (count < 500) {
+                    iconEl.textContent = '🌟';
+                } else {
+                    iconEl.textContent = '💖';
+                }
+            }
+        }
+
+        function updateProgressLabels(maxValue) {
+            const label0 = document.getElementById('label0');
+            const label1 = document.getElementById('label1');
+            const label2 = document.getElementById('label2');
+            const label3 = document.getElementById('label3');
+            const label4 = document.getElementById('label4');
+
+            if (maxValue === 100) {
+                // Etykiety dla skali 0-100
+                if (label0) label0.textContent = '0';
+                if (label1) label1.textContent = '25';
+                if (label2) label2.textContent = '50';
+                if (label3) label3.textContent = '75';
+                if (label4) label4.textContent = '100';
+            } else {
+                // Etykiety dla skali 0-1000
+                if (label0) label0.textContent = '0';
+                if (label1) label1.textContent = '250';
+                if (label2) label2.textContent = '500';
+                if (label3) label3.textContent = '750';
+                if (label4) label4.textContent = '1000';
+            }
+        }
+
+        window.addSmile = function() {
+            const currentCount = getSmileData();
+            const newCount = currentCount + 1;
+            
+            saveSmileCount(newCount);
+            
+            // Animacja licznika
+            const countEl = document.getElementById('smileCount');
+            if (countEl) {
+                countEl.classList.add('pulse');
+                setTimeout(() => {
+                    countEl.classList.remove('pulse');
+                }, 500);
+            }
+
+            updateSmileDisplay();
+
+            // Efekt konfetti przy kamieniach milowych
+            if (newCount === 10 || newCount === 50 || newCount === 100 || newCount === 500 || newCount === 1000) {
+                showMilestoneMessage(newCount);
+            }
+        };
+
+        window.resetSmiles = function() {
+            if (confirm('Czy na pewno chcesz zresetować dzisiejszy licznik uśmiechów?')) {
+                saveSmileCount(0);
+                updateSmileDisplay();
+                
+                // Animacja resetowania
+                const progressFill = document.getElementById('smileProgressFill');
+                if (progressFill) {
+                    progressFill.style.transition = 'none';
+                    progressFill.style.width = '0%';
+                    setTimeout(() => {
+                        progressFill.style.transition = 'width 0.5s cubic-bezier(0.4, 0, 0.2, 1)';
+                    }, 50);
+                }
+            }
+        };
+
+        function showMilestoneMessage(count) {
+            const messages = {
+                10: '🎉 Wow! 10 uśmiechów dzisiaj!',
+                50: '🌟 Niesamowite! 50 uśmiechów!',
+                100: '💖 WOW! 100 uśmiechów! Pasek rozszerza się do 1000!',
+                500: '🚀 Niesamowite! 500 uśmiechów! Jesteś niesamowita!',
+                1000: '👑 LEGENDA! 1000 uśmiechów w jeden dzień! 👑'
+            };
+
+            if (messages[count]) {
+                alert(messages[count]);
+            }
+        }
+
+        // Inicjalizacja przy załadowaniu
+        updateSmileDisplay();
+
+        // Sprawdzaj resetowanie co godzinę (jeśli strona jest otwarta)
+        setInterval(() => {
+            updateSmileDisplay();
+        }, 3600000); // 1 godzina
+    })();
+
+    // Gra: Odkryj moje myśli
+    let thoughtsGameScrollPosition = 0;
+
+    window.openThoughtsGame = function() {
+        // Zapisz pozycję scrolla do karty gry
+        const gameCard = document.querySelector('.thoughts-game-card');
+        if (gameCard) {
+            thoughtsGameScrollPosition = gameCard.offsetTop - 100; // 100px marginesu od góry
+        }
+
+        const thoughts = [
+            "Czuję się bezpiecznie, gdy jesteś obok ❤️",
+            "Twój uśmiech potrafi poprawić mi najgorszy dzień 😊",
+            "Dziękuję, że jesteś sobą – to właśnie w Tobie się zakochałem 💕",
+            "Każda wspólna chwila z Tobą to skarb, który chcę zachować na zawsze 💎",
+            "Myślę o Tobie częściej, niż sobie wyobrażasz 💭",
+            "Jesteś najlepszą rzeczą, jaka mi się przytrafiła ✨",
+            "Kocham to, jak patrzysz na świat i jak sprawiasz, że ja też go widzę inaczej 🌍",
+            "Z Tobą zwykłe chwile stają się wyjątkowymi wspomnieniami 🌟",
+            "Jesteś moim ulubionym powodem do uśmiechu każdego dnia 😍"
+        ];
+
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = lightbox.querySelector('img');
+        const buttonsContainer = document.getElementById('lightboxButtons');
+        const downloadBtn = document.getElementById('downloadPhotoBtn');
+
+        // Ukryj obrazek
+        lightboxImg.style.display = 'none';
+        
+        // Pokaż przyciski, ale ukryj przycisk pobierz
+        if (buttonsContainer) {
+            buttonsContainer.style.display = 'flex';
+        }
+        if (downloadBtn) {
+            downloadBtn.style.display = 'none';
+        }
+
+        // Ukryj inne treści lightboxa
+        const cardContent = lightbox.querySelector('.card-lightbox-content');
+        if (cardContent) cardContent.style.display = 'none';
+        const timelineContent = lightbox.querySelector('.timeline-lightbox-content');
+        if (timelineContent) timelineContent.style.display = 'none';
+        const counterContent = lightbox.querySelector('.counter-lightbox-content');
+        if (counterContent) counterContent.style.display = 'none';
+
+        // Stwórz zawartość gry
+        let gameContent = document.querySelector('.thoughts-game-lightbox');
+        if (!gameContent) {
+            gameContent = document.createElement('div');
+            gameContent.className = 'thoughts-game-lightbox';
+            lightbox.insertBefore(gameContent, lightboxImg);
+        }
+
+        gameContent.innerHTML = `
+            <div class="thoughts-game-header">
+                <h3>💭 Odkryj moje myśli 💭</h3>
+                <p class="thoughts-game-subtitle">W każdej z tych kart jest coś, co o Tobie myślę...</p>
+            </div>
+            <div class="thoughts-cards-grid">
+                ${thoughts.map((thought, index) => `
+                    <div class="thought-card" data-index="${index}" onclick="flipThoughtCard(${index})">
+                        <div class="thought-card-inner">
+                            <div class="thought-card-front">
+                                <div class="envelope-icon">✉️</div>
+                                <p>Kliknij, aby odkryć</p>
+                            </div>
+                            <div class="thought-card-back">
+                                <div class="heart-icon">❤️</div>
+                                <p>${thought}</p>
+                            </div>
+                        </div>
+                    </div>
+                `).join('')}
+            </div>
+        `;
+
+        gameContent.style.display = 'block';
+        
+        // Kompensacja szerokości paska przewijania
+        const scrollBarWidth = window.innerWidth - document.documentElement.clientWidth;
+        if (scrollBarWidth > 0) {
+            document.documentElement.style.paddingRight = `${scrollBarWidth}px`;
+        }
+        
+        // Zablokuj przewijanie
+        document.documentElement.style.overflow = 'hidden';
+        
+        // Otwórz lightbox
+        lightbox.classList.add('open');
+    };
+
+    window.flipThoughtCard = function(index) {
+        const card = document.querySelector(`.thought-card[data-index="${index}"]`);
+        if (card) {
+            card.classList.toggle('flipped');
+        }
+    };
+
+    // Gra: Pytanie do serca - wersja interaktywna
+    let heartQuestionScrollPosition = 0;
+    let currentGameState = null;
+    const SAVED_GAMES_KEY = 'heartQuestionGames';
+
+    const allQuestions = [
+        "Co najbardziej we mnie kochasz?",
+        "Kiedy poczułeś, że to coś więcej?",
+        "Co czujesz, gdy jestem smutna?",
+        "Jak wyobrażasz sobie naszą przyszłość?",
+        "Co sprawia, że się uśmiechasz, myśląc o mnie?",
+        "Co chciałbyś mi powiedzieć, ale jeszcze nie powiedziałeś?",
+        "Co sprawiło, że się w Tobie zakochałem?",
+        "Co czujesz, gdy jesteśmy razem?",
+        "Jaka jest Twoja ulubiona wspomnia z nami?",
+        "Czego najbardziej pragniesz dla nas?",
+        "Co sprawia, że czuję się z Tobą bezpiecznie?",
+        "Jak zmieniłaś moje życie?",
+        "Co byś zrobiła, gdybyś miała jeden dzień tylko dla nas?",
+        "Jaki moment z nami najbardziej Ci utkwił w pamięci?",
+        "Co sprawia, że czujesz się kochana?"
+    ];
+
+    window.openHeartQuestion = function() {
+        const gameCard = document.querySelector('.heart-question-card');
+        if (gameCard) {
+            heartQuestionScrollPosition = gameCard.offsetTop - 100;
+        }
+
+        // Wybierz 10 losowych pytań
+        const shuffled = [...allQuestions].sort(() => Math.random() - 0.5);
+        const selectedQuestions = shuffled.slice(0, 10);
+
+        currentGameState = {
+            questions: selectedQuestions,
+            answers: [],
+            currentIndex: 0,
+            startTime: new Date().toISOString()
+        };
+
+        showQuestionScreen();
+    };
+
+    function showQuestionScreen() {
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = lightbox.querySelector('img');
+        const buttonsContainer = document.getElementById('lightboxButtons');
+        const downloadBtn = document.getElementById('downloadPhotoBtn');
+
+        lightboxImg.style.display = 'none';
+        
+        if (buttonsContainer) {
+            buttonsContainer.style.display = 'flex';
+        }
+        if (downloadBtn) {
+            downloadBtn.style.display = 'none';
+        }
+
+        const cardContent = lightbox.querySelector('.card-lightbox-content');
+        if (cardContent) cardContent.style.display = 'none';
+        const timelineContent = lightbox.querySelector('.timeline-lightbox-content');
+        if (timelineContent) timelineContent.style.display = 'none';
+        const counterContent = lightbox.querySelector('.counter-lightbox-content');
+        if (counterContent) counterContent.style.display = 'none';
+        const thoughtsContent = lightbox.querySelector('.thoughts-game-lightbox');
+        if (thoughtsContent) thoughtsContent.style.display = 'none';
+
+        let gameContent = document.querySelector('.heart-question-lightbox');
+        if (!gameContent) {
+            gameContent = document.createElement('div');
+            gameContent.className = 'heart-question-lightbox';
+            lightbox.insertBefore(gameContent, lightboxImg);
+        }
+
+        const currentQuestion = currentGameState.questions[currentGameState.currentIndex];
+        const questionNumber = currentGameState.currentIndex + 1;
+
+        gameContent.innerHTML = `
+            <div class="heart-question-container">
+                <div class="heart-icon-large">❤️</div>
+                <p class="question-counter">Pytanie ${questionNumber} z 10</p>
+                <div class="question-display">${currentQuestion}</div>
+                <textarea 
+                    class="answer-input" 
+                    id="currentAnswer" 
+                    placeholder="Wpisz tutaj swoją odpowiedź..."
+                ></textarea>
+                <button class="btn-next-question" onclick="submitAnswer()" id="nextBtn">
+                    ${questionNumber < 10 ? 'Następne pytanie' : 'Zobacz podsumowanie'}
+                </button>
+            </div>
+        `;
+
+        gameContent.style.display = 'block';
+        
+        const scrollBarWidth = window.innerWidth - document.documentElement.clientWidth;
+        if (scrollBarWidth > 0) {
+            document.documentElement.style.paddingRight = `${scrollBarWidth}px`;
+        }
+        
+        document.documentElement.style.overflow = 'hidden';
+        lightbox.classList.add('open');
+
+        // Focus na textarea
+        setTimeout(() => {
+            const textarea = document.getElementById('currentAnswer');
+            if (textarea) textarea.focus();
+        }, 100);
+    }
+
+    window.submitAnswer = function() {
+        const answerInput = document.getElementById('currentAnswer');
+        const answer = answerInput ? answerInput.value.trim() : '';
+
+        if (!answer) {
+            alert('Proszę, wpisz odpowiedź zanim przejdziesz dalej.');
+            return;
+        }
+
+        currentGameState.answers.push(answer);
+        currentGameState.currentIndex++;
+
+        if (currentGameState.currentIndex < 10) {
+            showQuestionScreen();
+        } else {
+            showSummary();
+        }
+    };
+
+    function showSummary() {
+        const gameContent = document.querySelector('.heart-question-lightbox');
+        if (!gameContent) return;
+
+        let summaryHTML = `
+            <div class="summary-container">
+                <h3 style="text-align: center; color: var(--accent); margin-bottom: 2rem;">
+                    💖 Twoje odpowiedzi 💖
+                </h3>
+        `;
+
+        currentGameState.questions.forEach((question, index) => {
+            summaryHTML += `
+                <div class="summary-item">
+                    <div class="summary-question">${index + 1}. ${question}</div>
+                    <div class="summary-answer">${currentGameState.answers[index]}</div>
+                </div>
+            `;
+        });
+
+        summaryHTML += `
+                <div style="text-align: center; margin-top: 2rem;">
+                    <button class="btn-save-results" onclick="saveGameResults()">
+                        Zapisz odpowiedzi 💾
+                    </button>
+                    <button class="btn-ask-again" onclick="openHeartQuestion()">
+                        Zagraj ponownie 🔄
+                    </button>
+                </div>
+            </div>
+        `;
+
+        gameContent.innerHTML = summaryHTML;
+    }
+
+    window.saveGameResults = function() {
+        try {
+            const savedGames = JSON.parse(localStorage.getItem(SAVED_GAMES_KEY) || '[]');
+            
+            const gameToSave = {
+                id: Date.now(),
+                date: new Date().toISOString(),
+                questions: currentGameState.questions,
+                answers: currentGameState.answers
+            };
+
+            savedGames.push(gameToSave);
+            localStorage.setItem(SAVED_GAMES_KEY, JSON.stringify(savedGames));
+
+            alert('✅ Odpowiedzi zostały zapisane!');
+        } catch (e) {
+            console.error('Błąd zapisu:', e);
+            alert('❌ Nie udało się zapisać odpowiedzi.');
+        }
+    };
+
+    window.openSavedGames = function() {
+        const gameCard = document.querySelector('.saved-games-card');
+        if (gameCard) {
+            heartQuestionScrollPosition = gameCard.offsetTop - 100;
+        }
+
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = lightbox.querySelector('img');
+        const buttonsContainer = document.getElementById('lightboxButtons');
+        const downloadBtn = document.getElementById('downloadPhotoBtn');
+
+        lightboxImg.style.display = 'none';
+        
+        if (buttonsContainer) {
+            buttonsContainer.style.display = 'flex';
+        }
+        if (downloadBtn) {
+            downloadBtn.style.display = 'none';
+        }
+
+        const cardContent = lightbox.querySelector('.card-lightbox-content');
+        if (cardContent) cardContent.style.display = 'none';
+        const timelineContent = lightbox.querySelector('.timeline-lightbox-content');
+        if (timelineContent) timelineContent.style.display = 'none';
+        const counterContent = lightbox.querySelector('.counter-lightbox-content');
+        if (counterContent) counterContent.style.display = 'none';
+        const thoughtsContent = lightbox.querySelector('.thoughts-game-lightbox');
+        if (thoughtsContent) thoughtsContent.style.display = 'none';
+
+        let gameContent = document.querySelector('.heart-question-lightbox');
+        if (!gameContent) {
+            gameContent = document.createElement('div');
+            gameContent.className = 'heart-question-lightbox';
+            lightbox.insertBefore(gameContent, lightboxImg);
+        }
+
+        const savedGames = JSON.parse(localStorage.getItem(SAVED_GAMES_KEY) || '[]');
+
+        if (savedGames.length === 0) {
+            gameContent.innerHTML = `
+                <div class="no-saved-games">
+                    <div style="font-size: 4rem; margin-bottom: 1rem;">💭</div>
+                    <p>Nie masz jeszcze żadnych zapisanych odpowiedzi.</p>
+                    <button class="btn-ask-heart" onclick="openHeartQuestion()" style="margin-top: 1.5rem;">
+                        Zagraj teraz
+                    </button>
+                </div>
+            `;
+        } else {
+            let gamesHTML = `
+                <h3 style="text-align: center; color: var(--accent); margin-bottom: 2rem;">
+                    📚 Zapisane odpowiedzi
+                </h3>
+            `;
+
+            savedGames.reverse().forEach(game => {
+                const date = new Date(game.date);
+                const dateStr = date.toLocaleDateString('pl-PL', { 
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+
+                gamesHTML += `
+                    <div class="saved-game-item" onclick="viewSavedGame(${game.id})">
+                        <div class="saved-game-date">${dateStr}</div>
+                        <div class="saved-game-preview">10 odpowiedzi na pytania do serca</div>
+                    </div>
+                `;
+            });
+
+            gameContent.innerHTML = gamesHTML;
+        }
+
+        gameContent.style.display = 'block';
+        
+        const scrollBarWidth = window.innerWidth - document.documentElement.clientWidth;
+        if (scrollBarWidth > 0) {
+            document.documentElement.style.paddingRight = `${scrollBarWidth}px`;
+        }
+        
+        document.documentElement.style.overflow = 'hidden';
+        lightbox.classList.add('open');
+    };
+
+    window.viewSavedGame = function(gameId) {
+        const savedGames = JSON.parse(localStorage.getItem(SAVED_GAMES_KEY) || '[]');
+        const game = savedGames.find(g => g.id === gameId);
+        
+        if (!game) return;
+
+        const gameContent = document.querySelector('.heart-question-lightbox');
+        if (!gameContent) return;
+
+        const date = new Date(game.date);
+        const dateStr = date.toLocaleDateString('pl-PL', { 
+            year: 'numeric', 
+            month: 'long', 
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+
+        let summaryHTML = `
+            <div class="summary-container">
+                <h3 style="text-align: center; color: var(--accent); margin-bottom: 0.5rem;">
+                    💖 Twoje odpowiedzi 💖
+                </h3>
+                <p style="text-align: center; color: var(--text-muted); margin-bottom: 2rem;">
+                    ${dateStr}
+                </p>
+        `;
+
+        game.questions.forEach((question, index) => {
+            summaryHTML += `
+                <div class="summary-item">
+                    <div class="summary-question">${index + 1}. ${question}</div>
+                    <div class="summary-answer">${game.answers[index]}</div>
+                </div>
+            `;
+        });
+
+        summaryHTML += `
+                <div style="text-align: center; margin-top: 2rem;">
+                    <button class="btn-delete-game" onclick="deleteSavedGame(${game.id})">
+                        Usuń tę grę 🗑️
+                    </button>
+                    <button class="btn-ask-again" onclick="openSavedGames()">
+                        Powrót do listy ←
+                    </button>
+                </div>
+            </div>
+        `;
+
+        gameContent.innerHTML = summaryHTML;
+    };
+
+    window.deleteSavedGame = function(gameId) {
+        if (!confirm('Czy na pewno chcesz usunąć tę zapisaną grę?')) {
+            return;
+        }
+
+        try {
+            let savedGames = JSON.parse(localStorage.getItem(SAVED_GAMES_KEY) || '[]');
+            savedGames = savedGames.filter(g => g.id !== gameId);
+            localStorage.setItem(SAVED_GAMES_KEY, JSON.stringify(savedGames));
+
+            openSavedGames(); // Odśwież listę
+        } catch (e) {
+            console.error('Błąd usuwania:', e);
+            alert('❌ Nie udało się usunąć gry.');
+        }
+    };
+
+    // Licznik czasu związku
+    (function() {
+        const startDate = new Date('2024-12-12T00:00:00');
+        const daysEl = document.getElementById('days');
+        const hoursEl = document.getElementById('hours');
+        const minutesEl = document.getElementById('minutes');
+        const secondsEl = document.getElementById('seconds');
+
+        function updateCounter() {
+            const now = new Date();
+            const diff = now - startDate;
+
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+            if (daysEl) daysEl.textContent = days;
+            if (hoursEl) hoursEl.textContent = hours;
+            if (minutesEl) minutesEl.textContent = minutes;
+            if (secondsEl) secondsEl.textContent = seconds;
+            
+            // Aktualizuj też wersję w lightboxie jeśli jest otwarta
+            const daysLarge = document.getElementById('days-large');
+            const hoursLarge = document.getElementById('hours-large');
+            const minutesLarge = document.getElementById('minutes-large');
+            const secondsLarge = document.getElementById('seconds-large');
+            
+            if (daysLarge) daysLarge.textContent = days;
+            if (hoursLarge) hoursLarge.textContent = hours;
+            if (minutesLarge) minutesLarge.textContent = minutes;
+            if (secondsLarge) secondsLarge.textContent = seconds;
+        }
+
+        // Aktualizuj od razu
+        updateCounter();
+        // Aktualizuj co sekundę
+        setInterval(updateCounter, 1000);
+    })();
+
+    // Generator komplementów
+    (function() {
+        const compliments = [
+            "Jesteś najpiękniejszą dziewczyną, jaką znam ✨",
+            "Twój uśmiech potrafi rozjaśnić nawet najciemniejszy dzień ☀️",
+            "Przy Tobie czuję się kompletny i szczęśliwy 💕",
+            "Jesteś mądra, piękna i niesamowita - wszystko w jednej osobie 🌟",
+            "Twoja dobroć i wrażliwość czynią Cię wyjątkową 💖",
+            "Z każdym dniem zakochuję się w Tobie jeszcze bardziej 💗",
+            "Jesteś moim największym szczęściem i błogosławieństwem 🍀",
+            "Twoja obecność sprawia, że wszystko staje się lepsze ✨",
+            "Jesteś dokładnie taka, jakiej zawsze szukałem 💝",
+            "Kocham każdą chwilę spędzoną z Tobą 🥰",
+            "Jesteś silniejsza niż myślisz i potrafisz osiągnąć wszystko 💪",
+            "Twój śmiech jest moją ulubioną melodią 🎵",
+            "Jesteś inspiracją do tego, żeby być lepszym człowiekiem 🌈",
+            "Z Tobą każdy dzień jest wyjątkowy i pełen miłości 💞",
+            "Twoje oczy są jak gwiazdy, których nie mogę przestać podziwiać ⭐",
+            "Jesteś moją największą miłością i najlepszą przyjaciółką jednocześnie 👫",
+            "Przy Tobie czuję się bezpieczny i spokojny 🏡",
+            "Jesteś najlepszą rzeczą, jaka przytrafiła mi się w życiu 🎁",
+            "Twoja inteligencja i dowcip zawsze mnie zachwycają 🧠",
+            "Jesteś piękna zarówno wewnątrz jak i na zewnątrz 🌹",
+            "Kocham to, jak dbasz o innych i jesteś dla nich wsparciem 🤗",
+            "Z Tobą każdy moment jest bezcenny 💎",
+            "Jesteś moją wymarzoną księżniczką i królową serca 👑",
+            "Twoja troska i czułość sprawiają, że czuję się kochany 💗",
+            "Jesteś najcudowniejszą osobą na świecie 🌍",
+            "Kocham Cię bardziej niż słowa potrafią wyrazić 💕",
+            "Jesteś moim wszystkim - przeszłością, teraźniejszością i przyszłością 🔮",
+            "Twoja radość jest zaraźliwa i zawsze poprawia mi humor 😊",
+            "Jesteś dokładnie taka, jakiej potrzebuję w moim życiu 💝",
+            "Z Tobą każdy dzień jest przygodą pełną miłości 🗺️"
+        ];
+
+        let lastCompliment = null;
+
+        window.generateCompliment = function() {
+            const textEl = document.getElementById('complimentText');
+            if (!textEl) return;
+
+            // Wylosuj komplement różny od poprzedniego
+            let newCompliment;
+            do {
+                newCompliment = compliments[Math.floor(Math.random() * compliments.length)];
+            } while (newCompliment === lastCompliment && compliments.length > 1);
+
+            lastCompliment = newCompliment;
+
+            // Animacja zmiany tekstu
+            textEl.style.opacity = '0';
+            textEl.style.transform = 'translateY(-10px)';
+
+            setTimeout(() => {
+                textEl.textContent = newCompliment;
+                textEl.style.opacity = '1';
+                textEl.style.transform = 'translateY(0)';
+            }, 200);
+        };
+    })();
 
     // System efektów dźwiękowych
     const SoundEffects = {
@@ -3246,7 +5052,7 @@
             savedScrollY = window.scrollY || document.documentElement.scrollTop || 0;
 
             // Pokaż przyciski (zamknij i pobierz) dla zdjęć
-            const buttonsContainer = lightbox.querySelector('div[style*="position: absolute"]');
+            const buttonsContainer = document.getElementById('lightboxButtons');
             if (buttonsContainer) {
                 buttonsContainer.style.display = 'flex';
             }
@@ -3283,9 +5089,6 @@
                 document.documentElement.style.overflow = '';
                 document.documentElement.style.paddingRight = '';
 
-                // Przywróć scroll do zapisanej pozycji
-                window.scrollTo(0, savedScrollY);
-
                 // Wyczyść zawartość
                 imgEl.src = '';
                 imgEl.style.display = 'block';
@@ -3297,6 +5100,32 @@
                 const timelineContent = lightbox.querySelector('.timeline-lightbox-content');
                 if (timelineContent) {
                     timelineContent.innerHTML = '';
+                }
+                const counterContent = lightbox.querySelector('.counter-lightbox-content');
+                if (counterContent) {
+                    counterContent.innerHTML = '';
+                }
+                const thoughtsContent = lightbox.querySelector('.thoughts-game-lightbox');
+                const wasThoughtsGameOpen = thoughtsContent && thoughtsContent.style.display !== 'none';
+                if (thoughtsContent) {
+                    thoughtsContent.style.display = 'none';
+                    thoughtsContent.innerHTML = '';
+                }
+                const heartQuestionContent = lightbox.querySelector('.heart-question-lightbox');
+                const wasHeartQuestionOpen = heartQuestionContent && heartQuestionContent.style.display !== 'none';
+                if (heartQuestionContent) {
+                    heartQuestionContent.style.display = 'none';
+                    heartQuestionContent.innerHTML = '';
+                }
+
+                // Przywróć scroll do zapisanej pozycji
+                // Jeśli była otwarta gra myśli lub gra pytanie do serca, wróć do niej
+                if (wasThoughtsGameOpen && typeof thoughtsGameScrollPosition !== 'undefined') {
+                    window.scrollTo(0, thoughtsGameScrollPosition);
+                } else if (wasHeartQuestionOpen && typeof heartQuestionScrollPosition !== 'undefined') {
+                    window.scrollTo(0, heartQuestionScrollPosition);
+                } else {
+                    window.scrollTo(0, savedScrollY);
                 }
 
                 // Przywróć wcześniejsze zachowanie przewijania (jeśli było ustawione)
@@ -3351,6 +5180,13 @@
                 if (strong) {
                     openTimeline(strong.innerHTML, contentText, meta ? meta.innerHTML : '');
                 }
+                return;
+            }
+            
+            // Obsługa kliknięcia w counter-card
+            const counterCard = e.target.closest && e.target.closest('.counter-card');
+            if (counterCard) {
+                openCounter();
             }
         });
 
@@ -3359,10 +5195,14 @@
             // Zapisz pozycję scrolla
             savedScrollY = window.scrollY || document.documentElement.scrollTop;
             
-            // Ukryj przyciski (zamknij i pobierz) dla kart
-            const buttonsContainer = lightbox.querySelector('div[style*="position: absolute"]');
+            // Pokaż kontener przycisków, ale ukryj przycisk pobierz
+            const buttonsContainer = document.getElementById('lightboxButtons');
             if (buttonsContainer) {
-                buttonsContainer.style.display = 'none';
+                buttonsContainer.style.display = 'flex';
+            }
+            const downloadBtn = document.getElementById('downloadPhotoBtn');
+            if (downloadBtn) {
+                downloadBtn.style.display = 'none';
             }
             
             // Kompensacja szerokości paska przewijania
@@ -3408,10 +5248,14 @@
             // Zapisz pozycję scrolla
             savedScrollY = window.scrollY || document.documentElement.scrollTop;
             
-            // Ukryj przyciski (zamknij i pobierz) dla timeline
-            const buttonsContainer = lightbox.querySelector('div[style*="position: absolute"]');
+            // Pokaż kontener przycisków, ale ukryj przycisk pobierz
+            const buttonsContainer = document.getElementById('lightboxButtons');
             if (buttonsContainer) {
-                buttonsContainer.style.display = 'none';
+                buttonsContainer.style.display = 'flex';
+            }
+            const downloadBtn = document.getElementById('downloadPhotoBtn');
+            if (downloadBtn) {
+                downloadBtn.style.display = 'none';
             }
             
             // Kompensacja szerokości paska przewijania
@@ -3432,6 +5276,12 @@
                 cardContent.style.display = 'none';
             }
             
+            // Ukryj counter content jeśli istnieje
+            const counterContent = lightbox.querySelector('.counter-lightbox-content');
+            if (counterContent) {
+                counterContent.style.display = 'none';
+            }
+            
             // Tworzymy kontener dla timeline
             let timelineContent = lightbox.querySelector('.timeline-lightbox-content');
             if (!timelineContent) {
@@ -3444,6 +5294,88 @@
                 <strong>${title}</strong>
                 <div class="timeline-text">${text}</div>
                 <div class="timeline-meta-large">${meta}</div>
+            `;
+            
+            // Otwórz lightbox
+            lightbox.classList.add('open');
+        }
+
+        // Funkcja do otwierania licznika w lightboxie
+        function openCounter() {
+            // Zapisz pozycję scrolla
+            savedScrollY = window.scrollY || document.documentElement.scrollTop;
+            
+            // Pokaż kontener przycisków, ale ukryj przycisk pobierz
+            const buttonsContainer = document.getElementById('lightboxButtons');
+            if (buttonsContainer) {
+                buttonsContainer.style.display = 'flex';
+            }
+            const downloadBtn = document.getElementById('downloadPhotoBtn');
+            if (downloadBtn) {
+                downloadBtn.style.display = 'none';
+            }
+            
+            // Kompensacja szerokości paska przewijania
+            const scrollBarWidth = window.innerWidth - document.documentElement.clientWidth;
+            if (scrollBarWidth > 0) {
+                document.documentElement.style.paddingRight = `${scrollBarWidth}px`;
+            }
+            
+            // Zablokuj przewijanie
+            document.documentElement.style.overflow = 'hidden';
+            
+            // Ukryj obrazek
+            imgEl.style.display = 'none';
+            
+            // Ukryj inne contenery
+            const cardContent = lightbox.querySelector('.card-lightbox-content');
+            if (cardContent) {
+                cardContent.style.display = 'none';
+            }
+            const timelineContent = lightbox.querySelector('.timeline-lightbox-content');
+            if (timelineContent) {
+                timelineContent.style.display = 'none';
+            }
+            
+            // Tworzymy kontener dla licznika
+            let counterContent = lightbox.querySelector('.counter-lightbox-content');
+            if (!counterContent) {
+                counterContent = document.createElement('div');
+                counterContent.className = 'counter-lightbox-content';
+                lightbox.appendChild(counterContent);
+            }
+            
+            // Pobierz aktualne wartości licznika
+            const days = document.getElementById('days').textContent;
+            const hours = document.getElementById('hours').textContent;
+            const minutes = document.getElementById('minutes').textContent;
+            const seconds = document.getElementById('seconds').textContent;
+            
+            counterContent.innerHTML = `
+                <span class="counter-heart-large">♥</span>
+                <h3>Razem od 12 grudnia 2024</h3>
+                <div class="counter-display-large">
+                    <div class="counter-item-large">
+                        <div class="counter-value-large" id="days-large">${days}</div>
+                        <div class="counter-label-large">dni</div>
+                    </div>
+                    <div class="counter-separator-large">:</div>
+                    <div class="counter-item-large">
+                        <div class="counter-value-large" id="hours-large">${hours}</div>
+                        <div class="counter-label-large">godzin</div>
+                    </div>
+                    <div class="counter-separator-large">:</div>
+                    <div class="counter-item-large">
+                        <div class="counter-value-large" id="minutes-large">${minutes}</div>
+                        <div class="counter-label-large">minut</div>
+                    </div>
+                    <div class="counter-separator-large">:</div>
+                    <div class="counter-item-large">
+                        <div class="counter-value-large" id="seconds-large">${seconds}</div>
+                        <div class="counter-label-large">sekund</div>
+                    </div>
+                </div>
+                <p class="counter-message-large">...i każda minuta z Tobą jest wyjątkowa</p>
             `;
             
             // Otwórz lightbox
@@ -5248,11 +7180,27 @@
 
     // Funkcje zarządzania zdjęciami użytkowników
     function getUserPhotos() {
-      return JSON.parse(localStorage.getItem('userPhotos')) || {};
+      try {
+        return JSON.parse(localStorage.getItem('userPhotos')) || {};
+      } catch (e) {
+        console.error('Błąd odczytu zdjęć:', e);
+        return {};
+      }
     }
 
     function saveUserPhotos(photos) {
-      localStorage.setItem('userPhotos', JSON.stringify(photos));
+      try {
+        localStorage.setItem('userPhotos', JSON.stringify(photos));
+        return true;
+      } catch (e) {
+        console.error('Błąd zapisu zdjęć:', e);
+        if (e.name === 'QuotaExceededError') {
+          alert('Błąd: Brak miejsca w pamięci przeglądarki. Zdjęcie jest za duże lub pamięć jest zapełniona.');
+        } else {
+          alert('Błąd podczas zapisywania zdjęcia. Spróbuj ponownie.');
+        }
+        return false;
+      }
     }
 
     function openPhotoUpload(photoType) {
@@ -5260,7 +7208,10 @@
         alert('Musisz być zalogowany, aby dodać zdjęcie!');
         return;
       }
-      document.getElementById(photoType + 'PhotoInput').click();
+      const input = document.getElementById(photoType + 'PhotoInput');
+      if (input) {
+        input.click();
+      }
     }
 
     function handlePhotoUpload(photoType, input) {
@@ -5269,23 +7220,56 @@
       const file = input.files[0];
       const maxSize = 5 * 1024 * 1024; // 5MB
       
-      if (file.size > maxSize) {
-        alert('Zdjęcie jest za duże! Maksymalny rozmiar to 5MB.');
+      // Sprawdź typ pliku
+      if (!file.type.match('image.*')) {
+        alert('Wybierz plik obrazu (JPG, PNG, GIF)');
+        input.value = '';
         return;
       }
       
+      if (file.size > maxSize) {
+        alert('Zdjęcie jest za duże! Maksymalny rozmiar to 5MB.');
+        input.value = '';
+        return;
+      }
+      
+      // Pokaż indicator ładowania
+      const frame = document.getElementById(photoType + 'PhotoFrame');
+      if (frame) {
+        frame.innerHTML = '<div class="photo-placeholder-content"><div class="icon">⏳</div><div class="text">Przesyłanie...</div></div>';
+      }
+      
       const reader = new FileReader();
-      reader.onload = function(e) {
-        const photos = getUserPhotos();
-        photos[photoType] = {
-          data: e.target.result,
-          uploadedBy: currentUser,
-          uploadedAt: new Date().toLocaleString('pl-PL')
-        };
-        saveUserPhotos(photos);
+      
+      reader.onerror = function() {
+        alert('Błąd podczas wczytywania zdjęcia. Spróbuj ponownie.');
+        input.value = '';
         loadUserPhotos();
-        alert('Zdjęcie dodane!');
       };
+      
+      reader.onload = function(e) {
+        try {
+          const photos = getUserPhotos();
+          photos[photoType] = {
+            data: e.target.result,
+            uploadedBy: currentUser,
+            uploadedAt: new Date().toLocaleString('pl-PL')
+          };
+          
+          const saved = saveUserPhotos(photos);
+          if (saved) {
+            loadUserPhotos();
+            alert('Zdjęcie dodane!');
+          } else {
+            loadUserPhotos();
+          }
+        } catch (error) {
+          console.error('Błąd podczas przetwarzania zdjęcia:', error);
+          alert('Wystąpił błąd podczas dodawania zdjęcia. Spróbuj ponownie.');
+          loadUserPhotos();
+        }
+      };
+      
       reader.readAsDataURL(file);
       
       // Reset input
@@ -5317,55 +7301,63 @@
     }
 
     function loadUserPhotos() {
-      const photos = getUserPhotos();
-      const users = getUsers();
-      const currentUserObj = users.find(u => u.name === currentUser);
-      const isAdmin = currentUserObj && currentUserObj.isAdmin;
-      
-      // Load Michał's photo
-      const michalFrame = document.getElementById('michalPhotoFrame');
-      if (photos.michal) {
-        const isOwner = photos.michal.uploadedBy === currentUser;
-        const canDelete = isOwner || isAdmin;
+      try {
+        const photos = getUserPhotos();
+        const users = getUsers();
+        const currentUserObj = users.find(u => u.name === currentUser);
+        const isAdmin = currentUserObj && currentUserObj.isAdmin;
         
-        michalFrame.innerHTML = `
-          <img class="zoomable" src="${photos.michal.data}" alt="Michał - zdjęcie z danego dnia">
-          ${canDelete ? '<button class="delete-photo-btn" onclick="event.stopPropagation(); deleteUserPhoto(\'michal\')" title="Usuń zdjęcie">🗑️</button>' : ''}
-        `;
-        michalFrame.classList.remove('placeholder');
-        michalFrame.onclick = null;
-      } else {
-        michalFrame.innerHTML = `
-          <div class="photo-placeholder-content">
-            <div class="icon">📷</div>
-            <div class="text">Kliknij, aby dodać zdjęcie</div>
-          </div>
-        `;
-        michalFrame.classList.add('placeholder');
-        michalFrame.onclick = () => openPhotoUpload('michal');
-      }
-      
-      // Load Paulina's photo
-      const paulinaFrame = document.getElementById('paulinaPhotoFrame');
-      if (photos.paulina) {
-        const isOwner = photos.paulina.uploadedBy === currentUser;
-        const canDelete = isOwner || isAdmin;
+        // Load Michał's photo
+        const michalFrame = document.getElementById('michalPhotoFrame');
+        if (michalFrame) {
+          if (photos.michal && photos.michal.data) {
+            const isOwner = photos.michal.uploadedBy === currentUser;
+            const canDelete = isOwner || isAdmin;
+            
+            michalFrame.innerHTML = `
+              <img class="zoomable" src="${photos.michal.data}" alt="Michał - zdjęcie z danego dnia">
+              ${canDelete ? '<button class="delete-photo-btn" onclick="event.stopPropagation(); deleteUserPhoto(\'michal\')" title="Usuń zdjęcie">🗑️</button>' : ''}
+            `;
+            michalFrame.classList.remove('placeholder');
+            michalFrame.onclick = null;
+          } else {
+            michalFrame.innerHTML = `
+              <div class="photo-placeholder-content">
+                <div class="icon">📷</div>
+                <div class="text">Kliknij, aby dodać zdjęcie</div>
+              </div>
+            `;
+            michalFrame.classList.add('placeholder');
+            michalFrame.onclick = () => openPhotoUpload('michal');
+          }
+        }
         
-        paulinaFrame.innerHTML = `
-          <img class="zoomable" src="${photos.paulina.data}" alt="Paulina - zdjęcie z danego dnia">
-          ${canDelete ? '<button class="delete-photo-btn" onclick="event.stopPropagation(); deleteUserPhoto(\'paulina\')" title="Usuń zdjęcie">🗑️</button>' : ''}
-        `;
-        paulinaFrame.classList.remove('placeholder');
-        paulinaFrame.onclick = null;
-      } else {
-        paulinaFrame.innerHTML = `
-          <div class="photo-placeholder-content">
-            <div class="icon">📷</div>
-            <div class="text">Kliknij, aby dodać zdjęcie</div>
-          </div>
-        `;
-        paulinaFrame.classList.add('placeholder');
-        paulinaFrame.onclick = () => openPhotoUpload('paulina');
+        // Load Paulina's photo
+        const paulinaFrame = document.getElementById('paulinaPhotoFrame');
+        if (paulinaFrame) {
+          if (photos.paulina && photos.paulina.data) {
+            const isOwner = photos.paulina.uploadedBy === currentUser;
+            const canDelete = isOwner || isAdmin;
+            
+            paulinaFrame.innerHTML = `
+              <img class="zoomable" src="${photos.paulina.data}" alt="Paulina - zdjęcie z danego dnia">
+              ${canDelete ? '<button class="delete-photo-btn" onclick="event.stopPropagation(); deleteUserPhoto(\'paulina\')" title="Usuń zdjęcie">🗑️</button>' : ''}
+            `;
+            paulinaFrame.classList.remove('placeholder');
+            paulinaFrame.onclick = null;
+          } else {
+            paulinaFrame.innerHTML = `
+              <div class="photo-placeholder-content">
+                <div class="icon">📷</div>
+                <div class="text">Kliknij, aby dodać zdjęcie</div>
+              </div>
+            `;
+            paulinaFrame.classList.add('placeholder');
+            paulinaFrame.onclick = () => openPhotoUpload('paulina');
+          }
+        }
+      } catch (error) {
+        console.error('Błąd podczas ładowania zdjęć:', error);
       }
     }
 </script>
