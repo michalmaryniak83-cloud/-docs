@@ -7059,20 +7059,26 @@
 
     // Funkcje synchronizacji danych
     function exportData() {
+      // Skrócone nazwy kluczy dla mniejszego rozmiaru
       const data = {
-        users: localStorage.getItem('users'),
-        conversations: localStorage.getItem('conversations'),
-        chatGroups: localStorage.getItem('chatGroups'),
-        userProfiles: localStorage.getItem('userProfiles'),
-        userNicknames: localStorage.getItem('userNicknames'),
-        smileCounter: localStorage.getItem('smileCounter'),
-        smileCounterDate: localStorage.getItem('smileCounterDate'),
-        heartQuestionGames: localStorage.getItem('heartQuestionGames'),
-        musicVolume: localStorage.getItem('musicVolume'),
-        sfxVolume: localStorage.getItem('sfxVolume'),
-        chatConversations: localStorage.getItem('chatConversations'),
-        timestamp: new Date().toISOString()
+        u: localStorage.getItem('users'),
+        c: localStorage.getItem('conversations'),
+        g: localStorage.getItem('chatGroups'),
+        p: localStorage.getItem('userProfiles'),
+        n: localStorage.getItem('userNicknames'),
+        s: localStorage.getItem('smileCounter'),
+        d: localStorage.getItem('smileCounterDate'),
+        h: localStorage.getItem('heartQuestionGames'),
+        m: localStorage.getItem('musicVolume'),
+        f: localStorage.getItem('sfxVolume'),
+        x: localStorage.getItem('chatConversations'),
+        t: new Date().toISOString()
       };
+      
+      // Usuń puste wartości aby zmniejszyć rozmiar
+      Object.keys(data).forEach(key => {
+        if (!data[key]) delete data[key];
+      });
       
       const jsonString = JSON.stringify(data);
       const encoded = btoa(unescape(encodeURIComponent(jsonString)));
@@ -7101,10 +7107,23 @@
         const jsonString = decodeURIComponent(escape(atob(code)));
         const data = JSON.parse(jsonString);
         
+        // Mapa skróconych kluczy na pełne nazwy
+        const keyMap = {
+          u: 'users',
+          c: 'conversations',
+          g: 'chatGroups',
+          p: 'userProfiles',
+          n: 'userNicknames',
+          s: 'smileCounter',
+          d: 'smileCounterDate',
+          h: 'heartQuestionGames',
+          m: 'musicVolume',
+          f: 'sfxVolume',
+          x: 'chatConversations'
+        };
+        
         // Sprawdź czy dane zawierają jakiekolwiek informacje
-        const hasData = data.users || data.conversations || data.chatGroups || 
-                       data.userProfiles || data.userNicknames || data.smileCounter || 
-                       data.heartQuestionGames || data.chatConversations;
+        const hasData = Object.keys(keyMap).some(key => data[key]);
         
         if (!hasData) {
           alert('Nieprawidłowy kod synchronizacji - brak danych!');
@@ -7116,18 +7135,12 @@
           return;
         }
         
-        // Importuj wszystkie dane
-        if (data.users) localStorage.setItem('users', data.users);
-        if (data.conversations) localStorage.setItem('conversations', data.conversations);
-        if (data.chatGroups) localStorage.setItem('chatGroups', data.chatGroups);
-        if (data.userProfiles) localStorage.setItem('userProfiles', data.userProfiles);
-        if (data.userNicknames) localStorage.setItem('userNicknames', data.userNicknames);
-        if (data.smileCounter) localStorage.setItem('smileCounter', data.smileCounter);
-        if (data.smileCounterDate) localStorage.setItem('smileCounterDate', data.smileCounterDate);
-        if (data.heartQuestionGames) localStorage.setItem('heartQuestionGames', data.heartQuestionGames);
-        if (data.musicVolume) localStorage.setItem('musicVolume', data.musicVolume);
-        if (data.sfxVolume) localStorage.setItem('sfxVolume', data.sfxVolume);
-        if (data.chatConversations) localStorage.setItem('chatConversations', data.chatConversations);
+        // Importuj wszystkie dane używając mapy kluczy
+        Object.keys(keyMap).forEach(shortKey => {
+          if (data[shortKey]) {
+            localStorage.setItem(keyMap[shortKey], data[shortKey]);
+          }
+        });
         
         alert('Dane zaimportowane pomyślnie! Odśwież stronę, aby zobaczyć zmiany.');
         document.getElementById('importCodeText').value = '';
