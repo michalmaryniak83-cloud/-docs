@@ -7065,6 +7065,12 @@
         chatGroups: localStorage.getItem('chatGroups'),
         userProfiles: localStorage.getItem('userProfiles'),
         userNicknames: localStorage.getItem('userNicknames'),
+        smileCounter: localStorage.getItem('smileCounter'),
+        smileCounterDate: localStorage.getItem('smileCounterDate'),
+        heartQuestionGames: localStorage.getItem('heartQuestionGames'),
+        musicVolume: localStorage.getItem('musicVolume'),
+        sfxVolume: localStorage.getItem('sfxVolume'),
+        chatConversations: localStorage.getItem('chatConversations'),
         timestamp: new Date().toISOString()
       };
       
@@ -7095,9 +7101,13 @@
         const jsonString = decodeURIComponent(escape(atob(code)));
         const data = JSON.parse(jsonString);
         
-        // Sprawdź czy dane są prawidłowe
-        if (!data.users || !data.conversations) {
-          alert('Nieprawidłowy kod synchronizacji!');
+        // Sprawdź czy dane zawierają jakiekolwiek informacje
+        const hasData = data.users || data.conversations || data.chatGroups || 
+                       data.userProfiles || data.userNicknames || data.smileCounter || 
+                       data.heartQuestionGames || data.chatConversations;
+        
+        if (!hasData) {
+          alert('Nieprawidłowy kod synchronizacji - brak danych!');
           return;
         }
         
@@ -7112,6 +7122,12 @@
         if (data.chatGroups) localStorage.setItem('chatGroups', data.chatGroups);
         if (data.userProfiles) localStorage.setItem('userProfiles', data.userProfiles);
         if (data.userNicknames) localStorage.setItem('userNicknames', data.userNicknames);
+        if (data.smileCounter) localStorage.setItem('smileCounter', data.smileCounter);
+        if (data.smileCounterDate) localStorage.setItem('smileCounterDate', data.smileCounterDate);
+        if (data.heartQuestionGames) localStorage.setItem('heartQuestionGames', data.heartQuestionGames);
+        if (data.musicVolume) localStorage.setItem('musicVolume', data.musicVolume);
+        if (data.sfxVolume) localStorage.setItem('sfxVolume', data.sfxVolume);
+        if (data.chatConversations) localStorage.setItem('chatConversations', data.chatConversations);
         
         alert('Dane zaimportowane pomyślnie! Odśwież stronę, aby zobaczyć zmiany.');
         document.getElementById('importCodeText').value = '';
@@ -7364,3 +7380,4 @@
 
 </body>
 </html>
+
