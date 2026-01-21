@@ -7389,8 +7389,152 @@
         console.error('Błąd podczas ładowania zdjęć:', error);
       }
     }
+
+    // ============= SYNCHRONIZACJA MIĘDZY URZĄDZENIAMI =============
+    let socket = null;
+    let isInitialized = false;
+
+    function initializeSync() {
+      if (isInitialized || !currentUser) return;
+      
+      // Połącz z serwerem WebSocket
+      socket = io();
+      
+      socket.on('connect', () => {
+        console.log('✅ Połączono z serwerem synchronizacji');
+        
+        // Powiadom serwer o zalogowaniu
+        socket.emit('user_login', {
+          userId: currentUser,
+          username: currentUser
+        });
+        
+        // Poproś o pełną synchronizację danych
+        socket.emit('get_full_sync');
+      });
+      
+      // Odbierz zsynchronizowane dane z serwera
+      socket.on('sync_data', (data) => {
+        console.log('📥 Otrzymano zsynchronizowane dane');
+        Object.keys(data).forEach(key => {
+          if (localStorage.getItem(key) !== data[key]) {
+            localStorage.setItem(key, data[key]);
+          }
+        });
+        
+        // Odśwież widoki
+        refreshAllViews();
+      });
+      
+      socket.on('full_sync_data', (data) => {
+        console.log('📥 Otrzymano pełną synchronizację');
+        Object.keys(data).forEach(key => {
+          if (localStorage.getItem(key) !== data[key]) {
+            localStorage.setItem(key, data[key]);
+          }
+        });
+        
+        // Odśwież widoki
+        refreshAllViews();
+      });
+      
+      // Odbierz aktualizacje z innych urządzeń
+      socket.on('storage_update', (update) => {
+        const { key, value, action } = update;
+        
+        if (action === 'set') {
+          localStorage.setItem(key, value);
+        } else if (action === 'remove') {
+          localStorage.removeItem(key);
+        } else if (action === 'clear') {
+          localStorage.clear();
+        }
+        
+        // Odśwież widoki
+        refreshAllViews();
+      });
+      
+      socket.on('user_session_update', (data) => {
+        console.log('📱 Status sesji:', data.action);
+      });
+      
+      socket.on('disconnect', () => {
+        console.log('❌ Rozłączono z serwerem');
+      });
+      
+      // Nadpisz localStorage aby automatycznie synchronizować
+      const originalSetItem = localStorage.setItem.bind(localStorage);
+      const originalRemoveItem = localStorage.removeItem.bind(localStorage);
+      const originalClear = localStorage.clear.bind(localStorage);
+      
+      localStorage.setItem = function(key, value) {
+        originalSetItem(key, value);
+        if (socket && socket.connected && currentUser) {
+          socket.emit('sync_request', { key, value, action: 'set' });
+        }
+      };
+      
+      localStorage.removeItem = function(key) {
+        originalRemoveItem(key);
+        if (socket && socket.connected && currentUser) {
+          socket.emit('sync_request', { key, action: 'remove' });
+        }
+      };
+      
+      localStorage.clear = function() {
+        originalClear();
+        if (socket && socket.connected && currentUser) {
+          socket.emit('sync_request', { action: 'clear' });
+        }
+      };
+      
+      isInitialized = true;
+    }
+    
+    function refreshAllViews() {
+      // Odśwież widoki które mogły się zmienić
+      if (typeof loadChatHistory === 'function') loadChatHistory();
+      if (typeof loadUsersList === 'function') loadUsersList();
+      if (typeof loadGroups === 'function') loadGroups();
+      if (typeof loadPhotosFromStorage === 'function') loadPhotosFromStorage();
+      if (typeof renderSavedGames === 'function') renderSavedGames();
+    }
+    
+    // Dodaj inicjalizację synchronizacji po zalogowaniu
+    const originalLogin = window.login;
+    const originalRegister = window.register;
+    
+    if (originalLogin) {
+      window.login = function() {
+        const result = originalLogin.apply(this, arguments);
+        setTimeout(() => {
+          if (currentUser) initializeSync();
+        }, 100);
+        return result;
+      };
+    }
+    
+    if (originalRegister) {
+      window.register = function() {
+        const result = originalRegister.apply(this, arguments);
+        setTimeout(() => {
+          if (currentUser) initializeSync();
+        }, 100);
+        return result;
+      };
+    }
+    
+    // Jeśli użytkownik jest już zalogowany, uruchom synchronizację
+    setTimeout(() => {
+      if (currentUser) {
+        initializeSync();
+      }
+    }, 500);
 </script>
+
+<script src="/socket.io/socket.io.js"></script>
 
 </body>
 </html>
+
 
